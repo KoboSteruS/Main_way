@@ -499,24 +499,15 @@ body {
 }
 
 .value {
-    background: var(--color-bg-secondary);
-    border: 2px solid var(--color-border);
-    border-radius: 20px;
-    padding: 50px 30px;
-    transition: var(--transition);
-    cursor: pointer;
-    text-align: center;
-    min-width: 0;
-    box-sizing: border-box;
-    overflow: hidden;
     position: relative;
+    height: 280px;
+    border-radius: 20px;
+    overflow: hidden;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .value__overlay {
@@ -525,47 +516,33 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%);
     transition: all 0.3s ease;
 }
 
 .value__content {
     position: relative;
     z-index: 2;
-    color: white;
+    padding: 25px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
-
-.value:hover {
-    border-color: var(--color-accent);
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(191, 164, 107, 0.3);
-}
-
-.value:hover .value__overlay {
-    background: rgba(0, 0, 0, 0.6);
-}
-
-/* Удалены старые стили для иконок, так как теперь используются фоновые изображения */
 
 .value__name {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 700;
-    color: var(--color-primary);
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    word-break: break-word;
-    text-align: center;
-    max-width: 100%;
-    overflow-wrap: break-word;
+    color: var(--color-accent);
+    margin-bottom: 12px;
+    line-height: 1.2;
 }
 
 .value__desc {
-    font-size: 18px;
+    font-size: 13px;
     color: var(--color-text);
-    line-height: 1.6;
-    font-weight: 500;
+    line-height: 1.5;
+    opacity: 0.9;
 }
 
 /* ===== VIDEO SECTION ===== */
@@ -1352,6 +1329,14 @@ body {
     font-size: 16px;
     color: var(--color-text);
     line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.mission__cta {
+    position: relative;
+    z-index: 3;
+    display: inline-block;
+    margin-top: 20px;
 }
 
 .map-container {
@@ -1362,14 +1347,6 @@ body {
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 
-.mission__cta {
-    position: relative;
-    z-index: 3;
-    display: block;
-    width: fit-content;
-    margin: 40px auto 0 auto;
-}
-
 /* Адаптивность для новых блоков */
 @media (max-width: 768px) {
     .stages-grid {
@@ -1378,22 +1355,27 @@ body {
     
     .mission-content {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 40px;
     }
     
     .mission-text h3 {
-        font-size: 24px;
+        font-size: 28px;
     }
     
-    .mission-path {
+    .mission-description {
         font-size: 16px;
-    }
-    
-    .map-container {
-        height: 300px;
     }
     
     .section-title {
         font-size: 2rem;
     }
+} 
+
+.value:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(191, 164, 107, 0.2);
+}
+
+.value:hover .value__overlay {
+    background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 100%);
 } 
