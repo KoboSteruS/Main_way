@@ -1274,42 +1274,7 @@ body {
     line-height: 1.6;
 }
 
-/* Другие программы */
-.other-programs {
-    text-align: center;
-    margin-top: 3rem;
-}
 
-.other-programs-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    color: var(--color-accent);
-}
-
-.programs-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-}
-
-.program-btn {
-    display: inline-block;
-    padding: 1rem 2rem;
-    background: var(--color-accent);
-    color: var(--color-bg);
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: bold;
-    transition: var(--transition);
-    border: 2px solid transparent;
-}
-
-.program-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(191, 164, 107, 0.3);
-    border-color: var(--color-accent);
-}
 
 /* YouTube видео */
 .video-youtube {
@@ -1426,11 +1391,6 @@ body {
     
     .map-container {
         height: 300px;
-    }
-    
-    .programs-buttons {
-        flex-direction: column;
-        align-items: center;
     }
     
     .section-title {
