@@ -365,3 +365,139 @@ function initMobileSidebar() {
         link.addEventListener('click', closeSidebar);
     });
 } 
+
+// Инициализация карты с точками городов
+function initMap() {
+    if (typeof L === 'undefined') {
+        console.log('Leaflet не загружен');
+        return;
+    }
+
+    const map = L.map('map').setView([55.7558, 37.6176], 4); // Центр на Москве
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Точки городов
+    const cities = [
+        { name: 'Москва', coords: [55.7558, 37.6176] },
+        { name: 'Стокгольм', coords: [59.3293, 18.0686] },
+        { name: 'Рига', coords: [56.9496, 24.1052] },
+        { name: 'Цюрих', coords: [47.3769, 8.5417] },
+        { name: 'Минск', coords: [53.9045, 27.5615] },
+        { name: 'Владивосток', coords: [43.1198, 131.8869] },
+        { name: 'Красноярск', coords: [56.0153, 92.8932] }
+    ];
+
+    cities.forEach(city => {
+        L.marker(city.coords)
+            .addTo(map)
+            .bindPopup(city.name)
+            .openPopup();
+    });
+}
+
+// FAQ аккордеон
+function initFAQ() {
+    const faqItems = document.querySelectorAll('.faq__item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq__question');
+        const answer = item.querySelector('.faq__answer');
+        
+        question.addEventListener('click', () => {
+            const isOpen = item.classList.contains('active');
+            
+            // Закрываем все остальные
+            faqItems.forEach(otherItem => {
+                otherItem.classList.remove('active');
+                otherItem.querySelector('.faq__answer').style.maxHeight = '0';
+            });
+            
+            // Открываем/закрываем текущий
+            if (!isOpen) {
+                item.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
+        });
+    });
+}
+
+// Мобильное меню
+function initMobileMenu() {
+    const burger = document.getElementById('headerBurger');
+    const sidebar = document.getElementById('sidebarMenu');
+    const closeBtn = document.getElementById('sidebarClose');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    
+    if (burger && sidebar) {
+        burger.addEventListener('click', () => {
+            sidebar.classList.add('open');
+            backdrop.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        const closeMenu = () => {
+            sidebar.classList.remove('open');
+            backdrop.style.display = 'none';
+            document.body.style.overflow = '';
+        };
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeMenu);
+        }
+        
+        if (backdrop) {
+            backdrop.addEventListener('click', closeMenu);
+        }
+    }
+}
+
+// Плавная прокрутка
+function initSmoothScroll() {
+    const links = document.querySelectorAll('a[href^="#"]');
+    
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+}
+
+// Анимации при скролле
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    const animatedElements = document.querySelectorAll('.stage, .value, .faq__item, .stage-card');
+    animatedElements.forEach(el => observer.observe(el));
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    initMap();
+    initFAQ();
+    initMobileMenu();
+    initSmoothScroll();
+    initScrollAnimations();
+}); 

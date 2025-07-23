@@ -92,8 +92,6 @@ body {
     transform: translateY(-2px);
 }
 
-
-
 /* ===== HEADER ===== */
 .header {
     position: fixed;
@@ -113,27 +111,14 @@ body {
     align-items: center;
 }
 
-.header__logo {
-    font-size: var(--font-size-xl);
-    font-weight: 700;
-    color: var(--color-accent);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    background: rgba(255,255,255,0.10);
-    border-radius: 16px;
-    padding: 8px 16px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-    transition: background 0.2s;
-}
+
 .header__logo-img {
-    height: 64px;
+    height: 100px;
     width: auto;
     display: block;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.18));
     transition: height 0.2s;
 }
+
 @media (max-width: 768px) {
     .header__logo-img { height: 48px; }
     .header__logo { border-radius: 10px; padding: 4px 8px; }
@@ -403,11 +388,24 @@ body {
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     transition: all 0.3s ease;
-    height: 340px;
+    height: 400px;
+    position: relative;
+}
+
+.portrait__placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    transition: all 0.3s ease;
 }
 
 .portrait:hover .portrait__placeholder {
     box-shadow: 0 12px 48px rgba(0,0,0,0.4);
+}
+
+.portrait:hover .portrait__placeholder img {
+    transform: scale(1.05);
 }
 
 .portrait__quote {
@@ -415,20 +413,43 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    background: linear-gradient(transparent, rgba(0,0,0,0.9));
     color: #fff;
     padding: 40px 20px 20px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
-    text-align: center;
+    text-align: left;
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.3s ease;
+    max-height: 80%;
+    overflow-y: auto;
 }
 
 .portrait:hover .portrait__quote {
     opacity: 1;
     transform: translateY(0);
+}
+
+.portrait__name {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--color-accent);
+}
+
+.portrait__text {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-style: italic;
+    color: #fff;
+}
+
+.portrait__story {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .who-we-are__cta {
@@ -478,8 +499,8 @@ body {
 }
 
 .value {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--color-border);
+    background: var(--color-bg-secondary);
+    border: 2px solid var(--color-border);
     border-radius: 20px;
     padding: 50px 30px;
     transition: var(--transition);
@@ -488,27 +509,47 @@ body {
     min-width: 0;
     box-sizing: border-box;
     overflow: hidden;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.value__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 18px;
+    transition: all 0.3s ease;
+}
+
+.value__content {
+    position: relative;
+    z-index: 2;
+    color: white;
 }
 
 .value:hover {
     border-color: var(--color-accent);
     transform: translateY(-10px);
     box-shadow: 0 20px 40px rgba(191, 164, 107, 0.3);
-    background: rgba(191, 164, 107, 0.05);
 }
 
-.value__icon {
-    font-size: 64px;
-    margin-bottom: 25px;
-    display: block;
-    max-width: 80px;
-    height: auto;
-    margin-left: auto;
-    margin-right: auto;
+.value:hover .value__overlay {
+    background: rgba(0, 0, 0, 0.6);
 }
+
+/* Удалены старые стили для иконок, так как теперь используются фоновые изображения */
 
 .value__name {
-    font-size: var(--font-size-xl);
+    font-size: 28px;
     font-weight: 700;
     color: var(--color-primary);
     margin-bottom: 15px;
@@ -521,9 +562,10 @@ body {
 }
 
 .value__desc {
-    font-size: var(--font-size-base);
-    color: var(--color-text-secondary);
+    font-size: 18px;
+    color: var(--color-text);
     line-height: 1.6;
+    font-weight: 500;
 }
 
 /* ===== VIDEO SECTION ===== */
@@ -579,33 +621,21 @@ body {
     margin: 0 auto;
 }
 
-.video-section__placeholder {
+.video-container {
+    width: 100%;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 
-.video-section__play {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(191,164,107,0.9);
-    color: #18171c;
+.video-container iframe {
+    width: 100%;
+    height: 450px;
     border: none;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    font-size: 32px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    border-radius: 20px;
 }
 
-.video-section__play:hover {
-    background: var(--color-accent);
-    transform: translate(-50%, -50%) scale(1.1);
-}
+/* Удалены старые стили для плейсхолдера и кнопки воспроизведения */
 
 .video-section__caption {
     font-size: var(--font-size-xl);
@@ -614,56 +644,9 @@ body {
     font-style: italic;
 }
 
-/* ===== MISSION SECTION (MAP) ===== */
-.mission__map-wrap {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto 40px auto;
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 4px 32px rgba(0,0,0,0.18);
-}
-.mission__map {
-    width: 100%;
-    height: 400px;
-    min-height: 220px;
-    border: none;
-}
-@media (max-width: 900px) {
-    .mission__map-wrap { max-width: 100vw; }
-    .mission__map { height: 220px; }
-}
+
 
 /* ===== MISSION SECTION ===== */
-.mission {
-    padding: var(--section-padding);
-    background: var(--color-bg-secondary);
-}
-
-.mission__container {
-    text-align: center;
-}
-
-.mission__map {
-    width: 100%;
-    height: 400px;
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 20px;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-lg);
-}
-
-.mission__desc {
-    font-size: var(--font-size-xl);
-    color: var(--color-primary);
-    margin-bottom: 30px;
-    font-weight: 600;
-}
 
 /* ===== OFFLINE EVENTS SECTION (NEW CAROUSEL) ===== */
 .offline-events {
@@ -924,7 +907,7 @@ body {
     }
     
     .video-section__text { font-size: 24px; margin-bottom: 30px; }
-    .video-section__play { width: 60px; height: 60px; font-size: 24px; }
+    .video-container iframe { height: 300px; }
 }
 
 @media (max-width: 480px) {
@@ -1037,20 +1020,20 @@ body {
     .header__nav {
         display: none;
     }
-
+    
     .hero__actions {
         flex-direction: column;
         align-items: center;
     }
-
+    
     .stages__carousel {
         grid-template-columns: 1fr;
     }
-
+    
     .who-we-are__portraits {
         grid-template-columns: 1fr;
     }
-
+    
     .values__list {
         grid-template-columns: 1fr;
     }
@@ -1061,14 +1044,14 @@ body {
 
     .value {
         padding: 30px 10px;
-    }
-
-    .value__icon {
-        font-size: 40px;
-        max-width: 48px;
+        min-height: 250px;
     }
 
     .value__name {
+        font-size: 22px;
+    }
+
+    .value__desc {
         font-size: 16px;
     }
 
@@ -1079,7 +1062,7 @@ body {
     .event-slide__placeholder {
         height: 400px !important;
     }
-
+    
     .footer__container {
         flex-direction: column;
         text-align: center;
@@ -1121,16 +1104,15 @@ body {
 
 .hero__watermark {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.18;
-    width: 80vw;
-    max-width: 600px;
-    min-width: 220px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.3;
     pointer-events: none;
     z-index: 1;
-} 
+}
 
 /* ===== MOBILE HEADER & SIDEBAR ===== */
 .header__burger {
@@ -1234,4 +1216,224 @@ body {
 .sidebar.open ~ .sidebar__backdrop {
     display: block;
     opacity: 1;
+}
+
+/* ===== НОВЫЕ БЛОКИ С ПРАВКАМИ ===== */
+
+/* Новые этапы пути */
+.stages-new {
+    padding: var(--section-padding);
+    background: var(--color-bg);
+}
+
+.section-title {
+    font-size: var(--font-size-3xl);
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.stages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.stage-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid rgba(191, 164, 107, 0.2);
+    transition: var(--transition);
+}
+
+.stage-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-accent);
+    box-shadow: 0 10px 30px rgba(191, 164, 107, 0.2);
+}
+
+.stage-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.stage-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: var(--color-accent);
+}
+
+.stage-description {
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+/* Другие программы */
+.other-programs {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.other-programs-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--color-accent);
+}
+
+.programs-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.program-btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.program-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(191, 164, 107, 0.3);
+    border-color: var(--color-accent);
+}
+
+/* YouTube видео */
+.video-youtube {
+    padding: var(--section-padding);
+    background: var(--color-bg-secondary);
+}
+
+.video-container {
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.video-container iframe {
+    display: block;
+    width: 100%;
+    height: 500px;
+}
+
+/* Карта городов */
+.mission-cities {
+    padding: var(--section-padding);
+    position: relative;
+    overflow: hidden;
+}
+
+.mission-cities__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+.mission-cities__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2;
+}
+
+.mission-content {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.mission-text h3 {
+    font-size: 28px;
+    color: var(--color-primary);
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.mission-path {
+    font-size: 18px;
+    color: var(--color-accent);
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.mission-description {
+    font-size: 16px;
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+.map-container {
+    width: 100%;
+    height: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.mission__cta {
+    position: relative;
+    z-index: 3;
+    display: block;
+    width: fit-content;
+    margin: 40px auto 0 auto;
+}
+
+/* Адаптивность для новых блоков */
+@media (max-width: 768px) {
+    .stages-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .mission-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .mission-text h3 {
+        font-size: 24px;
+    }
+    
+    .mission-path {
+        font-size: 16px;
+    }
+    
+    .map-container {
+        height: 300px;
+    }
+    
+    .programs-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
 } 

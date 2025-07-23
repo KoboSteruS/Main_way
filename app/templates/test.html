@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Тест изображений</title>
+</head>
+<body style="background: #000; color: white; padding: 20px;">
+    <h1>Тест изображений</h1>
+    
+    <h2>Фото участников:</h2>
+    <img src="{{ url_for('static', filename='img/character/character_1.png') }}" alt="Участник 1" style="width: 200px; height: 200px; object-fit: cover; border-radius: 10px; margin: 10px;">
+    <img src="{{ url_for('static', filename='img/character/character_2.png') }}" alt="Участник 2" style="width: 200px; height: 200px; object-fit: cover; border-radius: 10px; margin: 10px;">
+    <img src="{{ url_for('static', filename='img/character/character_3.png') }}" alt="Участник 3" style="width: 200px; height: 200px; object-fit: cover; border-radius: 10px; margin: 10px;">
+    
+    <h2>Иконки ценностей:</h2>
+    <img src="{{ url_for('static', filename='img/balance.png') }}" alt="Баланс" style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px; margin: 10px;">
+    <img src="{{ url_for('static', filename='img/Become_strong.png') }}" alt="Сила" style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px; margin: 10px;">
+    <img src="{{ url_for('static', filename='img/meditation.png') }}" alt="Глубина" style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px; margin: 10px;">
+    
+    <h2>Текст участников:</h2>
+    <div style="background: #333; padding: 20px; border-radius: 10px; margin: 10px;">
+        <h3>👨‍🦰 Массажист из Швейцарии</h3>
+        <p><em>«Я касался сотен тел, но не чувствовал своего»</em></p>
+        <p>Работаю руками, держу, снимаю боль. Все думают, что я уравновешенный и спокойный. А внутри — пустота и выгорание.</p>
+    </div>
+    
+    <div style="background: #333; padding: 20px; border-radius: 10px; margin: 10px;">
+        <h3>👩‍🦳 Женщина из другой страны</h3>
+        <p><em>«Я дома. Среди тех, кто чувствует как я»</em></p>
+        <p>Я жила в другой стране и думала, что со мной что‑то не так. Вокруг были люди, но я не могла найти своих.</p>
+    </div>
+</body>
+</html> 

@@ -1,9 +1,20 @@
-<section class="mission" id="mission">
-    <div class="container mission__container">
-        <h2 class="mission__title">Миссия и сообщество</h2>
-        <div class="mission__desc">Мы создаём поле силы, объединяя людей по всему миру</div>
-        <div class="mission__map-wrap">
-            <div id="communityMap" class="mission__map"></div>
+<!-- Блок с картой городов -->
+<section class="mission-cities" id="mission-cities">
+    <div class="mission-cities__bg" style="background-image: url('{{ url_for('static', filename='img/back_map.png') }}');"></div>
+    <div class="mission-cities__overlay"></div>
+    <div class="container">
+        <h2 class="section-title">Миссия и сообщество</h2>
+        <div class="mission-content">
+            <div class="mission-text">
+                <h3>Мы создаём поле силы, объединяя людей по всему миру</h3>
+                <p class="mission-path">Путь → Ядро → Сборка → ОСНОВА ПУТИ 2.0</p>
+                <p class="mission-description">
+                    Мы создаем пространство для трансформации и роста, где каждый может найти свой путь к внутренней силе и гармонии.
+                </p>
+            </div>
+            <div class="mission-map">
+                <div id="map" class="map-container"></div>
+            </div>
         </div>
         <a href="#" class="btn btn--primary mission__cta">Поддержать клуб / Стать частью</a>
     </div>

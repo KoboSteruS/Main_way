@@ -3,20 +3,59 @@
     <div class="who-we-are__overlay"></div>
     <div class="container who-we-are__container">
         <h2 class="who-we-are__title">Кто мы</h2>
+        
         <div class="who-we-are__portraits">
+            <!-- Участник 1 -->
             <div class="portrait">
-                <div class="portrait__placeholder" style="background: linear-gradient(45deg, #333, #666); width: 100%; height: 400px; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">Участник 1</div>
-                <div class="portrait__quote">"Я пришёл слабым..."</div>
+                <div class="portrait__placeholder">
+                    <img src="{{ url_for('static', filename='img/character/character_1.png') }}" alt="Участник 1">
+                </div>
+                <div class="portrait__quote">
+                    <div class="portrait__name">👨‍🦰 Массажист из Швейцарии</div>
+                    <div class="portrait__text">«Я касался сотен тел, но не чувствовал своего»</div>
+                    <div class="portrait__story">
+                        Работаю руками, держу, снимаю боль. Все думают, что я уравновешенный и спокойный. А внутри — пустота и выгорание.
+                        <br><br>
+                        Путь стал первым пространством, где кто-то увидел меня, не как профи, а как мужчину. Где не надо было доказывать.
+                        <br><br>
+                        Сейчас я чувствую своё тело. И даю не из долга, а из наполненности.
+                    </div>
+                </div>
             </div>
+            
+            <!-- Участник 2 -->
             <div class="portrait">
-                <div class="portrait__placeholder" style="background: linear-gradient(45deg, #333, #666); width: 100%; height: 400px; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">Участник 2</div>
-                <div class="portrait__quote">"Путь изменил меня..."</div>
+                <div class="portrait__placeholder">
+                    <img src="{{ url_for('static', filename='img/character/character_2.png') }}" alt="Участник 2">
+                </div>
+                <div class="portrait__quote">
+                    <div class="portrait__name">👩‍🦳 Женщина из другой страны</div>
+                    <div class="portrait__text">«Я дома. Среди тех, кто чувствует как я»</div>
+                    <div class="portrait__story">
+                        Я жила в другой стране и думала, что со мной что‑то не так. Вокруг были люди, но я не могла найти своих.
+                        <br><br>
+                        На Пути я встретила женщин, которые слышат без слов. Без конкуренции. Без игр. Только глубина и поддержка.
+                        <br><br>
+                        Сейчас у меня подруги по всему миру. Мы на одной частоте.
+                    </div>
+                </div>
             </div>
+            
+            <!-- Участник 3 -->
             <div class="portrait">
-                <div class="portrait__placeholder" style="background: linear-gradient(45deg, #333, #666); width: 100%; height: 400px; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">Участник 3</div>
-                <div class="portrait__quote">"Нашёл свою силу..."</div>
+                <div class="portrait__placeholder">
+                    <img src="{{ url_for('static', filename='img/character/character_3.png') }}" alt="Участник 3">
+                </div>
+                <div class="portrait__quote">
+                    <div class="portrait__name">👨‍🦱 Участник 3</div>
+                    <div class="portrait__text">«Путь изменил мою жизнь»</div>
+                    <div class="portrait__story">
+                        История третьего участника будет добавлена позже...
+                    </div>
+                </div>
             </div>
         </div>
+        
         <a href="#" class="btn btn--secondary who-we-are__cta">Прочитать истории</a>
     </div>
 </section> 
