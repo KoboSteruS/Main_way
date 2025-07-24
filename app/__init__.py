@@ -9,6 +9,7 @@ def create_app() -> Flask:
     app = Flask(__name__)
     app.config.from_object('app.config.Config')
 
+    # Импортируем роуты после создания приложения
     from app.routes import main_bp
     app.register_blueprint(main_bp)
 

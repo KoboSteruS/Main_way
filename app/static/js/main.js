@@ -314,26 +314,40 @@ function initOfflineEventsCarouselV2() {
 } 
 
 function initMissionMap() {
-    const mapEl = document.getElementById('communityMap');
+    const mapEl = document.getElementById('map');
     if (!mapEl) return;
     if (typeof L === 'undefined') {
         console.error('Leaflet.js не загружен!');
         return;
     }
-    // Координаты Москвы
-    const moscow = [55.751244, 37.618423];
-    const map = L.map('communityMap', {
-        center: moscow,
-        zoom: 5,
+    
+    // Координаты Красноярска
+    const krasnoyarsk = [56.0153, 92.8932];
+    const map = L.map('map', {
+        center: krasnoyarsk,
+        zoom: 6,
         scrollWheelZoom: false,
         dragging: true,
         zoomControl: true,
         attributionControl: false
     });
+    
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 18,
+        attribution: 'Leaflet | © OpenStreetMap contributors'
     }).addTo(map);
-    // Можно добавить маркер: L.marker(moscow).addTo(map)
+    
+    // Добавляем маркер Красноярска
+    const marker = L.marker(krasnoyarsk).addTo(map);
+    
+    // Создаем popup с названием города
+    const popup = L.popup({
+        closeButton: true,
+        className: 'city-popup'
+    })
+    .setLatLng(krasnoyarsk)
+    .setContent('<div class="city-label">Красноярск <span class="close-btn">×</span></div>')
+    .openOn(map);
 } 
 
 function initMobileSidebar() {
