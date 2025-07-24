@@ -26,6 +26,28 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <!-- JavaScript -->
     <script src="{{ url_for('static', filename='js/main.js', v='1.2') }}"></script>
+    
+    <!-- Принудительное обновление кэша -->
+    <script>
+        // Принудительно обновляем страницу при загрузке
+        if (performance.navigation.type === 1) {
+            // Это перезагрузка страницы
+            console.log('Страница перезагружена');
+        } else {
+            // Это первая загрузка
+            console.log('Первая загрузка страницы');
+        }
+        
+        // Очищаем кэш при загрузке
+        if ('caches' in window) {
+            caches.keys().then(function(names) {
+                for (let name of names) {
+                    caches.delete(name);
+                }
+            });
+        }
+    </script>
+    
     {% block scripts %}{% endblock %}
 </body>
 </html> 
