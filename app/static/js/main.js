@@ -269,17 +269,17 @@ function initOfflineEventsCarouselV2() {
         {
             title: 'Москва',
             desc: 'Столичный слёт. Город силы и встреч.',
-            bg: 'linear-gradient(120deg, #666 0%, #222 100%)'
+            image: '/static/img/Moscow.png'
         },
         {
             title: 'Грузия: женская линия',
             desc: 'Уникальный женский круг. Горы, ритуалы, поддержка.',
-            bg: 'linear-gradient(120deg, #3a3a3a 0%, #6e5e4a 100%)'
+            image: '/static/img/Georgia.png'
         },
         {
             title: 'Латвия 2025',
             desc: 'Сбор в лесу. Единение с природой и собой.',
-            bg: 'linear-gradient(120deg, #2a2a2a 0%, #4a6e5e 100%)'
+            image: '/static/img/Latvia.png'
         }
     ];
     let current = 0;
@@ -295,7 +295,10 @@ function initOfflineEventsCarouselV2() {
         title.style.opacity = 0;
         desc.style.opacity = 0;
         setTimeout(() => {
-            bg.style.background = slides[idx].bg;
+            bg.style.backgroundImage = `url(${slides[idx].image})`;
+            bg.style.backgroundSize = 'cover';
+            bg.style.backgroundPosition = 'center';
+            bg.style.backgroundRepeat = 'no-repeat';
             title.textContent = slides[idx].title;
             desc.textContent = slides[idx].desc;
             // Анимация появления
