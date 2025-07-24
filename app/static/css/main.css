@@ -1177,13 +1177,13 @@ body {
 }
 
 /* Блок с картой */
-.mission {
+.mission-cities {
     padding: var(--section-padding);
     position: relative;
     overflow: hidden;
 }
 
-.mission__bg {
+.mission-cities__bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -1195,11 +1195,7 @@ body {
     z-index: 1;
 }
 
-.mission__bg--map {
-    background-image: url('../img/back_map.png');
-}
-
-.mission__overlay {
+.mission-cities__overlay {
     position: absolute;
     top: 0;
     left: 0;

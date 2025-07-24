@@ -318,7 +318,7 @@ function initOfflineEventsCarouselV2() {
 } 
 
 function initMissionMap() {
-    console.log('Инициализация карты mission...');
+    console.log('Инициализация карты mission-cities...');
     const mapEl = document.getElementById('map');
     if (!mapEl) {
         console.error('Элемент карты не найден!');
