@@ -393,37 +393,7 @@ function initMobileSidebar() {
     });
 } 
 
-// Инициализация карты с точками городов
-function initMap() {
-    if (typeof L === 'undefined') {
-        console.log('Leaflet не загружен');
-        return;
-    }
 
-    const map = L.map('map').setView([55.7558, 37.6176], 4); // Центр на Москве
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
-
-    // Точки городов
-    const cities = [
-        { name: 'Москва', coords: [55.7558, 37.6176] },
-        { name: 'Стокгольм', coords: [59.3293, 18.0686] },
-        { name: 'Рига', coords: [56.9496, 24.1052] },
-        { name: 'Цюрих', coords: [47.3769, 8.5417] },
-        { name: 'Минск', coords: [53.9045, 27.5615] },
-        { name: 'Владивосток', coords: [43.1198, 131.8869] },
-        { name: 'Красноярск', coords: [56.0153, 92.8932] }
-    ];
-
-    cities.forEach(city => {
-        L.marker(city.coords)
-            .addTo(map)
-            .bindPopup(city.name)
-            .openPopup();
-    });
-}
 
 // FAQ аккордеон
 function initFAQ() {
@@ -522,7 +492,6 @@ function initScrollAnimations() {
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
-    initMap();
     initFAQ();
     initMobileMenu();
     initSmoothScroll();
