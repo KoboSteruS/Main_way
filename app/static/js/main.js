@@ -9,8 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
     initIntersectionObserver();
     initHeaderScroll();
     initOfflineEventsCarouselV2();
-    initMissionMap();
     initMobileSidebar();
+    
+    // Инициализация карты с небольшой задержкой
+    setTimeout(() => {
+        initMissionMap();
+    }, 100);
 });
 
 // ===== FAQ АККОРДЕОН =====
@@ -314,12 +318,19 @@ function initOfflineEventsCarouselV2() {
 } 
 
 function initMissionMap() {
+    console.log('Инициализация карты mission...');
     const mapEl = document.getElementById('map');
-    if (!mapEl) return;
+    if (!mapEl) {
+        console.error('Элемент карты не найден!');
+        return;
+    }
+    console.log('Элемент карты найден:', mapEl);
+    
     if (typeof L === 'undefined') {
         console.error('Leaflet.js не загружен!');
         return;
     }
+    console.log('Leaflet.js загружен');
     
     // Координаты Красноярска
     const krasnoyarsk = [56.0153, 92.8932];
@@ -348,6 +359,8 @@ function initMissionMap() {
     .setLatLng(krasnoyarsk)
     .setContent('<div class="city-label">Красноярск <span class="close-btn">×</span></div>')
     .openOn(map);
+    
+    console.log('Карта инициализирована успешно');
 } 
 
 function initMobileSidebar() {
