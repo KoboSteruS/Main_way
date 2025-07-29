@@ -16,13 +16,20 @@ JWT_ALGORITHM = "HS256"
 
 # Функция для проверки JWT токена
 def verify_jwt_token(token):
+    print(f"DEBUG: Проверяем JWT токен: {token[:50]}...")
     try:
         # Декодируем токен
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        print(f"DEBUG: JWT токен валиден, payload: {payload}")
         return payload.get('admin', False)
     except jwt.ExpiredSignatureError:
+        print("DEBUG: JWT токен истек")
         return False
-    except jwt.InvalidTokenError:
+    except jwt.InvalidTokenError as e:
+        print(f"DEBUG: JWT токен невалиден: {e}")
+        return False
+    except Exception as e:
+        print(f"DEBUG: Ошибка проверки JWT: {e}")
         return False
 
 # Декоратор для защиты админских маршрутов
@@ -31,8 +38,11 @@ def admin_required(f):
     def decorated_function(*args, **kwargs):
         # Получаем токен из URL
         token = request.view_args.get('token')
+        print(f"DEBUG: Получен токен из URL: {token[:50] if token else 'None'}...")
         if not token or not verify_jwt_token(token):
+            print("DEBUG: Доступ запрещен - токен невалиден")
             return "Доступ запрещен", 403
+        print("DEBUG: Доступ разрешен")
         return f(*args, **kwargs)
     return decorated_function
 
@@ -82,6 +92,17 @@ def load_participants():
         print(f"DEBUG: Ошибка загрузки участников: {e}")
         print("DEBUG: Возвращаем статичных участников как fallback")
         return STATIC_PARTICIPANTS
+
+# Тестовый маршрут для диагностики JWT
+@main_bp.route('/debug/jwt/<token>')
+def debug_jwt(token):
+    print(f"DEBUG: Тестируем JWT токен: {token[:50]}...")
+    is_valid = verify_jwt_token(token)
+    return {
+        'token': token[:50] + '...',
+        'is_valid': is_valid,
+        'jwt_secret': JWT_SECRET[:20] + '...' if len(JWT_SECRET) > 20 else JWT_SECRET
+    }
 
 # Тестовый маршрут для диагностики участников
 @main_bp.route('/debug/participants')
