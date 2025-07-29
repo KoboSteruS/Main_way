@@ -63,6 +63,9 @@ STATIC_PARTICIPANTS = [
 
 # Функция для загрузки участников из JSON
 def load_participants():
+    print("DEBUG: Начинаем загрузку участников...")
+    print(f"DEBUG: STATIC_PARTICIPANTS содержит {len(STATIC_PARTICIPANTS)} участников")
+    
     try:
         with open('app/data/participants.json', 'r', encoding='utf-8') as f:
             dynamic_participants = json.load(f)
@@ -77,6 +80,7 @@ def load_participants():
         return STATIC_PARTICIPANTS
     except Exception as e:
         print(f"DEBUG: Ошибка загрузки участников: {e}")
+        print("DEBUG: Возвращаем статичных участников как fallback")
         return STATIC_PARTICIPANTS
 
 # Тестовый маршрут для диагностики участников
@@ -97,7 +101,9 @@ def index(version=None):
     timestamp = int(time.time())
     
     # Загружаем участников из JSON
+    print("DEBUG: Загружаем участников для главной страницы...")
     participants = load_participants()
+    print(f"DEBUG: Передаем в шаблон {len(participants)} участников")
     
     response = make_response(render_template('index.html', 
                                           version=version or f'1.1.{timestamp}',
