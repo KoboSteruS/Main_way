@@ -1,11 +1,7 @@
-{% set participants = [] %}
-{% try %}
-    {% with open('app/data/participants.json', 'r', encoding='utf-8') as f %}
-        {% set participants = f.read() | from_json %}
-    {% endwith %}
-{% except %}
-    {# Если файл не существует, используем статичных участников #}
-    {% set participants = [
+{% if participants %}
+    {% set participants_data = participants %}
+{% else %}
+    {% set participants_data = [
         {
             'id': '1',
             'name': '👨‍🦰 Массажист из Швейцарии',
@@ -28,7 +24,7 @@
             'photo': 'img/character/character_3.png'
         }
     ] %}
-{% endtry %}
+{% endif %}
 
 <section class="who-we-are" id="who">
     <div class="who-we-are__bg" style="background-image: url('{{ url_for('static', filename='img/Who_am_I.jpg') }}');"></div>
@@ -38,7 +34,7 @@
         
         <div class="who-we-are__carousel">
             <div class="portraits-carousel">
-                {% for participant in participants %}
+                {% for participant in participants_data %}
                 <div class="portrait-slide {% if loop.first %}active{% endif %}">
                     <div class="portrait">
                         <div class="portrait__placeholder">
@@ -54,12 +50,12 @@
                 {% endfor %}
             </div>
             
-            {% if participants|length > 1 %}
+            {% if participants_data|length > 1 %}
             <!-- Кнопки навигации -->
             <div class="portraits-controls">
                 <button class="portrait-nav portrait-prev" id="portraitPrev">&#8592;</button>
                 <div class="portrait-dots">
-                    {% for participant in participants %}
+                    {% for participant in participants_data %}
                     <span class="portrait-dot {% if loop.first %}active{% endif %}" data-slide="{{ loop.index0 }}"></span>
                     {% endfor %}
                 </div>

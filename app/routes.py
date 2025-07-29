@@ -36,12 +36,26 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# Функция для загрузки участников из JSON
+def load_participants():
+    try:
+        with open('app/data/participants.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
 @main_bp.route('/')
 @main_bp.route('/<version>')
 def index(version=None):
     # Принудительно обновляем кэш, добавляя timestamp
     timestamp = int(time.time())
-    response = make_response(render_template('index.html', version=version or f'1.1.{timestamp}'))
+    
+    # Загружаем участников из JSON
+    participants = load_participants()
+    
+    response = make_response(render_template('index.html', 
+                                          version=version or f'1.1.{timestamp}',
+                                          participants=participants))
     
     # Добавляем заголовки для отключения кэширования
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
@@ -124,13 +138,6 @@ def delete_participant(token, participant_id):
     return redirect(url_for('main.admin_dashboard', token=token))
 
 # Вспомогательные функции
-def load_participants():
-    try:
-        with open('app/data/participants.json', 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return []
-
 def save_participant(participant):
     participants = load_participants()
     participants.append(participant)
