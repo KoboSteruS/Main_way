@@ -66,15 +66,29 @@ def load_participants():
     try:
         with open('app/data/participants.json', 'r', encoding='utf-8') as f:
             dynamic_participants = json.load(f)
+            print(f"DEBUG: Загружено {len(dynamic_participants)} динамических участников")
             # Объединяем статичных и динамических участников
             all_participants = STATIC_PARTICIPANTS + dynamic_participants
+            print(f"DEBUG: Всего участников: {len(all_participants)}")
             return all_participants
     except FileNotFoundError:
+        print("DEBUG: Файл participants.json не найден, возвращаем только статичных")
         # Если файл не найден, возвращаем только статичных
         return STATIC_PARTICIPANTS
     except Exception as e:
-        print(f"Ошибка загрузки участников: {e}")
+        print(f"DEBUG: Ошибка загрузки участников: {e}")
         return STATIC_PARTICIPANTS
+
+# Тестовый маршрут для диагностики участников
+@main_bp.route('/debug/participants')
+def debug_participants():
+    participants = load_participants()
+    debug_info = {
+        'total_participants': len(participants),
+        'static_participants': len(STATIC_PARTICIPANTS),
+        'participants': participants
+    }
+    return debug_info
 
 @main_bp.route('/')
 @main_bp.route('/<version>')
