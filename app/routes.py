@@ -13,7 +13,6 @@ main_bp = Blueprint('main', __name__)
 # JWT настройки
 JWT_SECRET = "your-super-secret-jwt-key-change-in-production"
 JWT_ALGORITHM = "HS256"
-ADMIN_JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM0NzI4MDAwLCJleHAiOjE3MzQ4MTQ0MDB9.ADMIN_TOKEN_HERE"
 
 # Функция для проверки JWT токена
 def verify_jwt_token(token):
@@ -30,10 +29,10 @@ def verify_jwt_token(token):
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # Получаем токен из URL параметра
-        token = request.args.get('token')
+        # Получаем токен из URL
+        token = request.view_args.get('token')
         if not token or not verify_jwt_token(token):
-            return redirect(url_for('main.admin_login'))
+            return "Доступ запрещен", 403
         return f(*args, **kwargs)
     return decorated_function
 
@@ -52,31 +51,18 @@ def index(version=None):
     
     return response
 
-# Маршрут для входа в админку
-@main_bp.route('/jwt-ключи/admin/login', methods=['GET', 'POST'])
-def admin_login():
-    if request.method == 'POST':
-        token = request.form.get('token')
-        
-        if token and verify_jwt_token(token):
-            return redirect(url_for('main.admin_dashboard', token=token))
-        else:
-            flash('Неверный JWT токен', 'error')
-    
-    return render_template('admin/login.html')
-
-# Маршрут для админской панели
-@main_bp.route('/jwt-ключи/admin')
+# Маршрут для админской панели с JWT в URL
+@main_bp.route('/<token>/admin')
 @admin_required
-def admin_dashboard():
+def admin_dashboard(token):
     # Загружаем существующих участников
     participants = load_participants()
-    return render_template('admin/dashboard.html', participants=participants)
+    return render_template('admin/dashboard.html', participants=participants, token=token)
 
 # Маршрут для добавления нового участника
-@main_bp.route('/jwt-ключи/admin/add-participant', methods=['GET', 'POST'])
+@main_bp.route('/<token>/admin/add-participant', methods=['GET', 'POST'])
 @admin_required
-def add_participant():
+def add_participant(token):
     if request.method == 'POST':
         name = request.form.get('name')
         text = request.form.get('text')
@@ -112,14 +98,14 @@ def add_participant():
                 save_participant(new_participant)
                 
                 flash('Участник успешно добавлен!', 'success')
-                return redirect(url_for('main.admin_dashboard', token=request.args.get('token')))
+                return redirect(url_for('main.admin_dashboard', token=token))
     
-    return render_template('admin/add_participant.html')
+    return render_template('admin/add_participant.html', token=token)
 
 # Маршрут для удаления участника
-@main_bp.route('/jwt-ключи/admin/delete-participant/<participant_id>')
+@main_bp.route('/<token>/admin/delete-participant/<participant_id>')
 @admin_required
-def delete_participant(participant_id):
+def delete_participant(token, participant_id):
     participants = load_participants()
     participant = next((p for p in participants if p['id'] == participant_id), None)
     
@@ -135,12 +121,7 @@ def delete_participant(participant_id):
         save_participants(participants)
         flash('Участник удален!', 'success')
     
-    return redirect(url_for('main.admin_dashboard', token=request.args.get('token')))
-
-# Маршрут для выхода из админки
-@main_bp.route('/jwt-ключи/admin/logout')
-def admin_logout():
-    return redirect(url_for('main.admin_login'))
+    return redirect(url_for('main.admin_dashboard', token=token))
 
 # Вспомогательные функции
 def load_participants():

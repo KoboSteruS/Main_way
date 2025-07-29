@@ -24,15 +24,19 @@ python generate_jwt.py
 ```
 
 ### Доступ к админке
-- **URL**: `http://127.0.0.1:5000/jwt-ключи/admin/login`
-- **Авторизация**: JWT токен (без регистрации)
+- **Формат URL**: `http://127.0.0.1:5000/{JWT_TOKEN}/admin`
+- **Авторизация**: JWT токен прямо в URL
 - **Срок действия**: 24 часа
 
 ### Как использовать:
 1. Запустите `python generate_jwt.py`
-2. Скопируйте сгенерированный токен
-3. Перейдите в админку
-4. Вставьте токен в форму входа
+2. Скопируйте полный URL из вывода
+3. Откройте URL в браузере
+
+### Пример URL:
+```
+http://127.0.0.1:5000/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzUzNzc4NjQ5LCJleHAiOjE3NTM4NjUwNDl9.9cll4-INksn4ZCnsTReMNn5-mvwLEvFBqgGPhZ3zDPQ/admin
+```
 
 ### Функции админки
 - **Добавление участников**: Загрузка фото и текста
