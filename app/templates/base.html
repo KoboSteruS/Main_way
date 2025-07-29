@@ -3,21 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ОСНОВА ПУТИ — Закрытая система перерождения. Мужская и женская линия. Путь → Ядро → Сборка → 2.0">
-    <meta name="keywords" content="основа пути, перерождение, развитие, мужская линия, женская линия">
-    <meta name="author" content="ОСНОВА ПУТИ">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>{% block title %}ОСНОВА ПУТИ — Закрытая система перерождения{% endblock %}</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>ОСНОВА ПУТИ - Закрытая система мужской трансформации</title>
+    <meta name="description" content="Закрытая система мужской трансформации. Путь к себе через сообщество, практики и поддержку.">
+    
     <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    
     <!-- CSS -->
-               <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css', v='3.5') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css', v='3.6') }}">
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -25,18 +18,17 @@
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <!-- JavaScript -->
-               <script src="{{ url_for('static', filename='js/main.js', v='2.3') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js', v='2.4') }}"></script>
     
-    <!-- Принудительное обновление кэша -->
     <script>
-        // Принудительно очищаем кэш при загрузке страницы
+        // Принудительно очищаем кэш браузера
         if ('caches' in window) {
             caches.keys().then(function(names) {
                 for (let name of names) caches.delete(name);
             });
         }
         
-        // Добавляем timestamp к URL для принудительного обновления
+        // Добавляем timestamp к статическим файлам
         const timestamp = new Date().getTime();
         const links = document.querySelectorAll('link[rel="stylesheet"], script[src]');
         links.forEach(link => {
@@ -45,7 +37,5 @@
             }
         });
     </script>
-    
-    {% block scripts %}{% endblock %}
 </body>
 </html> 

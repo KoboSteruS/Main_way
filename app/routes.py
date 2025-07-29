@@ -36,13 +36,45 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# Статичные участники (базовые)
+STATIC_PARTICIPANTS = [
+    {
+        'id': 'static_1',
+        'name': '👨‍🦰 Массажист из Швейцарии',
+        'text': '«Я касался сотен тел, но не чувствовал своего»',
+        'story': 'Работаю руками, держу, снимаю боль. Все думают, что я уравновешенный и спокойный. А внутри — пустота и выгорание.\n\nПуть стал первым пространством, где кто-то увидел меня, не как профи, а как мужчину. Где не надо было доказывать.\n\nСейчас я чувствую своё тело. И даю не из долга, а из наполненности.',
+        'photo': 'img/character/character_1.png'
+    },
+    {
+        'id': 'static_2',
+        'name': '👩‍🦳 Женщина из другой страны',
+        'text': '«Я дома. Среди тех, кто чувствует как я»',
+        'story': 'Я жила в другой стране и думала, что со мной что‑то не так. Вокруг были люди, но я не могла найти своих.\n\nНа Пути я встретила женщин, которые слышат без слов. Без конкуренции. Без игр. Только глубина и поддержка.\n\nСейчас у меня подруги по всему миру. Мы на одной частоте.',
+        'photo': 'img/character/character_2.png'
+    },
+    {
+        'id': 'static_3',
+        'name': '👨‍🦱 Человек, который выбрался из тьмы',
+        'text': '«Если я ещё жив — значит, меня не просто так оставили»',
+        'story': 'С 20 до 40 я жил во тьме: наркотики, тюрьмы, пустота. Каждый раз, когда пытался выбраться — падал снова. В какой-то момент я понял: если я ещё жив — значит, меня не просто так оставили.\n\nВ ОСНОВЕ ПУТИ я встретил тех, кто тоже падал, но не сломался. Здесь не судят, не жалеют, а держат. Сейчас я не один. Я иду свой путь — и знаю, ради чего встал.',
+        'photo': 'img/character/character_3.png'
+    }
+]
+
 # Функция для загрузки участников из JSON
 def load_participants():
     try:
         with open('app/data/participants.json', 'r', encoding='utf-8') as f:
-            return json.load(f)
+            dynamic_participants = json.load(f)
+            # Объединяем статичных и динамических участников
+            all_participants = STATIC_PARTICIPANTS + dynamic_participants
+            return all_participants
     except FileNotFoundError:
-        return []
+        # Если файл не найден, возвращаем только статичных
+        return STATIC_PARTICIPANTS
+    except Exception as e:
+        print(f"Ошибка загрузки участников: {e}")
+        return STATIC_PARTICIPANTS
 
 @main_bp.route('/')
 @main_bp.route('/<version>')
@@ -124,24 +156,44 @@ def delete_participant(token, participant_id):
     participant = next((p for p in participants if p['id'] == participant_id), None)
     
     if participant:
-        # Удаляем файл фото
-        if participant.get('photo'):
+        # Удаляем файл фото (только для динамических участников)
+        if not participant_id.startswith('static_') and participant.get('photo'):
             photo_path = os.path.join('app/static', participant['photo'])
             if os.path.exists(photo_path):
                 os.remove(photo_path)
         
-        # Удаляем из JSON
-        participants = [p for p in participants if p['id'] != participant_id]
-        save_participants(participants)
-        flash('Участник удален!', 'success')
+        # Удаляем из JSON (только динамических участников)
+        if not participant_id.startswith('static_'):
+            try:
+                with open('app/data/participants.json', 'r', encoding='utf-8') as f:
+                    dynamic_participants = json.load(f)
+                dynamic_participants = [p for p in dynamic_participants if p['id'] != participant_id]
+                save_participants(dynamic_participants)
+                flash('Участник удален!', 'success')
+            except Exception as e:
+                flash(f'Ошибка удаления: {e}', 'error')
+        else:
+            flash('Статичных участников нельзя удалить!', 'error')
     
     return redirect(url_for('main.admin_dashboard', token=token))
 
 # Вспомогательные функции
 def save_participant(participant):
-    participants = load_participants()
-    participants.append(participant)
-    save_participants(participants)
+    try:
+        # Загружаем существующих динамических участников
+        try:
+            with open('app/data/participants.json', 'r', encoding='utf-8') as f:
+                participants = json.load(f)
+        except FileNotFoundError:
+            participants = []
+        
+        # Добавляем нового участника
+        participants.append(participant)
+        
+        # Сохраняем обратно
+        save_participants(participants)
+    except Exception as e:
+        print(f"Ошибка сохранения участника: {e}")
 
 def save_participants(participants):
     # Создаем папку если её нет
