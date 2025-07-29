@@ -28,7 +28,7 @@
             border-radius: 20px;
             padding: 40px;
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
         
@@ -49,6 +49,21 @@
         .login-subtitle {
             color: #ccc;
             font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .jwt-info {
+            background: rgba(191, 164, 107, 0.1);
+            border: 1px solid rgba(191, 164, 107, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-size: 12px;
+            color: #bfa46b;
+        }
+        
+        .jwt-info strong {
+            color: #fff;
         }
         
         .form-group {
@@ -74,6 +89,7 @@
             color: #fff;
             font-size: 16px;
             transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
         }
         
         .form-input:focus {
@@ -125,13 +141,28 @@
             border: 1px solid rgba(0, 255, 0, 0.3);
             color: #6bff6b;
         }
+        
+        .example-token {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            padding: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: #bfa46b;
+            word-break: break-all;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="login-header">
             <h1 class="login-title">ОСНОВА ПУТИ</h1>
-            <p class="login-subtitle">Админ панель</p>
+            <p class="login-subtitle">JWT Админ панель</p>
+        </div>
+        
+        <div class="jwt-info">
+            <strong>JWT Токен:</strong> Введите ваш JWT токен для доступа к админке
         </div>
         
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -146,16 +177,15 @@
         
         <form method="POST">
             <div class="form-group">
-                <label class="form-label" for="username">Логин</label>
-                <input type="text" id="username" name="username" class="form-input" required>
+                <label class="form-label" for="token">JWT Токен</label>
+                <input type="text" id="token" name="token" class="form-input" 
+                       placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." required>
+                <div class="example-token">
+                    Пример: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM0NzI4MDAwLCJleHAiOjE3MzQ4MTQ0MDB9.ADMIN_TOKEN_HERE
+                </div>
             </div>
             
-            <div class="form-group">
-                <label class="form-label" for="password">Пароль</label>
-                <input type="password" id="password" name="password" class="form-input" required>
-            </div>
-            
-            <button type="submit" class="login-btn">Войти</button>
+            <button type="submit" class="login-btn">Войти в админку</button>
         </form>
     </div>
 </body>

@@ -203,10 +203,10 @@
     <header class="admin-header">
         <div class="admin-container">
             <h1 class="admin-title">ОСНОВА ПУТИ</h1>
-            <p class="admin-subtitle">Админ панель - Управление участниками</p>
+            <p class="admin-subtitle">JWT Админ панель - Управление участниками</p>
             
             <div class="admin-nav">
-                <a href="{{ url_for('main.add_participant') }}" class="admin-btn">Добавить участника</a>
+                <a href="{{ url_for('main.add_participant', token=request.args.get('token')) }}" class="admin-btn">Добавить участника</a>
                 <a href="{{ url_for('main.admin_logout') }}" class="admin-btn secondary">Выйти</a>
             </div>
         </div>
@@ -233,7 +233,7 @@
                             <div class="participant-text">{{ participant.text }}</div>
                             <div class="participant-story">{{ participant.story[:200] }}{% if participant.story|length > 200 %}...{% endif %}</div>
                             <div class="participant-actions">
-                                <a href="{{ url_for('main.delete_participant', participant_id=participant.id) }}" 
+                                <a href="{{ url_for('main.delete_participant', participant_id=participant.id, token=request.args.get('token')) }}" 
                                    class="delete-btn" 
                                    onclick="return confirm('Вы уверены, что хотите удалить этого участника?')">
                                     Удалить
@@ -246,7 +246,7 @@
                 <div class="empty-state">
                     <h3>Участники не найдены</h3>
                     <p>Добавьте первого участника, чтобы начать</p>
-                    <a href="{{ url_for('main.add_participant') }}" class="admin-btn">Добавить участника</a>
+                    <a href="{{ url_for('main.add_participant', token=request.args.get('token')) }}" class="admin-btn">Добавить участника</a>
                 </div>
             {% endif %}
         </div>

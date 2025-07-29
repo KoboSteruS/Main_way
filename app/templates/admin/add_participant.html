@@ -225,7 +225,7 @@
             <p class="admin-subtitle">Добавить нового участника</p>
             
             <div class="admin-nav">
-                <a href="{{ url_for('main.admin_dashboard') }}" class="admin-btn secondary">Назад к списку</a>
+                <a href="{{ url_for('main.admin_dashboard', token=request.args.get('token')) }}" class="admin-btn secondary">Назад к списку</a>
                 <a href="{{ url_for('main.admin_logout') }}" class="admin-btn secondary">Выйти</a>
             </div>
         </div>

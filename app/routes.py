@@ -5,29 +5,33 @@ import uuid
 from werkzeug.utils import secure_filename
 import json
 from functools import wraps
+import jwt
+from datetime import datetime, timedelta
 
 main_bp = Blueprint('main', __name__)
 
-# JWT ключи для админки
-ADMIN_JWT_SECRET = "your-secret-key-here"
-ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "admin123"
+# JWT настройки
+JWT_SECRET = "your-super-secret-jwt-key-change-in-production"
+JWT_ALGORITHM = "HS256"
+ADMIN_JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM0NzI4MDAwLCJleHAiOjE3MzQ4MTQ0MDB9.ADMIN_TOKEN_HERE"
 
 # Функция для проверки JWT токена
 def verify_jwt_token(token):
     try:
-        # Простая проверка токена (в реальном проекте используйте библиотеку PyJWT)
-        if token == "admin-token-123":
-            return True
+        # Декодируем токен
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        return payload.get('admin', False)
+    except jwt.ExpiredSignatureError:
         return False
-    except:
+    except jwt.InvalidTokenError:
         return False
 
 # Декоратор для защиты админских маршрутов
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        token = session.get('admin_token')
+        # Получаем токен из URL параметра
+        token = request.args.get('token')
         if not token or not verify_jwt_token(token):
             return redirect(url_for('main.admin_login'))
         return f(*args, **kwargs)
@@ -52,14 +56,12 @@ def index(version=None):
 @main_bp.route('/jwt-ключи/admin/login', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+        token = request.form.get('token')
         
-        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
-            session['admin_token'] = 'admin-token-123'
-            return redirect(url_for('main.admin_dashboard'))
+        if token and verify_jwt_token(token):
+            return redirect(url_for('main.admin_dashboard', token=token))
         else:
-            flash('Неверные учетные данные', 'error')
+            flash('Неверный JWT токен', 'error')
     
     return render_template('admin/login.html')
 
@@ -110,7 +112,7 @@ def add_participant():
                 save_participant(new_participant)
                 
                 flash('Участник успешно добавлен!', 'success')
-                return redirect(url_for('main.admin_dashboard'))
+                return redirect(url_for('main.admin_dashboard', token=request.args.get('token')))
     
     return render_template('admin/add_participant.html')
 
@@ -133,12 +135,11 @@ def delete_participant(participant_id):
         save_participants(participants)
         flash('Участник удален!', 'success')
     
-    return redirect(url_for('main.admin_dashboard'))
+    return redirect(url_for('main.admin_dashboard', token=request.args.get('token')))
 
 # Маршрут для выхода из админки
 @main_bp.route('/jwt-ключи/admin/logout')
 def admin_logout():
-    session.pop('admin_token', None)
     return redirect(url_for('main.admin_login'))
 
 # Вспомогательные функции
@@ -159,4 +160,13 @@ def save_participants(participants):
     os.makedirs('app/data', exist_ok=True)
     
     with open('app/data/participants.json', 'w', encoding='utf-8') as f:
-        json.dump(participants, f, ensure_ascii=False, indent=2) 
+        json.dump(participants, f, ensure_ascii=False, indent=2)
+
+# Функция для генерации JWT токена (для справки)
+def generate_admin_token():
+    payload = {
+        'admin': True,
+        'iat': datetime.utcnow(),
+        'exp': datetime.utcnow() + timedelta(hours=24)
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM) 
