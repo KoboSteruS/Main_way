@@ -97,6 +97,11 @@ def load_participants():
         print("DEBUG: Возвращаем статичных участников как fallback")
         return STATIC_PARTICIPANTS
 
+# Простой тестовый маршрут
+@main_bp.route('/test')
+def test():
+    return {"status": "ok", "message": "Сервер работает", "timestamp": time.time()}
+
 # Тестовый маршрут для диагностики JWT
 @main_bp.route('/debug/jwt/<token>')
 def debug_jwt(token):
