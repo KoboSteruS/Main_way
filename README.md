@@ -1,73 +1,78 @@
-# ОСНОВА ПУТИ — Лендинг
+# ОСНОВА ПУТИ
 
-## Описание
-Профессиональный лендинг для закрытой системы перерождения «ОСНОВА ПУТИ». Реализован на Flask с использованием стандартных HTML-шаблонов и анимаций на JavaScript. Проект структурирован по современным best practices, легко масштабируется и поддерживается.
+Веб-сайт для закрытой системы мужской трансформации.
 
-## Структура проекта
-```
-Main_Way_Lending/
-│
-├── app/
-│   ├── __init__.py
-│   ├── routes.py
-│   ├── static/
-│   │   ├── css/
-│   │   ├── js/
-│   │   └── images/
-│   └── templates/
-│       ├── base.html
-│       ├── index.html
-│       └── components/
-│           ├── header.html
-│           ├── hero.html
-│           ├── stages.html
-│           ├── who_we_are.html
-│           ├── values.html
-│           ├── video_section.html
-│           ├── mission.html
-│           ├── offline_events.html
-│           ├── faq.html
-│           ├── final_cta.html
-│           └── footer.html
-├── tests/
-├── requirements.txt
-├── README.md
-└── run.py
+## Установка и запуск
+
+1. Установите зависимости:
+```bash
+pip install -r requirements.txt
 ```
 
-## Установка
-1. Клонируйте репозиторий:
-   ```bash
-   git clone <repo_url>
-   cd Main_Way_Lending
-   ```
-2. Создайте виртуальное окружение и активируйте его:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Windows: venv\Scripts\activate
-   ```
-3. Установите зависимости:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Запуск
+2. Запустите приложение:
 ```bash
 python run.py
 ```
 
-## Тестирование
-```bash
-pytest
+3. Откройте браузер и перейдите по адресу: `http://127.0.0.1:5000`
+
+## Админка
+
+### Доступ к админке
+- URL: `http://127.0.0.1:5000/jwt-ключи/admin`
+- Логин: `admin`
+- Пароль: `admin123`
+
+### Функции админки
+- **Добавление участников**: Загрузка фото и текста
+- **Просмотр участников**: Список всех добавленных участников
+- **Удаление участников**: Удаление с подтверждением
+
+### Структура данных участника
+```json
+{
+  "id": "уникальный-id",
+  "name": "👨‍🦰 Массажист из Швейцарии",
+  "text": "«Я касался сотен тел, но не чувствовал своего»",
+  "story": "Полная история участника...",
+  "photo": "img/character/filename.jpg"
+}
 ```
 
-## Масштабируемость
-- Каждый блок лендинга реализован отдельным компонентом (шаблон + JS).
-- Легко добавлять новые секции, менять порядок, кастомизировать стили.
-- Возможность интеграции с backend/API для динамического наполнения.
+### Файлы данных
+- Участники сохраняются в: `app/data/participants.json`
+- Фото сохраняются в: `app/static/img/character/`
 
-## Контакты
-- Email: example@mail.com
-- Telegram: @osnovaputi
+## Структура проекта
 
---- 
+```
+Main_Way_Lending/
+├── app/
+│   ├── static/
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── img/
+│   ├── templates/
+│   │   ├── components/
+│   │   └── admin/
+│   ├── data/
+│   ├── __init__.py
+│   ├── config.py
+│   └── routes.py
+├── requirements.txt
+└── run.py
+```
+
+## Технологии
+
+- **Backend**: Flask
+- **Frontend**: HTML5, CSS3, JavaScript
+- **База данных**: JSON файлы
+- **Аутентификация**: JWT токены (упрощенная версия)
+
+## Безопасность
+
+⚠️ **Важно**: В продакшене обязательно измените:
+- `SECRET_KEY` в `app/config.py`
+- Логин и пароль админки в `app/routes.py`
+- Используйте настоящую JWT библиотеку 

@@ -17,7 +17,7 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
     <!-- CSS -->
-               <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css', v='2.3') }}">
+               <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css', v='3.5') }}">
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -25,27 +25,25 @@
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <!-- JavaScript -->
-               <script src="{{ url_for('static', filename='js/main.js', v='1.6') }}"></script>
+               <script src="{{ url_for('static', filename='js/main.js', v='2.3') }}"></script>
     
     <!-- Принудительное обновление кэша -->
     <script>
-        // Принудительно обновляем страницу при загрузке
-        if (performance.navigation.type === 1) {
-            // Это перезагрузка страницы
-            console.log('Страница перезагружена');
-        } else {
-            // Это первая загрузка
-            console.log('Первая загрузка страницы');
-        }
-        
-        // Очищаем кэш при загрузке
+        // Принудительно очищаем кэш при загрузке страницы
         if ('caches' in window) {
             caches.keys().then(function(names) {
-                for (let name of names) {
-                    caches.delete(name);
-                }
+                for (let name of names) caches.delete(name);
             });
         }
+        
+        // Добавляем timestamp к URL для принудительного обновления
+        const timestamp = new Date().getTime();
+        const links = document.querySelectorAll('link[rel="stylesheet"], script[src]');
+        links.forEach(link => {
+            if (link.href && !link.href.includes('unpkg.com')) {
+                link.href = link.href + (link.href.includes('?') ? '&' : '?') + 't=' + timestamp;
+            }
+        });
     </script>
     
     {% block scripts %}{% endblock %}

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить участника - ОСНОВА ПУТИ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+        .admin-header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(191, 164, 107, 0.2);
+            padding: 20px 0;
+        }
+        
+        .admin-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .admin-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #bfa46b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .admin-subtitle {
+            color: #ccc;
+            font-size: 16px;
+        }
+        
+        .admin-nav {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .admin-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #bfa46b 0%, #d4b87a 100%);
+            border: none;
+            border-radius: 8px;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(191, 164, 107, 0.3);
+        }
+        
+        .admin-btn.secondary {
+            background: transparent;
+            border: 1px solid #bfa46b;
+            color: #bfa46b;
+        }
+        
+        .admin-btn.secondary:hover {
+            background: rgba(191, 164, 107, 0.1);
+        }
+        
+        .admin-content {
+            padding: 40px 0;
+        }
+        
+        .form-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(191, 164, 107, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #bfa46b;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(191, 164, 107, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #bfa46b;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: #999;
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-input-label {
+            display: block;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(191, 164, 107, 0.3);
+            border-radius: 8px;
+            color: #bfa46b;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-input-label:hover {
+            border-color: #bfa46b;
+            background: rgba(191, 164, 107, 0.1);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #bfa46b 0%, #d4b87a 100%);
+            border: none;
+            border-radius: 8px;
+            color: #1a1a1a;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(191, 164, 107, 0.3);
+        }
+        
+        .flash-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .flash-error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff6b6b;
+        }
+        
+        .flash-success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            color: #6bff6b;
+        }
+        
+        .form-hint {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="admin-container">
+            <h1 class="admin-title">ОСНОВА ПУТИ</h1>
+            <p class="admin-subtitle">Добавить нового участника</p>
+            
+            <div class="admin-nav">
+                <a href="{{ url_for('main.admin_dashboard') }}" class="admin-btn secondary">Назад к списку</a>
+                <a href="{{ url_for('main.admin_logout') }}" class="admin-btn secondary">Выйти</a>
+            </div>
+        </div>
+    </header>
+    
+    <main class="admin-content">
+        <div class="admin-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <div class="form-container">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Имя участника</label>
+                        <input type="text" id="name" name="name" class="form-input" 
+                               placeholder="Например: 👨‍🦰 Массажист из Швейцарии" required>
+                        <div class="form-hint">Краткое описание участника с эмодзи</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="text">Краткий текст</label>
+                        <input type="text" id="text" name="text" class="form-input" 
+                               placeholder="Например: «Я касался сотен тел, но не чувствовал своего»" required>
+                        <div class="form-hint">Короткая цитата участника в кавычках</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="story">Полная история</label>
+                        <textarea id="story" name="story" class="form-textarea" 
+                                  placeholder="Подробная история участника..." required></textarea>
+                        <div class="form-hint">Полная история участника с переносами строк</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="photo">Фото участника</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="photo" name="photo" class="file-input" 
+                                   accept="image/*" required>
+                            <label for="photo" class="file-input-label">
+                                📷 Выберите фото участника
+                            </label>
+                        </div>
+                        <div class="form-hint">Рекомендуемый размер: 400x400px, формат: JPG, PNG</div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Добавить участника</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // Показываем имя выбранного файла
+        document.getElementById('photo').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            if (fileName) {
+                e.target.nextElementSibling.textContent = `📷 ${fileName}`;
+            }
+        });
+    </script>
+</body>
+</html>

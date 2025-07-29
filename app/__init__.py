@@ -1,4 +1,5 @@
 from flask import Flask, make_response
+import json
 
 
 def create_app() -> Flask:
@@ -8,6 +9,14 @@ def create_app() -> Flask:
     """
     app = Flask(__name__)
     app.config.from_object('app.config.Config')
+
+    # Добавляем фильтр для JSON
+    @app.template_filter('from_json')
+    def from_json_filter(value):
+        try:
+            return json.loads(value)
+        except:
+            return []
 
     # Импортируем роуты после создания приложения
     from app.routes import main_bp

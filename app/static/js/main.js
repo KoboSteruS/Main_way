@@ -10,10 +10,14 @@ document.addEventListener('DOMContentLoaded', function() {
     initHeaderScroll();
     initOfflineEventsCarouselV2();
     initMobileSidebar();
+    initPortraitsCarousel();
+    initOrganizersCarousel();
+    initProgramsCarousel();
+    initModals();
     
     // Инициализация карты с небольшой задержкой
     setTimeout(() => {
-        initMissionMap();
+    initMissionMap();
     }, 100);
 });
 
@@ -39,37 +43,10 @@ function initFAQ() {
 }
 
 // ===== АНИМАЦИЯ ЭТАПОВ С ПЛАВНЫМИ ПЕРЕХОДАМИ =====
+// ===== ОТКЛЮЧАЕМ АНИМАЦИИ ЭТАПОВ =====
 function initStagesAnimation() {
-    const stages = document.querySelectorAll('.stage');
-    let currentStage = 0;
-    
-    // Функция показа следующего этапа
-    function showNextStage() {
-        if (currentStage < stages.length) {
-            stages[currentStage].classList.add('visible');
-            currentStage++;
-            
-            // Плавный переход к следующему этапу через 1 секунду
-            if (currentStage < stages.length) {
-                setTimeout(showNextStage, 1000);
-            }
-        }
-    }
-    
-    // Запускаем анимацию при скролле к секции этапов
-    const stagesSection = document.querySelector('.stages');
-    if (stagesSection) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    showNextStage();
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.3 });
-        
-        observer.observe(stagesSection);
-    }
+    // Отключаем анимации этапов
+    console.log('Анимации этапов отключены');
 }
 
 // ===== ПЛАВНАЯ ПРОКРУТКА =====
@@ -123,23 +100,8 @@ function initVideoPlayer() {
 
 // ===== INTERSECTION OBSERVER ДЛЯ АНИМАЦИЙ =====
 function initIntersectionObserver() {
-    const animatedElements = document.querySelectorAll('.portrait, .value, .event-slide');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    animatedElements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
-        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(element);
-    });
+    // Отключаем все анимации загрузки
+    console.log('Анимации загрузки отключены');
 }
 
 // ===== АНИМАЦИЯ HEADER ПРИ СКРОЛЛЕ =====
@@ -413,5 +375,243 @@ function initMobileSidebar() {
     // Закрытие по клику на ссылку
     sidebar.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', closeSidebar);
+    });
+} 
+
+// ===== КАРУСЕЛЬ УЧАСТНИКОВ =====
+function initPortraitsCarousel() {
+    const slides = document.querySelectorAll('.portrait-slide');
+    const dots = document.querySelectorAll('.portrait-dot');
+    const prevBtn = document.getElementById('portraitPrev');
+    const nextBtn = document.getElementById('portraitNext');
+    
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+    
+    function showSlide(index) {
+        // Скрываем все слайды
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+        
+        // Убираем активный класс со всех точек
+        dots.forEach(dot => {
+            dot.classList.remove('active');
+        });
+        
+        // Показываем нужный слайд
+        slides[index].classList.add('active');
+        dots[index].classList.add('active');
+        
+        // Убираем блокировку кнопок для бесконечной карусели
+        // prevBtn.disabled = index === 0;
+        // nextBtn.disabled = index === totalSlides - 1;
+    }
+    
+    // Обработчики для кнопок с бесконечным переключением
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        });
+    }
+    
+    // Обработчики для точек
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentSlide = index;
+            showSlide(currentSlide);
+        });
+    });
+    
+    // Автоматическое переключение каждые 5 секунд
+    setInterval(() => {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        showSlide(currentSlide);
+    }, 5000);
+    
+    // Инициализация первого слайда
+    showSlide(0);
+} 
+
+// ===== КАРУСЕЛЬ ОРГАНИЗАТОРОВ =====
+function initOrganizersCarousel() {
+    const slides = document.querySelectorAll('.portrait-slide[data-carousel="organizers"]');
+    const dots = document.querySelectorAll('.portrait-dot[data-carousel="organizers"]');
+    const prevBtn = document.getElementById('organizerPrev');
+    const nextBtn = document.getElementById('organizerNext');
+    
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+    
+    function showSlide(index) {
+        // Скрываем все слайды организаторов
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+        
+        // Убираем активный класс со всех точек организаторов
+        dots.forEach(dot => {
+            dot.classList.remove('active');
+        });
+        
+        // Показываем нужный слайд
+        slides[index].classList.add('active');
+        dots[index].classList.add('active');
+    }
+    
+    // Обработчики для кнопок с бесконечным переключением
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        });
+    }
+    
+    // Обработчики для точек
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentSlide = index;
+            showSlide(currentSlide);
+        });
+    });
+    
+    // Автоматическое переключение каждые 6 секунд (немного медленнее чем участники)
+    setInterval(() => {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        showSlide(currentSlide);
+    }, 6000);
+    
+    // Инициализация первого слайда
+    showSlide(0);
+} 
+
+// ===== КАРУСЕЛЬ ПРОГРАММ =====
+function initProgramsCarousel() {
+    const slides = document.querySelectorAll('.program-slide');
+    const dots = document.querySelectorAll('.program-dot');
+    const prevBtn = document.getElementById('programPrev');
+    const nextBtn = document.getElementById('programNext');
+    
+    if (!slides.length) return; // Если нет слайдов, выходим
+    
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+    
+    function showSlide(index) {
+        // Скрываем все слайды
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+        
+        // Убираем активный класс со всех точек
+        dots.forEach(dot => {
+            dot.classList.remove('active');
+        });
+        
+        // Показываем нужный слайд
+        slides[index].classList.add('active');
+        dots[index].classList.add('active');
+    }
+    
+    // Обработчики для кнопок с бесконечным переключением
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        });
+    }
+    
+    // Обработчики для точек
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentSlide = index;
+            showSlide(currentSlide);
+        });
+    });
+    
+    // Автоматическое переключение каждые 8 секунд (медленнее чем участники)
+    setInterval(() => {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        showSlide(currentSlide);
+    }, 8000);
+    
+    // Инициализация первого слайда
+    showSlide(0);
+} 
+
+// ===== МОДАЛЬНЫЕ ОКНА =====
+function initModals() {
+    const modalTriggers = document.querySelectorAll('[data-modal]');
+    const modals = document.querySelectorAll('.modal');
+    const modalCloses = document.querySelectorAll('.modal__close');
+    
+    // Открытие модального окна
+    modalTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            const modalId = trigger.getAttribute('data-modal');
+            const modal = document.getElementById(modalId);
+            
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Блокируем скролл
+            }
+        });
+    });
+    
+    // Закрытие модального окна по кнопке
+    modalCloses.forEach(closeBtn => {
+        closeBtn.addEventListener('click', () => {
+            const modalId = closeBtn.getAttribute('data-modal');
+            const modal = document.getElementById(modalId);
+            
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = ''; // Возвращаем скролл
+            }
+        });
+    });
+    
+    // Закрытие модального окна по клику на оверлей
+    modals.forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.classList.contains('modal__overlay')) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    });
+    
+    // Закрытие модального окна по ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const activeModal = document.querySelector('.modal.active');
+            if (activeModal) {
+                activeModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
     });
 } 

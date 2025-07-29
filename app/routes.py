@@ -1,14 +1,44 @@
-from flask import Blueprint, render_template, make_response
+from flask import Blueprint, render_template, make_response, request, redirect, url_for, flash, session
 import time
+import os
+import uuid
+from werkzeug.utils import secure_filename
+import json
+from functools import wraps
 
 main_bp = Blueprint('main', __name__)
+
+# JWT ключи для админки
+ADMIN_JWT_SECRET = "your-secret-key-here"
+ADMIN_USERNAME = "admin"
+ADMIN_PASSWORD = "admin123"
+
+# Функция для проверки JWT токена
+def verify_jwt_token(token):
+    try:
+        # Простая проверка токена (в реальном проекте используйте библиотеку PyJWT)
+        if token == "admin-token-123":
+            return True
+        return False
+    except:
+        return False
+
+# Декоратор для защиты админских маршрутов
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        token = session.get('admin_token')
+        if not token or not verify_jwt_token(token):
+            return redirect(url_for('main.admin_login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @main_bp.route('/')
 @main_bp.route('/<version>')
 def index(version=None):
     # Принудительно обновляем кэш, добавляя timestamp
     timestamp = int(time.time())
-    response = make_response(render_template('index.html', version=version or f'1.0.{timestamp}'))
+    response = make_response(render_template('index.html', version=version or f'1.1.{timestamp}'))
     
     # Добавляем заголовки для отключения кэширования
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
@@ -18,10 +48,115 @@ def index(version=None):
     
     return response
 
-@main_bp.route('/test')
-def test():
-    return render_template('test.html')
+# Маршрут для входа в админку
+@main_bp.route('/jwt-ключи/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            session['admin_token'] = 'admin-token-123'
+            return redirect(url_for('main.admin_dashboard'))
+        else:
+            flash('Неверные учетные данные', 'error')
+    
+    return render_template('admin/login.html')
 
-@main_bp.route('/debug')
-def debug():
-    return "Debug route working" 
+# Маршрут для админской панели
+@main_bp.route('/jwt-ключи/admin')
+@admin_required
+def admin_dashboard():
+    # Загружаем существующих участников
+    participants = load_participants()
+    return render_template('admin/dashboard.html', participants=participants)
+
+# Маршрут для добавления нового участника
+@main_bp.route('/jwt-ключи/admin/add-participant', methods=['GET', 'POST'])
+@admin_required
+def add_participant():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        text = request.form.get('text')
+        story = request.form.get('story')
+        
+        # Обработка загруженного файла
+        if 'photo' in request.files:
+            file = request.files['photo']
+            if file and file.filename:
+                # Генерируем уникальное имя файла
+                filename = secure_filename(file.filename)
+                file_extension = filename.rsplit('.', 1)[1].lower()
+                new_filename = f"character_{uuid.uuid4().hex[:8]}.{file_extension}"
+                
+                # Сохраняем файл
+                upload_folder = 'app/static/img/character'
+                if not os.path.exists(upload_folder):
+                    os.makedirs(upload_folder)
+                
+                file_path = os.path.join(upload_folder, new_filename)
+                file.save(file_path)
+                
+                # Создаем нового участника
+                new_participant = {
+                    'id': str(uuid.uuid4()),
+                    'name': name,
+                    'text': text,
+                    'story': story,
+                    'photo': f'img/character/{new_filename}'
+                }
+                
+                # Сохраняем в JSON файл
+                save_participant(new_participant)
+                
+                flash('Участник успешно добавлен!', 'success')
+                return redirect(url_for('main.admin_dashboard'))
+    
+    return render_template('admin/add_participant.html')
+
+# Маршрут для удаления участника
+@main_bp.route('/jwt-ключи/admin/delete-participant/<participant_id>')
+@admin_required
+def delete_participant(participant_id):
+    participants = load_participants()
+    participant = next((p for p in participants if p['id'] == participant_id), None)
+    
+    if participant:
+        # Удаляем файл фото
+        if participant.get('photo'):
+            photo_path = os.path.join('app/static', participant['photo'])
+            if os.path.exists(photo_path):
+                os.remove(photo_path)
+        
+        # Удаляем из JSON
+        participants = [p for p in participants if p['id'] != participant_id]
+        save_participants(participants)
+        flash('Участник удален!', 'success')
+    
+    return redirect(url_for('main.admin_dashboard'))
+
+# Маршрут для выхода из админки
+@main_bp.route('/jwt-ключи/admin/logout')
+def admin_logout():
+    session.pop('admin_token', None)
+    return redirect(url_for('main.admin_login'))
+
+# Вспомогательные функции
+def load_participants():
+    try:
+        with open('app/data/participants.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+def save_participant(participant):
+    participants = load_participants()
+    participants.append(participant)
+    save_participants(participants)
+
+def save_participants(participants):
+    # Создаем папку если её нет
+    os.makedirs('app/data', exist_ok=True)
+    
+    with open('app/data/participants.json', 'w', encoding='utf-8') as f:
+        json.dump(participants, f, ensure_ascii=False, indent=2) 
