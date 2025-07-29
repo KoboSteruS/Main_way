@@ -443,10 +443,12 @@ function initPortraitsCarousel() {
 
 // ===== КАРУСЕЛЬ ОРГАНИЗАТОРОВ =====
 function initOrganizersCarousel() {
-    const slides = document.querySelectorAll('.portrait-slide[data-carousel="organizers"]');
-    const dots = document.querySelectorAll('.portrait-dot[data-carousel="organizers"]');
+    const slides = document.querySelectorAll('.organizer-slide[data-carousel="organizers"]');
+    const dots = document.querySelectorAll('.organizer-dot[data-carousel="organizers"]');
     const prevBtn = document.getElementById('organizerPrev');
     const nextBtn = document.getElementById('organizerNext');
+    
+    if (!slides.length) return; // Если нет слайдов, выходим
     
     let currentSlide = 0;
     const totalSlides = slides.length;
