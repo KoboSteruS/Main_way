@@ -16,20 +16,15 @@ JWT_ALGORITHM = "HS256"
 
 # Функция для проверки JWT токена
 def verify_jwt_token(token):
-    print(f"DEBUG: Проверяем JWT токен: {token[:50]}...")
     try:
         # Декодируем токен
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        print(f"DEBUG: JWT токен валиден, payload: {payload}")
         return payload.get('admin', False)
     except jwt.ExpiredSignatureError:
-        print("DEBUG: JWT токен истек")
         return False
-    except jwt.InvalidTokenError as e:
-        print(f"DEBUG: JWT токен невалиден: {e}")
+    except jwt.InvalidTokenError:
         return False
-    except Exception as e:
-        print(f"DEBUG: Ошибка проверки JWT: {e}")
+    except Exception:
         return False
 
 # Декоратор для защиты админских маршрутов
@@ -38,15 +33,12 @@ def admin_required(f):
     def decorated_function(*args, **kwargs):
         # Получаем токен из URL
         token = request.view_args.get('token')
-        print(f"DEBUG: Получен токен из URL: {token[:50] if token else 'None'}...")
         
         # Временно упрощаем проверку для тестирования
         if not token:
-            print("DEBUG: Доступ запрещен - токен отсутствует")
             return "Доступ запрещен - токен отсутствует", 403
             
         # Проверяем только наличие токена, не валидируем
-        print("DEBUG: Доступ разрешен (временная проверка)")
         return f(*args, **kwargs)
     return decorated_function
 
@@ -77,52 +69,18 @@ STATIC_PARTICIPANTS = [
 
 # Функция для загрузки участников из JSON
 def load_participants():
-    print("DEBUG: Начинаем загрузку участников...")
-    print(f"DEBUG: STATIC_PARTICIPANTS содержит {len(STATIC_PARTICIPANTS)} участников")
-    
     try:
         with open('app/data/participants.json', 'r', encoding='utf-8') as f:
             dynamic_participants = json.load(f)
-            print(f"DEBUG: Загружено {len(dynamic_participants)} динамических участников")
             # Объединяем статичных и динамических участников
             all_participants = STATIC_PARTICIPANTS + dynamic_participants
-            print(f"DEBUG: Всего участников: {len(all_participants)}")
             return all_participants
     except FileNotFoundError:
-        print("DEBUG: Файл participants.json не найден, возвращаем только статичных")
         # Если файл не найден, возвращаем только статичных
         return STATIC_PARTICIPANTS
     except Exception as e:
-        print(f"DEBUG: Ошибка загрузки участников: {e}")
-        print("DEBUG: Возвращаем статичных участников как fallback")
+        print(f"Ошибка загрузки участников: {e}")
         return STATIC_PARTICIPANTS
-
-# Простой тестовый маршрут
-@main_bp.route('/test')
-def test():
-    return {"status": "ok", "message": "Сервер работает", "timestamp": time.time()}
-
-# Тестовый маршрут для диагностики JWT
-@main_bp.route('/debug/jwt/<token>')
-def debug_jwt(token):
-    print(f"DEBUG: Тестируем JWT токен: {token[:50]}...")
-    is_valid = verify_jwt_token(token)
-    return {
-        'token': token[:50] + '...',
-        'is_valid': is_valid,
-        'jwt_secret': JWT_SECRET[:20] + '...' if len(JWT_SECRET) > 20 else JWT_SECRET
-    }
-
-# Тестовый маршрут для диагностики участников
-@main_bp.route('/debug/participants')
-def debug_participants():
-    participants = load_participants()
-    debug_info = {
-        'total_participants': len(participants),
-        'static_participants': len(STATIC_PARTICIPANTS),
-        'participants': participants
-    }
-    return debug_info
 
 @main_bp.route('/')
 @main_bp.route('/<version>')
@@ -131,9 +89,7 @@ def index(version=None):
     timestamp = int(time.time())
     
     # Загружаем участников из JSON
-    print("DEBUG: Загружаем участников для главной страницы...")
     participants = load_participants()
-    print(f"DEBUG: Передаем в шаблон {len(participants)} участников")
     
     response = make_response(render_template('index.html', 
                                           version=version or f'1.1.{timestamp}',

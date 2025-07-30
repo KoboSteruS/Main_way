@@ -341,6 +341,11 @@ body {
     filter: grayscale(100%);
 }
 
+.portrait__placeholder img:hover{
+    filter: grayscale(0%);
+}
+
+
 .portrait:hover .portrait__placeholder {
     transform: scale(1.05);
 }

@@ -32,11 +32,6 @@
     <div class="container who-we-are__container">
         <h2 class="who-we-are__title">Кто мы</h2>
         
-        <!-- Временная отладочная информация -->
-        <div style="color: white; margin-bottom: 20px; text-align: center;">
-            DEBUG: Участников загружено: {{ participants_data|length }}
-        </div>
-        
         <div class="who-we-are__carousel">
             <div class="portraits-carousel">
                 {% for participant in participants_data %}
