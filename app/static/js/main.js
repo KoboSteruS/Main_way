@@ -263,7 +263,12 @@ function initOfflineEventsCarouselV2() {
         title.style.opacity = 0;
         desc.style.opacity = 0;
         setTimeout(() => {
-            bg.style.backgroundImage = `url(${slides[idx].image})`;
+            // Проверяем, начинается ли путь с /static/
+            let imagePath = slides[idx].image;
+            if (!imagePath.startsWith('/static/') && !imagePath.startsWith('http')) {
+                imagePath = '/static/' + imagePath;
+            }
+            bg.style.backgroundImage = `url(${imagePath})`;
             bg.style.backgroundSize = 'cover';
             bg.style.backgroundPosition = 'center';
             bg.style.backgroundRepeat = 'no-repeat';

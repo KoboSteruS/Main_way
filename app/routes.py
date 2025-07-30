@@ -73,19 +73,19 @@ STATIC_EVENTS = [
         'id': 'static_event_1',
         'title': 'Москва',
         'desc': 'Столичный слёт. Город силы и встреч.',
-        'image': 'img/Moscow.png'
+        'image': '/static/img/Moscow.png'
     },
     {
         'id': 'static_event_2',
         'title': 'Грузия: женская линия',
         'desc': 'Уникальный женский круг. Горы, ритуалы, поддержка.',
-        'image': 'img/Georgia.png'
+        'image': '/static/img/Georgia.png'
     },
     {
         'id': 'static_event_3',
         'title': 'Латвия 2025',
         'desc': 'Сбор в лесу. Единение с природой и собой.',
-        'image': 'img/Latvia.png'
+        'image': '/static/img/Latvia.png'
     }
 ]
 
