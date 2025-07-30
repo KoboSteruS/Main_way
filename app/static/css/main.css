@@ -2376,8 +2376,8 @@ body {
 
 /* ===== БЛОК ОРГАНИЗАТОРОВ ===== */
 .organizers {
-    padding: 80px 0;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    padding: 120px 0;
+    background: var(--color-bg);
     position: relative;
 }
 
@@ -2387,11 +2387,11 @@ body {
 }
 
 .organizers .section-header h2 {
-    font-size: 3rem;
+    font-size: var(--font-size-3xl);
     font-weight: 700;
-    color: #fff;
+    color: var(--color-primary);
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     margin: 0;
 }
 
@@ -2409,7 +2409,6 @@ body {
     border-radius: 20px;
     padding: 30px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(191, 164, 107, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -2477,7 +2476,6 @@ body {
         border-radius: 20px;
         padding: 30px;
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(191, 164, 107, 0.2);
     }
     
     .organizer-slide.active {
@@ -2569,7 +2567,8 @@ body {
     }
     
     .organizers .section-header h2 {
-        font-size: 2.5rem;
+        font-size: var(--font-size-2xl);
+        letter-spacing: 2px;
     }
 }
 
