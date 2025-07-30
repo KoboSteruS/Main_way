@@ -370,7 +370,7 @@ body {
 
 /* Карусель участников (скрыта на десктопе) */
 .who-we-are__carousel {
-    display: none;
+    display: none; /* Скрываем карусель на десктопе */
 }
 
 .who-we-are__cta {
@@ -2542,17 +2542,14 @@ body {
 /* Мобильные стили */
 @media (max-width: 768px) {
     .organizers-grid {
-        display: none;
+        display: none; /* Скрываем сетку на мобильных */
     }
     
     .organizers-carousel-mobile {
-        display: block;
-        position: relative;
-        max-width: 400px;
-        margin: 0 auto;
+        display: block; /* Показываем карусель на мобильных */
     }
     
-    .organizer-slide {
+    .organizers-carousel-mobile .organizer-slide {
         display: none;
         opacity: 1 !important;
         transform: none !important;
@@ -2563,13 +2560,13 @@ body {
         backdrop-filter: blur(10px);
     }
     
-    .organizer-slide.active {
+    .organizers-carousel-mobile .organizer-slide.active {
         display: block;
         opacity: 1 !important;
         transform: none !important;
     }
     
-    .organizer-slide:not(.active) {
+    .organizers-carousel-mobile .organizer-slide:not(.active) {
         display: none !important;
     }
     
@@ -3281,6 +3278,22 @@ body {
         font-size: 14px;
         line-height: 1.6;
         color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .portraits-controls {
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .portrait-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .portrait-dot {
+        width: 10px;
+        height: 10px;
     }
 }
 
