@@ -253,11 +253,9 @@ body {
 
 /* ===== WHO WE ARE SECTION ===== */
 .who-we-are {
-    padding: var(--section-padding);
     position: relative;
-    margin: 0;
-    min-height: 900px;
-    max-height: 1200px;
+    padding: 120px 0;
+    background: var(--color-bg);
 }
 
 .who-we-are__bg {
@@ -270,7 +268,6 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     z-index: 1;
-    object-fit: cover;
 }
 
 .who-we-are__overlay {
@@ -279,7 +276,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%);
+    background: rgba(0, 0, 0, 0.7);
     z-index: 2;
 }
 
@@ -289,108 +286,91 @@ body {
 }
 
 .who-we-are__title,
-.who-we-are__portraits {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-}
-
-.who-we-are__title {
-    font-size: 48px;
-    font-weight: 800;
+.who-we-are__subtitle {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--color-primary);
     text-align: center;
     margin-bottom: 60px;
-    color: #fff;
-    text-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    text-transform: uppercase;
+    letter-spacing: 3px;
 }
 
-.who-we-are__portraits {
+/* Сетка участников для десктопа */
+.who-we-are__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 40px;
-    margin-bottom: 60px;
+    margin-bottom: 0;
 }
 
-.portrait {
-    position: relative;
+.portrait-card {
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(191, 164, 107, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.portrait-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.portrait-card .portrait__placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
     overflow: hidden;
-    transition: var(--transition);
-    display: flex;
-    flex-direction: column;
+    margin: 0 auto 20px;
+    border: 3px solid rgba(191, 164, 107, 0.3);
 }
 
-.portrait:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(191, 164, 107, 0.2);
-}
-
-.portrait__placeholder {
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
-    border-radius: 20px 20px 0 0;
-    position: relative;
-}
-
-.portrait__placeholder img {
+.portrait-card .portrait__placeholder img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: var(--transition);
     filter: grayscale(100%);
+    transition: filter 0.3s ease;
 }
 
-.portrait__placeholder img:hover{
+.portrait-card:hover .portrait__placeholder img {
     filter: grayscale(0%);
 }
 
-
-.portrait:hover .portrait__placeholder {
-    transform: scale(1.05);
-}
-
-
-
-.portrait__quote {
-    position: relative;
-    background: var(--color-bg-secondary);
+.portrait-card .portrait__quote {
     color: #fff;
-    padding: 30px 20px 20px;
-    font-size: 16px;
-    font-weight: 500;
-    text-align: left;
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.3s ease;
-    border-radius: 0 0 20px 20px;
-    flex: 1;
+    text-align: center;
 }
 
-.portrait:hover .portrait__quote {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.portrait__name {
+.portrait-card .portrait__name {
     font-size: 18px;
     font-weight: 700;
+    color: #bfa46b;
     margin-bottom: 10px;
-    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.portrait__text {
+.portrait-card .portrait__text {
     font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 15px;
     font-style: italic;
-    color: #fff;
+    color: #ccc;
+    margin-bottom: 15px;
+    line-height: 1.6;
 }
 
-.portrait__story {
+.portrait-card .portrait__story {
     font-size: 14px;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
+    color: #999;
+}
+
+/* Карусель участников (скрыта на десктопе) */
+.who-we-are__carousel {
+    display: none;
 }
 
 .who-we-are__cta {
@@ -870,7 +850,7 @@ body {
     }
     .faq__title { font-size: 28px; margin-bottom: 30px; }
     .faq__question { font-size: 16px; padding: 20px; }
-    .faq__img { max-width: 100%; }
+    .faq__img { max-width: 100%; display: none; }
     
     .who-we-are__title { font-size: 32px; margin-bottom: 40px; }
     .who-we-are__portraits { gap: 30px; }
@@ -3107,5 +3087,103 @@ body {
         max-width: 300px;
     }
 } 
+
+@media (max-width: 768px) {
+    .who-we-are__grid {
+        display: none; /* Скрываем сетку на мобильных */
+    }
+    
+    .who-we-are__carousel {
+        display: block; /* Показываем карусель на мобильных */
+    }
+    
+    .who-we-are__title {
+        font-size: var(--font-size-2xl);
+        margin-bottom: 40px;
+        letter-spacing: 2px;
+    }
+    
+    .portrait {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(191, 164, 107, 0.2);
+    }
+    
+    .portrait:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(191, 164, 107, 0.2);
+    }
+    
+    .portrait__placeholder {
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        border-radius: 20px 20px 0 0;
+        position: relative;
+    }
+    
+    .portrait__placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition);
+        filter: grayscale(100%);
+    }
+    
+    .portrait__placeholder img:hover{
+        filter: grayscale(0%);
+    }
+    
+    .portrait:hover .portrait__placeholder {
+        transform: scale(1.05);
+    }
+    
+    .portrait__quote {
+        position: relative;
+        background: var(--color-bg-secondary);
+        color: #fff;
+        padding: 30px 20px 20px;
+        font-size: 16px;
+        font-weight: 500;
+        text-align: left;
+        opacity: 1;
+        transform: translateY(0);
+        transition: all 0.3s ease;
+        border-radius: 0 0 20px 20px;
+        flex: 1;
+    }
+    
+    .portrait:hover .portrait__quote {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .portrait__name {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: var(--color-accent);
+    }
+    
+    .portrait__text {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        font-style: italic;
+        color: #fff;
+    }
+    
+    .portrait__story {
+        font-size: 14px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.9);
+    }
+}
 
  
