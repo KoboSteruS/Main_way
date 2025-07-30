@@ -2376,233 +2376,200 @@ body {
 
 /* ===== БЛОК ОРГАНИЗАТОРОВ ===== */
 .organizers {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     position: relative;
-    padding: 120px 0;
-    background: var(--color-bg);
-    overflow: hidden;
 }
 
-.organizers__bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 1;
-}
-
-.organizers__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 2;
-}
-
-.organizers__container {
-    position: relative;
-    z-index: 3;
-}
-
-.organizers__title {
-    font-size: var(--font-size-3xl);
-    font-weight: 700;
-    color: var(--color-primary);
+.organizers .section-header {
     text-align: center;
     margin-bottom: 60px;
+}
+
+.organizers .section-header h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #fff;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
+    margin: 0;
 }
 
-.organizers__carousel {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
+/* Сетка организаторов для десктопа */
+.organizers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 0;
 }
 
-/* Стили для карусели организаторов */
-.organizers-portraits-carousel {
-    position: relative;
-    overflow: hidden;
-    border-radius: 20px;
+.organizer-card {
+    text-align: center;
     background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 30px;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(191, 164, 107, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.organizer-slide {
-    display: none;
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
+.organizer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.organizer-slide.active {
-    display: block;
-    opacity: 1 !important;
-    transform: none !important;
-}
-
-.organizer-slide:not(.active) {
-    display: none !important;
-}
-
-.organizer-portrait {
-    display: flex;
-    flex-direction: column;
-    padding: 30px;
-    gap: 20px;
-}
-
-.organizer-portrait__placeholder {
-    width: 120px;
-    height: 120px;
+.organizer-photo {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #bfa46b 0%, #d4b87a 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
+    overflow: hidden;
     border: 3px solid rgba(191, 164, 107, 0.3);
 }
 
-.organizer-portrait__quote {
-    text-align: center;
-    color: #fff;
+.organizer-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.organizer-portrait__name {
-    font-size: 18px;
-    font-weight: 700;
-    color: #bfa46b;
-    margin-bottom: 10px;
+.organizer-info h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 10px 0;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-.organizer-portrait__text {
-    font-size: 16px;
-    font-style: italic;
+.organizer-info p {
+    font-size: 0.95rem;
     color: #ccc;
-    margin-bottom: 15px;
-    line-height: 1.6;
+    margin: 0;
+    line-height: 1.5;
 }
 
-.organizer-portrait__story {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #999;
+/* Мобильная карусель (скрыта на десктопе) */
+.organizers-carousel-mobile {
+    display: none;
 }
 
-/* Контролы для организаторов */
-.organizers-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 30px;
-}
-
-.organizer-nav {
-    width: 50px;
-    height: 50px;
-    border: none;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #bfa46b 0%, #d4b87a 100%);
-    color: #1a1a1a;
-    font-size: 20px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.organizer-nav:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(191, 164, 107, 0.3);
-}
-
-.organizer-nav:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.organizer-dots {
-    display: flex;
-    gap: 10px;
-}
-
-.organizer-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.organizer-dot.active {
-    background: #bfa46b;
-    transform: scale(1.2);
-}
-
-.organizer-dot:hover {
-    background: rgba(191, 164, 107, 0.5);
-}
-
+/* Мобильные стили */
 @media (max-width: 768px) {
-    .organizers {
-        padding: 80px 0;
+    .organizers-grid {
+        display: none;
     }
     
-    .organizers__title {
-        font-size: var(--font-size-2xl);
-        margin-bottom: 40px;
-        letter-spacing: 2px;
+    .organizers-carousel-mobile {
+        display: block;
+        position: relative;
+        max-width: 400px;
+        margin: 0 auto;
     }
     
-    .organizer-portrait {
-        padding: 20px;
+    .organizer-slide {
+        display: none;
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 30px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(191, 164, 107, 0.2);
     }
     
-    .organizer-portrait__placeholder {
-        width: 100px;
-        height: 100px;
+    .organizer-slide.active {
+        display: block;
+        opacity: 1 !important;
+        transform: none !important;
     }
     
-    .organizer-portrait__name {
-        font-size: 16px;
+    .organizer-slide:not(.active) {
+        display: none !important;
     }
     
-    .organizer-portrait__text {
-        font-size: 14px;
+    .organizer-photo {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid rgba(191, 164, 107, 0.3);
     }
     
-    .organizer-portrait__story {
-        font-size: 12px;
+    .organizer-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     
-    .organizers-controls {
-        gap: 15px;
-        margin-top: 20px;
+    .organizer-info h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #fff;
+        margin: 0 0 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
     
-    .organizer-nav {
+    .organizer-info p {
+        font-size: 0.9rem;
+        color: #ccc;
+        margin: 0;
+        line-height: 1.5;
+    }
+    
+    /* Навигация карусели */
+    .carousel-nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+        gap: 20px;
+    }
+    
+    .carousel-btn {
         width: 40px;
         height: 40px;
-        font-size: 16px;
+        border-radius: 50%;
+        border: 2px solid rgba(191, 164, 107, 0.5);
+        background: rgba(191, 164, 107, 0.1);
+        color: #bfa46b;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
-    .organizer-dot {
+    .carousel-btn:hover {
+        background: rgba(191, 164, 107, 0.2);
+        border-color: rgba(191, 164, 107, 0.8);
+    }
+    
+    .carousel-dots {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .dot {
         width: 10px;
         height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .dot.active {
+        background: #bfa46b;
+    }
+    
+    .organizers .section-header h2 {
+        font-size: 2.5rem;
     }
 }
 

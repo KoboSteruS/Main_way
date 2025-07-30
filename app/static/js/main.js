@@ -444,44 +444,51 @@ function initPortraitsCarousel() {
 // ===== КАРУСЕЛЬ ОРГАНИЗАТОРОВ =====
 function initOrganizersCarousel() {
     const slides = document.querySelectorAll('.organizer-slide[data-carousel="organizers"]');
-    const dots = document.querySelectorAll('.organizer-dot[data-carousel="organizers"]');
+    const dots = document.querySelectorAll('.dot[data-carousel="organizers"]');
     const prevBtn = document.getElementById('organizerPrev');
     const nextBtn = document.getElementById('organizerNext');
     
-    if (!slides.length) return; // Если нет слайдов, выходим
+    if (!slides.length) return; // Выходим если слайды не найдены
     
     let currentSlide = 0;
-    const totalSlides = slides.length;
     
     function showSlide(index) {
-        // Скрываем все слайды организаторов
+        // Скрываем все слайды
         slides.forEach(slide => {
             slide.classList.remove('active');
+            slide.style.display = 'none';
         });
         
-        // Убираем активный класс со всех точек организаторов
-        dots.forEach(dot => {
-            dot.classList.remove('active');
-        });
+        // Убираем активный класс у всех точек
+        dots.forEach(dot => dot.classList.remove('active'));
         
-        // Показываем нужный слайд
+        // Показываем текущий слайд
         slides[index].classList.add('active');
-        dots[index].classList.add('active');
+        slides[index].style.display = 'block';
+        
+        // Активируем соответствующую точку
+        if (dots[index]) {
+            dots[index].classList.add('active');
+        }
     }
     
-    // Обработчики для кнопок с бесконечным переключением
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+    
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+    }
+    
+    // Обработчики для кнопок
     if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-            showSlide(currentSlide);
-        });
+        prevBtn.addEventListener('click', prevSlide);
     }
     
     if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            showSlide(currentSlide);
-        });
+        nextBtn.addEventListener('click', nextSlide);
     }
     
     // Обработчики для точек
@@ -492,13 +499,10 @@ function initOrganizersCarousel() {
         });
     });
     
-    // Автоматическое переключение каждые 6 секунд (немного медленнее чем участники)
-    setInterval(() => {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        showSlide(currentSlide);
-    }, 6000);
+    // Автоматическое переключение каждые 5 секунд
+    setInterval(nextSlide, 5000);
     
-    // Инициализация первого слайда
+    // Показываем первый слайд
     showSlide(0);
 } 
 
