@@ -2790,20 +2790,20 @@ body {
     
     .programs-carousel-mobile {
         display: block; /* Показываем мобильную карусель */
-        height: 700px; /* Фиксированная высота контейнера */
+        height: 800px; /* Увеличиваем высоту контейнера */
         position: relative;
         overflow: hidden;
     }
     
     .programs-carousel {
         height: 100%; /* Занимает всю высоту родителя */
-        min-height: 700px; /* Фиксированная высота для мобильной версии */
+        min-height: 800px; /* Увеличиваем минимальную высоту */
         position: relative;
     }
     
     .program-slide {
         height: 100%; /* Занимает всю высоту родителя */
-        min-height: 700px; /* Фиксированная высота для мобильной версии */
+        min-height: 800px; /* Увеличиваем минимальную высоту */
         display: flex;
         flex-direction: column;
         justify-content: center; /* Центрируем контент по вертикали */
@@ -2856,6 +2856,7 @@ body {
         margin-bottom: 20px;
         text-align: center;
         max-width: 100%;
+        line-height: 1.4; /* Улучшаем межстрочный интервал */
     }
     
     .program-features {
@@ -2864,22 +2865,25 @@ body {
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 8px; /* Уменьшаем отступы между плашками */
     }
     
     .feature {
         font-size: 12px;
         padding: 6px 12px;
-        min-height: 35px; /* Фиксированная высота для плашек */
-        margin-bottom: 8px;
+        min-height: 32px; /* Уменьшаем высоту плашек */
+        margin-bottom: 6px; /* Уменьшаем отступы */
         width: 100%;
         max-width: 300px; /* Ограничиваем ширину плашек */
         text-align: left; /* Текст внутри плашек выравниваем по левому краю */
+        line-height: 1.3; /* Улучшаем межстрочный интервал */
     }
     
     .program-highlight {
         margin-bottom: 20px;
         text-align: center;
         width: 100%;
+        line-height: 1.4; /* Улучшаем межстрочный интервал */
     }
     
     .program-highlight strong {
