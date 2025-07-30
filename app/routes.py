@@ -67,6 +67,28 @@ STATIC_PARTICIPANTS = [
     }
 ]
 
+# Статичные события (базовые)
+STATIC_EVENTS = [
+    {
+        'id': 'static_event_1',
+        'title': 'Москва',
+        'desc': 'Столичный слёт. Город силы и встреч.',
+        'image': 'img/Moscow.png'
+    },
+    {
+        'id': 'static_event_2',
+        'title': 'Грузия: женская линия',
+        'desc': 'Уникальный женский круг. Горы, ритуалы, поддержка.',
+        'image': 'img/Georgia.png'
+    },
+    {
+        'id': 'static_event_3',
+        'title': 'Латвия 2025',
+        'desc': 'Сбор в лесу. Единение с природой и собой.',
+        'image': 'img/Latvia.png'
+    }
+]
+
 # Функция для загрузки участников из JSON
 def load_participants():
     try:
@@ -82,6 +104,21 @@ def load_participants():
         print(f"Ошибка загрузки участников: {e}")
         return STATIC_PARTICIPANTS
 
+# Функция для загрузки событий из JSON
+def load_events():
+    try:
+        with open('app/data/events.json', 'r', encoding='utf-8') as f:
+            dynamic_events = json.load(f)
+            # Объединяем статичных и динамических событий
+            all_events = STATIC_EVENTS + dynamic_events
+            return all_events
+    except FileNotFoundError:
+        # Если файл не найден, возвращаем только статичных
+        return STATIC_EVENTS
+    except Exception as e:
+        print(f"Ошибка загрузки событий: {e}")
+        return STATIC_EVENTS
+
 @main_bp.route('/')
 @main_bp.route('/<version>')
 def index(version=None):
@@ -91,9 +128,13 @@ def index(version=None):
     # Загружаем участников из JSON
     participants = load_participants()
     
+    # Загружаем события из JSON
+    events = load_events()
+    
     response = make_response(render_template('index.html', 
                                           version=version or f'1.1.{timestamp}',
-                                          participants=participants))
+                                          participants=participants,
+                                          events=events))
     
     # Добавляем заголовки для отключения кэширования
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
@@ -109,7 +150,11 @@ def index(version=None):
 def admin_dashboard(token):
     # Загружаем существующих участников
     participants = load_participants()
-    return render_template('admin/dashboard.html', participants=participants, token=token)
+    
+    # Загружаем существующих событий
+    events = load_events()
+    
+    return render_template('admin/dashboard.html', participants=participants, events=events, token=token)
 
 # Маршрут для добавления нового участника
 @main_bp.route('/<token>/admin/add-participant', methods=['GET', 'POST'])
@@ -183,6 +228,76 @@ def delete_participant(token, participant_id):
     
     return redirect(url_for('main.admin_dashboard', token=token))
 
+# Маршрут для добавления нового события
+@main_bp.route('/<token>/admin/add-event', methods=['GET', 'POST'])
+@admin_required
+def add_event(token):
+    if request.method == 'POST':
+        title = request.form.get('title')
+        desc = request.form.get('desc')
+        
+        # Обработка загруженного файла
+        if 'image' in request.files:
+            file = request.files['image']
+            if file and file.filename:
+                # Генерируем уникальное имя файла
+                filename = secure_filename(file.filename)
+                file_extension = filename.rsplit('.', 1)[1].lower()
+                new_filename = f"event_{uuid.uuid4().hex[:8]}.{file_extension}"
+                
+                # Сохраняем файл
+                upload_folder = 'app/static/img'
+                if not os.path.exists(upload_folder):
+                    os.makedirs(upload_folder)
+                
+                file_path = os.path.join(upload_folder, new_filename)
+                file.save(file_path)
+                
+                # Создаем новое событие
+                new_event = {
+                    'id': str(uuid.uuid4()),
+                    'title': title,
+                    'desc': desc,
+                    'image': f'img/{new_filename}'
+                }
+                
+                # Сохраняем в JSON файл
+                save_event(new_event)
+                
+                flash('Событие успешно добавлено!', 'success')
+                return redirect(url_for('main.admin_dashboard', token=token))
+    
+    return render_template('admin/add_event.html', token=token)
+
+# Маршрут для удаления события
+@main_bp.route('/<token>/admin/delete-event/<event_id>')
+@admin_required
+def delete_event(token, event_id):
+    events = load_events()
+    event = next((e for e in events if e['id'] == event_id), None)
+    
+    if event:
+        # Удаляем файл изображения (только для динамических событий)
+        if not event_id.startswith('static_event_') and event.get('image'):
+            image_path = os.path.join('app/static', event['image'])
+            if os.path.exists(image_path):
+                os.remove(image_path)
+        
+        # Удаляем из JSON (только динамических событий)
+        if not event_id.startswith('static_event_'):
+            try:
+                with open('app/data/events.json', 'r', encoding='utf-8') as f:
+                    dynamic_events = json.load(f)
+                dynamic_events = [e for e in dynamic_events if e['id'] != event_id]
+                save_events(dynamic_events)
+                flash('Событие удалено!', 'success')
+            except Exception as e:
+                flash(f'Ошибка удаления: {e}', 'error')
+        else:
+            flash('Статичных событий нельзя удалить!', 'error')
+    
+    return redirect(url_for('main.admin_dashboard', token=token))
+
 # Вспомогательные функции
 def save_participant(participant):
     try:
@@ -207,6 +322,31 @@ def save_participants(participants):
     
     with open('app/data/participants.json', 'w', encoding='utf-8') as f:
         json.dump(participants, f, ensure_ascii=False, indent=2)
+
+# Вспомогательные функции для событий
+def save_event(event):
+    try:
+        # Загружаем существующих динамических событий
+        try:
+            with open('app/data/events.json', 'r', encoding='utf-8') as f:
+                events = json.load(f)
+        except FileNotFoundError:
+            events = []
+        
+        # Добавляем новое событие
+        events.append(event)
+        
+        # Сохраняем обратно
+        save_events(events)
+    except Exception as e:
+        print(f"Ошибка сохранения события: {e}")
+
+def save_events(events):
+    # Создаем папку если её нет
+    os.makedirs('app/data', exist_ok=True)
+    
+    with open('app/data/events.json', 'w', encoding='utf-8') as f:
+        json.dump(events, f, ensure_ascii=False, indent=2)
 
 # Функция для генерации JWT токена (для справки)
 def generate_admin_token():

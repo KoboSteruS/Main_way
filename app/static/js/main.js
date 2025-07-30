@@ -227,7 +227,8 @@ window.addEventListener('scroll', debounce(() => {
 }, 10)); 
 
 function initOfflineEventsCarouselV2() {
-    const slides = [
+    // Используем события из Flask или статические по умолчанию
+    const slides = window.eventsData && window.eventsData.length > 0 ? window.eventsData : [
         {
             title: 'Москва',
             desc: 'Столичный слёт. Город силы и встреч.',
@@ -251,6 +252,11 @@ function initOfflineEventsCarouselV2() {
     const desc = document.getElementById('offlineEventDesc');
     const prev = document.getElementById('offlinePrev');
     const next = document.getElementById('offlineNext');
+
+    if (!bg || !title || !desc || !prev || !next) {
+        console.error('Элементы карусели событий не найдены');
+        return;
+    }
 
     function showSlide(idx) {
         // Анимация исчезновения

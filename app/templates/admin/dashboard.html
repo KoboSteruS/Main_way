@@ -223,31 +223,48 @@
                 {% endif %}
             {% endwith %}
             
-            {% if participants %}
-                <div class="participants-grid">
-                    {% for participant in participants %}
-                        <div class="participant-card">
-                            <img src="{{ url_for('static', filename=participant.photo) }}" alt="{{ participant.name }}" class="participant-photo">
-                            <div class="participant-name">{{ participant.name }}</div>
-                            <div class="participant-text">{{ participant.text }}</div>
-                            <div class="participant-story">{{ participant.story[:200] }}{% if participant.story|length > 200 %}...{% endif %}</div>
-                            <div class="participant-actions">
-                                <a href="{{ url_for('main.delete_participant', token=token, participant_id=participant.id) }}" 
-                                   class="delete-btn" 
-                                   onclick="return confirm('Вы уверены, что хотите удалить этого участника?')">
-                                    Удалить
-                                </a>
-                            </div>
-                        </div>
-                    {% endfor %}
+            <h2>Участники</h2>
+            <a href="{{ url_for('main.add_participant', token=token) }}" class="admin-btn">Добавить участника</a>
+            
+            <div class="participants-list">
+                {% for participant in participants %}
+                <div class="participant-item">
+                    <div class="participant-info">
+                        <strong>{{ participant.name }}</strong>
+                        <p>{{ participant.text }}</p>
+                    </div>
+                    {% if not participant.id.startswith('static_') %}
+                    <a href="{{ url_for('main.delete_participant', token=token, participant_id=participant.id) }}" 
+                       class="admin-btn admin-btn-danger" 
+                       onclick="return confirm('Удалить участника?')">Удалить</a>
+                    {% else %}
+                    <span class="static-badge">Статичный</span>
+                    {% endif %}
                 </div>
-            {% else %}
-                <div class="empty-state">
-                    <h3>Участники не найдены</h3>
-                    <p>Добавьте первого участника, чтобы начать</p>
-                    <a href="{{ url_for('main.add_participant', token=token) }}" class="admin-btn">Добавить участника</a>
+                {% endfor %}
+            </div>
+            
+            <h2>События</h2>
+            <a href="{{ url_for('main.add_event', token=token) }}" class="admin-btn">Добавить событие</a>
+            
+            <div class="events-list">
+                {% for event in events %}
+                <div class="event-item">
+                    <div class="event-info">
+                        <strong>{{ event.title }}</strong>
+                        <p>{{ event.desc }}</p>
+                        <small>Изображение: {{ event.image }}</small>
+                    </div>
+                    {% if not event.id.startswith('static_event_') %}
+                    <a href="{{ url_for('main.delete_event', token=token, event_id=event.id) }}" 
+                       class="admin-btn admin-btn-danger" 
+                       onclick="return confirm('Удалить событие?')">Удалить</a>
+                    {% else %}
+                    <span class="static-badge">Статичное</span>
+                    {% endif %}
                 </div>
-            {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </main>
 </body>
