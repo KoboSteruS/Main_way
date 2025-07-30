@@ -374,14 +374,112 @@ body {
 }
 
 .who-we-are__cta {
-    display: block;
-    width: fit-content;
-    margin: 0 auto;
+    text-align: center;
+    margin-top: 40px;
 }
 
 .who-we-are__stories {
-    margin-top: 20px;
+    margin-top: 60px;
 }
+
+/* Стили для карусели участников */
+.portraits-carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    margin-bottom: 30px;
+}
+
+.portrait-slide {
+    display: none;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.portrait-slide.active {
+    display: block;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.portrait-slide:not(.active) {
+    display: none !important;
+}
+
+.portraits-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.portrait-nav {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portrait-nav:hover {
+    background: var(--color-accent-hover);
+    transform: scale(1.1);
+}
+
+.portrait-nav:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.portrait-dots {
+    display: flex;
+    gap: 10px;
+}
+
+.portrait-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.portrait-dot.active {
+    background: var(--color-accent);
+    transform: scale(1.2);
+}
+
+.portrait-dot:hover {
+    background: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+    .portraits-controls {
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .portrait-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .portrait-dot {
+        width: 10px;
+        height: 10px;
+    }
+} 
 
 /* ===== VALUES SECTION ===== */
 .values {
