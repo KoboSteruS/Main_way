@@ -253,9 +253,11 @@ body {
 
 /* ===== WHO WE ARE SECTION ===== */
 .who-we-are {
+    padding: var(--section-padding);
     position: relative;
-    padding: 120px 0;
-    background: var(--color-bg);
+    margin: 0;
+    min-height: 900px;
+    max-height: 1200px;
 }
 
 .who-we-are__bg {
@@ -268,6 +270,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     z-index: 1;
+    object-fit: cover;
 }
 
 .who-we-are__overlay {
@@ -276,7 +279,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%);
     z-index: 2;
 }
 
@@ -286,200 +289,119 @@ body {
 }
 
 .who-we-are__title,
-.who-we-are__subtitle {
-    font-size: var(--font-size-3xl);
-    font-weight: 700;
-    color: var(--color-primary);
+.who-we-are__portraits {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.who-we-are__title {
+    font-size: 48px;
+    font-weight: 800;
     text-align: center;
     margin-bottom: 60px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
+    color: #fff;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.5);
 }
 
-/* Сетка участников для десктопа */
-.who-we-are__grid {
+.who-we-are__portraits {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 40px;
-    margin-bottom: 0;
+    margin-bottom: 60px;
 }
 
-.portrait-card {
-    background: rgba(255, 255, 255, 0.05);
+.portrait {
+    position: relative;
     border-radius: 20px;
-    padding: 30px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(191, 164, 107, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
-}
-
-.portrait-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.portrait-card .portrait__placeholder {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
     overflow: hidden;
-    margin: 0 auto 20px;
-    border: 3px solid rgba(191, 164, 107, 0.3);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
 }
 
-.portrait-card .portrait__placeholder img {
+.portrait:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(191, 164, 107, 0.2);
+}
+
+.portrait__placeholder {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 20px 20px 0 0;
+    position: relative;
+}
+
+.portrait__placeholder img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: var(--transition);
     filter: grayscale(100%);
-    transition: filter 0.3s ease;
 }
 
-.portrait-card:hover .portrait__placeholder img {
+.portrait__placeholder img:hover{
     filter: grayscale(0%);
 }
 
-.portrait-card .portrait__quote {
-    color: #fff;
-    text-align: center;
+
+.portrait:hover .portrait__placeholder {
+    transform: scale(1.05);
 }
 
-.portrait-card .portrait__name {
+
+
+.portrait__quote {
+    position: relative;
+    background: var(--color-bg-secondary);
+    color: #fff;
+    padding: 30px 20px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+    border-radius: 0 0 20px 20px;
+    flex: 1;
+}
+
+.portrait:hover .portrait__quote {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.portrait__name {
     font-size: 18px;
     font-weight: 700;
-    color: #bfa46b;
     margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    color: var(--color-accent);
 }
 
-.portrait-card .portrait__text {
+.portrait__text {
     font-size: 16px;
-    font-style: italic;
-    color: #ccc;
+    font-weight: 600;
     margin-bottom: 15px;
-    line-height: 1.6;
+    font-style: italic;
+    color: #fff;
 }
 
-.portrait-card .portrait__story {
+.portrait__story {
     font-size: 14px;
     line-height: 1.6;
-    color: #999;
-}
-
-/* Карусель участников (скрыта на десктопе) */
-.who-we-are__carousel {
-    display: none; /* Скрываем карусель на десктопе */
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .who-we-are__cta {
-    text-align: center;
-    margin-top: 40px;
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
 }
 
 .who-we-are__stories {
-    margin-top: 60px;
+    margin-top: 20px;
 }
-
-/* Стили для карусели участников */
-.portraits-carousel {
-    position: relative;
-    overflow: hidden;
-    border-radius: 20px;
-    margin-bottom: 30px;
-}
-
-.portrait-slide {
-    display: none;
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-}
-
-.portrait-slide.active {
-    display: block;
-    opacity: 1 !important;
-    transform: none !important;
-}
-
-.portrait-slide:not(.active) {
-    display: none !important;
-}
-
-.portraits-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 30px;
-}
-
-.portrait-nav {
-    background: var(--color-accent);
-    color: var(--color-bg);
-    border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    font-size: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.portrait-nav:hover {
-    background: var(--color-accent-hover);
-    transform: scale(1.1);
-}
-
-.portrait-nav:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.portrait-dots {
-    display: flex;
-    gap: 10px;
-}
-
-.portrait-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.portrait-dot.active {
-    background: var(--color-accent);
-    transform: scale(1.2);
-}
-
-.portrait-dot:hover {
-    background: var(--color-accent);
-}
-
-@media (max-width: 768px) {
-    .portraits-controls {
-        gap: 15px;
-        margin-top: 20px;
-    }
-    
-    .portrait-nav {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-    }
-    
-    .portrait-dot {
-        width: 10px;
-        height: 10px;
-    }
-} 
 
 /* ===== VALUES SECTION ===== */
 .values {
@@ -2343,6 +2265,8 @@ body {
 
 /* ===== КАРУСЕЛЬ УЧАСТНИКОВ ===== */
 .who-we-are__carousel {
+    min-height: 650px;
+    max-height: 650px;
     position: relative;
     max-width: 800px;
     margin: 0 auto;
@@ -2542,14 +2466,17 @@ body {
 /* Мобильные стили */
 @media (max-width: 768px) {
     .organizers-grid {
-        display: none; /* Скрываем сетку на мобильных */
+        display: none;
     }
     
     .organizers-carousel-mobile {
-        display: block; /* Показываем карусель на мобильных */
+        display: block;
+        position: relative;
+        max-width: 400px;
+        margin: 0 auto;
     }
     
-    .organizers-carousel-mobile .organizer-slide {
+    .organizer-slide {
         display: none;
         opacity: 1 !important;
         transform: none !important;
@@ -2560,13 +2487,13 @@ body {
         backdrop-filter: blur(10px);
     }
     
-    .organizers-carousel-mobile .organizer-slide.active {
+    .organizer-slide.active {
         display: block;
         opacity: 1 !important;
         transform: none !important;
     }
     
-    .organizers-carousel-mobile .organizer-slide:not(.active) {
+    .organizer-slide:not(.active) {
         display: none !important;
     }
     
@@ -3182,119 +3109,5 @@ body {
         max-width: 300px;
     }
 } 
-
-@media (max-width: 768px) {
-    .who-we-are__grid {
-        display: none; /* Скрываем сетку на мобильных */
-    }
-    
-    .who-we-are__carousel {
-        display: block; /* Показываем карусель на мобильных */
-    }
-    
-    .who-we-are__title {
-        font-size: var(--font-size-2xl);
-        margin-bottom: 40px;
-        letter-spacing: 2px;
-    }
-    
-    .portrait {
-        position: relative;
-        border-radius: 20px;
-        overflow: hidden;
-        transition: var(--transition);
-        display: flex;
-        flex-direction: column;
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(191, 164, 107, 0.2);
-    }
-    
-    .portrait:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(191, 164, 107, 0.2);
-    }
-    
-    .portrait__placeholder {
-        width: 100%;
-        height: 300px;
-        overflow: hidden;
-        border-radius: 20px 20px 0 0;
-        position: relative;
-    }
-    
-    .portrait__placeholder img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: var(--transition);
-        filter: grayscale(100%);
-    }
-    
-    .portrait__placeholder img:hover{
-        filter: grayscale(0%);
-    }
-    
-    .portrait:hover .portrait__placeholder {
-        transform: scale(1.05);
-    }
-    
-    .portrait__quote {
-        position: relative;
-        background: var(--color-bg-secondary);
-        color: #fff;
-        padding: 30px 20px 20px;
-        font-size: 16px;
-        font-weight: 500;
-        text-align: left;
-        opacity: 1;
-        transform: translateY(0);
-        transition: all 0.3s ease;
-        border-radius: 0 0 20px 20px;
-        flex: 1;
-    }
-    
-    .portrait:hover .portrait__quote {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    
-    .portrait__name {
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 10px;
-        color: var(--color-accent);
-    }
-    
-    .portrait__text {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 15px;
-        font-style: italic;
-        color: #fff;
-    }
-    
-    .portrait__story {
-        font-size: 14px;
-        line-height: 1.6;
-        color: rgba(255, 255, 255, 0.9);
-    }
-    
-    .portraits-controls {
-        gap: 15px;
-        margin-top: 20px;
-    }
-    
-    .portrait-nav {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-    }
-    
-    .portrait-dot {
-        width: 10px;
-        height: 10px;
-    }
-}
 
  

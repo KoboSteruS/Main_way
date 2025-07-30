@@ -32,23 +32,6 @@
     <div class="container who-we-are__container">
         <h2 class="who-we-are__title">Кто мы</h2>
         
-        <!-- Сетка участников для десктопа -->
-        <div class="who-we-are__grid">
-            {% for participant in participants_data %}
-            <div class="portrait-card">
-                <div class="portrait__placeholder">
-                    <img src="{{ url_for('static', filename=participant.photo) }}" alt="{{ participant.name }}">
-                </div>
-                <div class="portrait__quote">
-                    <div class="portrait__name">{{ participant.name }}</div>
-                    <div class="portrait__text">{{ participant.text }}</div>
-                    <div class="portrait__story">{{ participant.story | replace('\n', '<br>') | safe }}</div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        
-        <!-- Карусель участников для мобильных -->
         <div class="who-we-are__carousel">
             <div class="portraits-carousel">
                 {% for participant in participants_data %}
