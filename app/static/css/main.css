@@ -1102,6 +1102,19 @@ body {
     }
 }
 
+/* Убеждаемся, что навигация видна на больших экранах */
+@media (min-width: 901px) {
+    .header__nav {
+        display: flex;
+    }
+    .header__cta-btn {
+        display: inline-block;
+    }
+    .header__burger {
+        display: none;
+    }
+}
+
 .sidebar {
     position: fixed;
     top: 0;
