@@ -197,6 +197,77 @@
             font-size: 16px;
             margin-bottom: 30px;
         }
+        
+        /* Стили для списков */
+        .participants-list, .events-list {
+            margin-top: 20px;
+        }
+        
+        .participant-item, .event-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(191, 164, 107, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .participant-item:hover, .event-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .participant-info, .event-info {
+            flex: 1;
+        }
+        
+        .participant-info strong, .event-info strong {
+            color: #bfa46b;
+            font-size: 16px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .participant-info p, .event-info p {
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .event-info small {
+            color: #999;
+            font-size: 12px;
+        }
+        
+        .admin-btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%) !important;
+            color: white !important;
+        }
+        
+        .admin-btn-danger:hover {
+            background: linear-gradient(135deg, #ff5252 0%, #ff7676 100%) !important;
+        }
+        
+        .static-badge {
+            background: rgba(191, 164, 107, 0.2);
+            color: #bfa46b;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        h2 {
+            color: #bfa46b;
+            font-size: 24px;
+            margin: 30px 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
