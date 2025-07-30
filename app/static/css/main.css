@@ -2779,20 +2779,35 @@ body {
     
     .programs-carousel-mobile {
         display: block; /* Показываем мобильную карусель */
-        min-height: 500px; /* Фиксированная высота для мобильной версии */
+        height: 700px; /* Фиксированная высота контейнера */
+        position: relative;
+        overflow: hidden;
     }
     
     .programs-carousel {
-        min-height: 500px; /* Фиксированная высота для мобильной версии */
+        height: 100%; /* Занимает всю высоту родителя */
+        min-height: 700px; /* Фиксированная высота для мобильной версии */
+        position: relative;
     }
     
     .program-slide {
-        min-height: 500px; /* Фиксированная высота для мобильной версии */
+        height: 100%; /* Занимает всю высоту родителя */
+        min-height: 700px; /* Фиксированная высота для мобильной версии */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        box-sizing: border-box;
     }
     
     .programs-controls {
         gap: 15px;
         margin-top: 20px;
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
     }
     
     .program-nav {
@@ -2808,25 +2823,45 @@ body {
     
     /* Уменьшаем отступы для мобильной версии */
     .program-card {
-        padding: 30px 20px;
+        padding: 20px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
     
     .program-title {
         font-size: var(--font-size-lg);
+        margin-bottom: 15px;
     }
     
     .program-description {
         font-size: 14px;
+        margin-bottom: 20px;
+        flex-grow: 1;
+    }
+    
+    .program-features {
+        margin-bottom: 20px;
     }
     
     .feature {
         font-size: 12px;
         padding: 6px 12px;
         min-height: 35px; /* Фиксированная высота для плашек */
+        margin-bottom: 8px;
+    }
+    
+    .program-highlight {
+        margin-bottom: 20px;
     }
     
     .program-highlight strong {
         font-size: 12px;
+    }
+    
+    .program-btn {
+        margin-top: auto; /* Прижимает кнопку к низу */
     }
 } 
 
