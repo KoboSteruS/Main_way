@@ -2790,23 +2790,21 @@ body {
     
     .programs-carousel-mobile {
         display: block; /* Показываем мобильную карусель */
-        height: 800px; /* Увеличиваем высоту контейнера */
+        height: auto; /* Автоматическая высота */
         position: relative;
-        overflow: hidden;
+        padding-bottom: 80px; /* Место для навигации */
     }
     
     .programs-carousel {
-        height: 100%; /* Занимает всю высоту родителя */
-        min-height: 800px; /* Увеличиваем минимальную высоту */
+        height: auto; /* Автоматическая высота */
         position: relative;
     }
     
     .program-slide {
-        height: 100%; /* Занимает всю высоту родителя */
-        min-height: 800px; /* Увеличиваем минимальную высоту */
+        height: auto; /* Автоматическая высота */
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Центрируем контент по вертикали */
+        justify-content: flex-start; /* Выравниваем по верху */
         align-items: center; /* Центрируем по горизонтали */
         padding: 20px;
         box-sizing: border-box;
@@ -2814,12 +2812,16 @@ body {
     
     .programs-controls {
         gap: 15px;
-        margin-top: 20px;
+        margin-top: 30px;
         position: absolute;
-        bottom: 20px;
+        bottom: 0;
         left: 50%;
         transform: translateX(-50%);
         z-index: 10;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 15px 20px;
+        border-radius: 25px;
+        backdrop-filter: blur(10px);
     }
     
     .program-nav {
@@ -2836,10 +2838,10 @@ body {
     /* Уменьшаем отступы для мобильной версии */
     .program-card {
         padding: 20px;
-        height: 100%;
+        height: auto; /* Автоматическая высота */
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Центрируем контент */
+        justify-content: flex-start; /* Выравниваем по верху */
         align-items: center; /* Центрируем по горизонтали */
         text-align: center; /* Центрируем текст */
         max-width: 100%;
