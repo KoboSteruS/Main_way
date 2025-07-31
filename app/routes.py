@@ -49,21 +49,21 @@ STATIC_PARTICIPANTS = [
         'name': 'Алексей',
         'text': 'Бывший военный',
         'story': 'История человека 1: Я был военным 15 лет. Домой вернулся другим человеком. Не мог найти себя в мирной жизни. В ОСНОВЕ ПУТИ я встретил тех, кто понимает. Кто не бросает. Кто держит. Сейчас я не один. Я иду свой путь — и знаю, ради чего встал.',
-        'photo': '/static/img/character/character_1.png'
+        'photo': 'img/character/character_1.png'
     },
     {
         'id': 'static_participant_2', 
         'name': 'Мария',
         'text': 'Бывшая топ-менеджер',
         'story': 'История человека 2: Я была топ-менеджером в крупной компании. Деньги, статус, но пустота внутри. В 35 поняла — я не живу, а существую. В ОСНОВЕ ПУТИ я встретила тех, кто показал: настоящая сила — в честности с собой. Сейчас я не одна. Я иду свой путь — и знаю, ради чего встала.',
-        'photo': '/static/img/character/character_2.png'
+        'photo': 'img/character/character_2.png'
     },
     {
         'id': 'static_participant_3',
         'name': 'Дмитрий', 
         'text': 'Бывший зависимый',
         'story': 'История человека 3: С 20 до 40 я жил во тьме: наркотики, тюрьмы, пустота. Каждый раз, когда пытался выбраться — падал снова. В какой-то момент я понял: если я ещё жив — значит, меня не просто так оставили. В ОСНОВЕ ПУТИ я встретил тех, кто тоже падал, но не сломался. Здесь не судят, не жалеют, а держат. Сейчас я не один. Я иду свой путь — и знаю, ради чего встал.',
-        'photo': '/static/img/character/character_3.png'
+        'photo': 'img/character/character_3.png'
     }
 ]
 
@@ -72,19 +72,19 @@ STATIC_EVENTS = [
         'id': 'static_event_1',
         'title': 'Москва',
         'desc': 'Столичный слёт. Город силы и встреч.',
-        'image': '/static/img/Moscow.png'
+        'image': 'img/Moscow.png'
     },
     {
         'id': 'static_event_2',
         'title': 'Грузия: женская линия',
         'desc': 'Уникальный женский круг. Горы, ритуалы, поддержка.',
-        'image': '/static/img/Georgia.png'
+        'image': 'img/Georgia.png'
     },
     {
         'id': 'static_event_3',
         'title': 'Латвия 2025',
         'desc': 'Сбор в лесу. Единение с природой и собой.',
-        'image': '/static/img/Latvia.png'
+        'image': 'img/Latvia.png'
     }
 ]
 
@@ -93,19 +93,19 @@ STATIC_ORGANIZERS = [
         'id': 'static_organizer_1',
         'name': 'Координатор',
         'role': 'Координатор',
-        'photo': '/static/img/Coordinat.png'
+        'photo': 'img/Coordinat.png'
     },
     {
         'id': 'static_organizer_2',
         'name': 'Глава организации',
         'role': 'Глава организации', 
-        'photo': '/static/img/Glava.png'
+        'photo': 'img/Glava.png'
     },
     {
         'id': 'static_organizer_3',
         'name': 'Проводница',
         'role': 'Проводница',
-        'photo': '/static/img/Provodnik.png'
+        'photo': 'img/Provodnik.png'
     }
 ]
 
