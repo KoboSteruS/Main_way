@@ -634,6 +634,74 @@ def edit_event(token, event_id):
     
     return render_template('admin/edit_event.html', event=event, token=token)
 
+# Маршрут для редактирования организатора
+@main_bp.route('/<token>/admin/edit-organizer/<organizer_id>', methods=['GET', 'POST'])
+@admin_required
+def edit_organizer(token, organizer_id):
+    organizers = load_organizers()
+    organizer = next((o for o in organizers if o['id'] == organizer_id), None)
+    
+    if not organizer:
+        flash('Организатор не найден', 'error')
+        return redirect(url_for('main.admin_dashboard', token=token))
+    
+    if request.method == 'POST':
+        name = request.form.get('name')
+        role = request.form.get('role')
+        
+        # Обработка загруженного файла
+        new_photo = organizer.get('photo')
+        if 'photo' in request.files:
+            file = request.files['photo']
+            if file and file.filename:
+                # Генерируем уникальное имя файла
+                filename = secure_filename(file.filename)
+                file_extension = filename.rsplit('.', 1)[1].lower()
+                new_filename = f"organizer_{uuid.uuid4().hex[:8]}.{file_extension}"
+                
+                # Сохраняем файл
+                upload_folder = 'app/static/img'
+                if not os.path.exists(upload_folder):
+                    os.makedirs(upload_folder)
+                
+                file_path = os.path.join(upload_folder, new_filename)
+                file.save(file_path)
+                new_photo = f'img/{new_filename}'
+        
+        # Обновляем данные организатора
+        organizer['name'] = name
+        organizer['role'] = role
+        organizer['photo'] = new_photo
+        
+        # Сохраняем изменения
+        if organizer_id.startswith('static_'):
+            # Для статичных организаторов обновляем константу
+            for i, static_o in enumerate(STATIC_ORGANIZERS):
+                if static_o['id'] == organizer_id:
+                    STATIC_ORGANIZERS[i] = organizer
+                    break
+            flash('Статичный организатор успешно обновлен!', 'success')
+        else:
+            # Для динамических организаторов обновляем JSON
+            try:
+                with open('app/data/organizers.json', 'r', encoding='utf-8') as f:
+                    dynamic_organizers = json.load(f)
+                
+                for i, dyn_o in enumerate(dynamic_organizers):
+                    if dyn_o['id'] == organizer_id:
+                        dynamic_organizers[i] = organizer
+                        break
+                
+                with open('app/data/organizers.json', 'w', encoding='utf-8') as f:
+                    json.dump(dynamic_organizers, f, ensure_ascii=False, indent=2)
+                flash('Организатор успешно обновлен!', 'success')
+            except Exception as e:
+                flash(f'Ошибка обновления: {e}', 'error')
+        
+        return redirect(url_for('main.admin_dashboard', token=token))
+    
+    return render_template('admin/edit_organizer.html', organizer=organizer, token=token)
+
 # Маршрут для удаления организатора
 @main_bp.route('/<token>/admin/delete-organizer/<organizer_id>')
 @admin_required

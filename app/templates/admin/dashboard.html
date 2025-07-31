@@ -318,13 +318,19 @@
                         {% endif %}
                     </div>
                     <div class="card-text">{{ organizer.role }}</div>
-                    {% if not organizer.id.startswith('static_') %}
-                        <a href="{{ url_for('main.delete_organizer_route', token=token, organizer_id=organizer.id) }}" 
-                           class="admin-btn danger" 
-                           onclick="return confirm('Удалить организатора?')">
-                            🗑️ Удалить
+                    <div class="card-actions">
+                        <a href="{{ url_for('main.edit_organizer', token=token, organizer_id=organizer.id) }}" 
+                           class="admin-btn secondary">
+                            ✏️ Редактировать
                         </a>
-                    {% endif %}
+                        {% if not organizer.id.startswith('static_') %}
+                            <a href="{{ url_for('main.delete_organizer_route', token=token, organizer_id=organizer.id) }}" 
+                               class="admin-btn danger" 
+                               onclick="return confirm('Удалить организатора?')">
+                                🗑️ Удалить
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
                 {% endfor %}
             </div>
