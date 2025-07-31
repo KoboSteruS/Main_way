@@ -178,6 +178,21 @@
             font-size: 12px;
             margin-left: 10px;
         }
+        
+        .card-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .card-actions .admin-btn {
+            font-size: 14px;
+            padding: 8px 15px;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -227,13 +242,19 @@
                         {% endif %}
                     </div>
                     <div class="card-text">{{ participant.text }}</div>
-                    {% if not participant.id.startswith('static_') %}
-                        <a href="{{ url_for('main.delete_participant', token=token, participant_id=participant.id) }}" 
-                           class="admin-btn danger" 
-                           onclick="return confirm('Удалить участника?')">
-                            🗑️ Удалить
+                    <div class="card-actions">
+                        <a href="{{ url_for('main.edit_participant', token=token, participant_id=participant.id) }}" 
+                           class="admin-btn secondary">
+                            ✏️ Редактировать
                         </a>
-                    {% endif %}
+                        {% if not participant.id.startswith('static_') %}
+                            <a href="{{ url_for('main.delete_participant', token=token, participant_id=participant.id) }}" 
+                               class="admin-btn danger" 
+                               onclick="return confirm('Удалить участника?')">
+                                🗑️ Удалить
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -259,13 +280,19 @@
                         {% endif %}
                     </div>
                     <div class="card-text">{{ event.desc }}</div>
-                    {% if not event.id.startswith('static_') %}
-                        <a href="{{ url_for('main.delete_event', token=token, event_id=event.id) }}" 
-                           class="admin-btn danger" 
-                           onclick="return confirm('Удалить событие?')">
-                            🗑️ Удалить
+                    <div class="card-actions">
+                        <a href="{{ url_for('main.edit_event', token=token, event_id=event.id) }}" 
+                           class="admin-btn secondary">
+                            ✏️ Редактировать
                         </a>
-                    {% endif %}
+                        {% if not event.id.startswith('static_') %}
+                            <a href="{{ url_for('main.delete_event', token=token, event_id=event.id) }}" 
+                               class="admin-btn danger" 
+                               onclick="return confirm('Удалить событие?')">
+                                🗑️ Удалить
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
                 {% endfor %}
             </div>

@@ -498,6 +498,142 @@ def add_organizer(token):
     
     return render_template('admin/add_organizer.html', token=token)
 
+# Маршрут для редактирования участника
+@main_bp.route('/<token>/admin/edit-participant/<participant_id>', methods=['GET', 'POST'])
+@admin_required
+def edit_participant(token, participant_id):
+    participants = load_participants()
+    participant = next((p for p in participants if p['id'] == participant_id), None)
+    
+    if not participant:
+        flash('Участник не найден', 'error')
+        return redirect(url_for('main.admin_dashboard', token=token))
+    
+    if request.method == 'POST':
+        name = request.form.get('name')
+        text = request.form.get('text')
+        story = request.form.get('story')
+        
+        # Обработка загруженного файла
+        new_photo = participant.get('photo')
+        if 'photo' in request.files:
+            file = request.files['photo']
+            if file and file.filename:
+                # Генерируем уникальное имя файла
+                filename = secure_filename(file.filename)
+                file_extension = filename.rsplit('.', 1)[1].lower()
+                new_filename = f"character_{uuid.uuid4().hex[:8]}.{file_extension}"
+                
+                # Сохраняем файл
+                upload_folder = 'app/static/img/character'
+                if not os.path.exists(upload_folder):
+                    os.makedirs(upload_folder)
+                
+                file_path = os.path.join(upload_folder, new_filename)
+                file.save(file_path)
+                new_photo = f'img/character/{new_filename}'
+        
+        # Обновляем данные участника
+        participant['name'] = name
+        participant['text'] = text
+        participant['story'] = story
+        participant['photo'] = new_photo
+        
+        # Сохраняем изменения
+        if participant_id.startswith('static_'):
+            # Для статичных участников обновляем константу
+            for i, static_p in enumerate(STATIC_PARTICIPANTS):
+                if static_p['id'] == participant_id:
+                    STATIC_PARTICIPANTS[i] = participant
+                    break
+            flash('Статичный участник успешно обновлен!', 'success')
+        else:
+            # Для динамических участников обновляем JSON
+            try:
+                with open('app/data/participants.json', 'r', encoding='utf-8') as f:
+                    dynamic_participants = json.load(f)
+                
+                for i, dyn_p in enumerate(dynamic_participants):
+                    if dyn_p['id'] == participant_id:
+                        dynamic_participants[i] = participant
+                        break
+                
+                save_participants(dynamic_participants)
+                flash('Участник успешно обновлен!', 'success')
+            except Exception as e:
+                flash(f'Ошибка обновления: {e}', 'error')
+        
+        return redirect(url_for('main.admin_dashboard', token=token))
+    
+    return render_template('admin/edit_participant.html', participant=participant, token=token)
+
+# Маршрут для редактирования события
+@main_bp.route('/<token>/admin/edit-event/<event_id>', methods=['GET', 'POST'])
+@admin_required
+def edit_event(token, event_id):
+    events = load_events()
+    event = next((e for e in events if e['id'] == event_id), None)
+    
+    if not event:
+        flash('Событие не найдено', 'error')
+        return redirect(url_for('main.admin_dashboard', token=token))
+    
+    if request.method == 'POST':
+        title = request.form.get('title')
+        desc = request.form.get('desc')
+        
+        # Обработка загруженного файла
+        new_image = event.get('image')
+        if 'image' in request.files:
+            file = request.files['image']
+            if file and file.filename:
+                # Генерируем уникальное имя файла
+                filename = secure_filename(file.filename)
+                file_extension = filename.rsplit('.', 1)[1].lower()
+                new_filename = f"event_{uuid.uuid4().hex[:8]}.{file_extension}"
+                
+                # Сохраняем файл
+                upload_folder = 'app/static/img'
+                if not os.path.exists(upload_folder):
+                    os.makedirs(upload_folder)
+                
+                file_path = os.path.join(upload_folder, new_filename)
+                file.save(file_path)
+                new_image = f'img/{new_filename}'
+        
+        # Обновляем данные события
+        event['title'] = title
+        event['desc'] = desc
+        event['image'] = new_image
+        
+        # Сохраняем изменения
+        if event_id.startswith('static_event_'):
+            # Для статичных событий обновляем константу
+            for i, static_e in enumerate(STATIC_EVENTS):
+                if static_e['id'] == event_id:
+                    STATIC_EVENTS[i] = event
+                    break
+            flash('Статичное событие успешно обновлено!', 'success')
+        else:
+            # Для динамических событий обновляем JSON
+            try:
+                with open('app/data/events.json', 'r', encoding='utf-8') as f:
+                    dynamic_events = json.load(f)
+                
+                for i, dyn_e in enumerate(dynamic_events):
+                    if dyn_e['id'] == event_id:
+                        dynamic_events[i] = event
+                        break
+                
+                save_events(dynamic_events)
+                flash('Событие успешно обновлено!', 'success')
+            except Exception as e:
+                flash(f'Ошибка обновления: {e}', 'error')
+        
+        return redirect(url_for('main.admin_dashboard', token=token))
+    
+    return render_template('admin/edit_event.html', event=event, token=token)
+
 # Маршрут для удаления организатора
 @main_bp.route('/<token>/admin/delete-organizer/<organizer_id>')
 @admin_required
