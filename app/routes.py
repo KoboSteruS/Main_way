@@ -42,32 +42,31 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# Статичные участники (базовые)
+# Константы для статических данных
 STATIC_PARTICIPANTS = [
     {
-        'id': 'static_1',
-        'name': '👨‍🦰 Массажист из Швейцарии',
-        'text': '«Я касался сотен тел, но не чувствовал своего»',
-        'story': 'Работаю руками, держу, снимаю боль. Все думают, что я уравновешенный и спокойный. А внутри — пустота и выгорание.\n\nПуть стал первым пространством, где кто-то увидел меня, не как профи, а как мужчину. Где не надо было доказывать.\n\nСейчас я чувствую своё тело. И даю не из долга, а из наполненности.',
-        'photo': 'img/character/character_1.png'
+        'id': 'static_participant_1',
+        'name': 'Алексей',
+        'text': 'Бывший военный',
+        'story': 'История человека 1: Я был военным 15 лет. Домой вернулся другим человеком. Не мог найти себя в мирной жизни. В ОСНОВЕ ПУТИ я встретил тех, кто понимает. Кто не бросает. Кто держит. Сейчас я не один. Я иду свой путь — и знаю, ради чего встал.',
+        'photo': '/static/img/character/character_1.png'
     },
     {
-        'id': 'static_2',
-        'name': '👩‍🦳 Женщина из другой страны',
-        'text': '«Я дома. Среди тех, кто чувствует как я»',
-        'story': 'Я жила в другой стране и думала, что со мной что‑то не так. Вокруг были люди, но я не могла найти своих.\n\nНа Пути я встретила женщин, которые слышат без слов. Без конкуренции. Без игр. Только глубина и поддержка.\n\nСейчас у меня подруги по всему миру. Мы на одной частоте.',
-        'photo': 'img/character/character_2.png'
+        'id': 'static_participant_2', 
+        'name': 'Мария',
+        'text': 'Бывшая топ-менеджер',
+        'story': 'История человека 2: Я была топ-менеджером в крупной компании. Деньги, статус, но пустота внутри. В 35 поняла — я не живу, а существую. В ОСНОВЕ ПУТИ я встретила тех, кто показал: настоящая сила — в честности с собой. Сейчас я не одна. Я иду свой путь — и знаю, ради чего встала.',
+        'photo': '/static/img/character/character_2.png'
     },
     {
-        'id': 'static_3',
-        'name': '👨‍🦱 Человек, который выбрался из тьмы',
-        'text': '«Если я ещё жив — значит, меня не просто так оставили»',
-        'story': 'С 20 до 40 я жил во тьме: наркотики, тюрьмы, пустота. Каждый раз, когда пытался выбраться — падал снова. В какой-то момент я понял: если я ещё жив — значит, меня не просто так оставили.\n\nВ ОСНОВЕ ПУТИ я встретил тех, кто тоже падал, но не сломался. Здесь не судят, не жалеют, а держат. Сейчас я не один. Я иду свой путь — и знаю, ради чего встал.',
-        'photo': 'img/character/character_3.png'
+        'id': 'static_participant_3',
+        'name': 'Дмитрий', 
+        'text': 'Бывший зависимый',
+        'story': 'История человека 3: С 20 до 40 я жил во тьме: наркотики, тюрьмы, пустота. Каждый раз, когда пытался выбраться — падал снова. В какой-то момент я понял: если я ещё жив — значит, меня не просто так оставили. В ОСНОВЕ ПУТИ я встретил тех, кто тоже падал, но не сломался. Здесь не судят, не жалеют, а держат. Сейчас я не один. Я иду свой путь — и знаю, ради чего встал.',
+        'photo': '/static/img/character/character_3.png'
     }
 ]
 
-# Статичные события (базовые)
 STATIC_EVENTS = [
     {
         'id': 'static_event_1',
@@ -86,6 +85,27 @@ STATIC_EVENTS = [
         'title': 'Латвия 2025',
         'desc': 'Сбор в лесу. Единение с природой и собой.',
         'image': '/static/img/Latvia.png'
+    }
+]
+
+STATIC_ORGANIZERS = [
+    {
+        'id': 'static_organizer_1',
+        'name': 'Координатор',
+        'role': 'Координатор',
+        'photo': '/static/img/Coordinat.png'
+    },
+    {
+        'id': 'static_organizer_2',
+        'name': 'Глава организации',
+        'role': 'Глава организации', 
+        'photo': '/static/img/Glava.png'
+    },
+    {
+        'id': 'static_organizer_3',
+        'name': 'Проводница',
+        'role': 'Проводница',
+        'photo': '/static/img/Provodnik.png'
     }
 ]
 
@@ -119,22 +139,82 @@ def load_events():
         print(f"Ошибка загрузки событий: {e}")
         return STATIC_EVENTS
 
+# Функции для работы с Telegram ссылкой
+def load_telegram_link():
+    """Загружает ссылку на Telegram из файла"""
+    try:
+        with open('app/data/telegram_link.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            return data.get('link', 'https://t.me/VScukerman')
+    except (FileNotFoundError, json.JSONDecodeError):
+        return 'https://t.me/VScukerman'
+
+def save_telegram_link(link):
+    """Сохраняет ссылку на Telegram в файл"""
+    os.makedirs('app/data', exist_ok=True)
+    with open('app/data/telegram_link.json', 'w', encoding='utf-8') as f:
+        json.dump({'link': link}, f, ensure_ascii=False, indent=2)
+
+# Функции для работы с организаторами
+def load_organizers():
+    """Загружает организаторов из файла"""
+    try:
+        with open('app/data/organizers.json', 'r', encoding='utf-8') as f:
+            dynamic_organizers = json.load(f)
+            return STATIC_ORGANIZERS + dynamic_organizers
+    except (FileNotFoundError, json.JSONDecodeError):
+        return STATIC_ORGANIZERS
+
+def save_organizer(organizer_data):
+    """Сохраняет нового организатора"""
+    os.makedirs('app/data', exist_ok=True)
+    try:
+        with open('app/data/organizers.json', 'r', encoding='utf-8') as f:
+            organizers = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        organizers = []
+    
+    # Добавляем ID для нового организатора
+    organizer_data['id'] = f'organizer_{uuid.uuid4().hex[:8]}'
+    organizers.append(organizer_data)
+    
+    with open('app/data/organizers.json', 'w', encoding='utf-8') as f:
+        json.dump(organizers, f, ensure_ascii=False, indent=2)
+
+def delete_organizer(organizer_id):
+    """Удаляет организатора (только динамических)"""
+    try:
+        with open('app/data/organizers.json', 'r', encoding='utf-8') as f:
+            organizers = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return False
+    
+    # Удаляем только динамических организаторов
+    organizers = [org for org in organizers if org.get('id') != organizer_id]
+    
+    with open('app/data/organizers.json', 'w', encoding='utf-8') as f:
+        json.dump(organizers, f, ensure_ascii=False, indent=2)
+    
+    return True
+
 @main_bp.route('/')
 @main_bp.route('/<version>')
 def index(version=None):
     # Принудительно обновляем кэш, добавляя timestamp
     timestamp = int(time.time())
     
-    # Загружаем участников из JSON
+    # Загружаем данные
     participants = load_participants()
-    
-    # Загружаем события из JSON
     events = load_events()
+    organizers = load_organizers()
+    telegram_link = load_telegram_link()
     
     response = make_response(render_template('index.html', 
                                           version=version or f'1.1.{timestamp}',
                                           participants=participants,
-                                          events=events))
+                                          events=events,
+                                          organizers=organizers,
+                                          telegram_link=telegram_link))
     
     # Добавляем заголовки для отключения кэширования
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
@@ -148,13 +228,18 @@ def index(version=None):
 @main_bp.route('/<token>/admin')
 @admin_required
 def admin_dashboard(token):
-    # Загружаем существующих участников
+    # Загружаем данные
     participants = load_participants()
-    
-    # Загружаем существующих событий
     events = load_events()
+    organizers = load_organizers()
+    telegram_link = load_telegram_link()
     
-    return render_template('admin/dashboard.html', participants=participants, events=events, token=token)
+    return render_template('admin/dashboard.html', 
+                         participants=participants, 
+                         events=events, 
+                         organizers=organizers,
+                         telegram_link=telegram_link,
+                         token=token)
 
 # Маршрут для добавления нового участника
 @main_bp.route('/<token>/admin/add-participant', methods=['GET', 'POST'])
@@ -355,4 +440,87 @@ def generate_admin_token():
         'iat': datetime.utcnow(),
         'exp': datetime.utcnow() + timedelta(hours=24)
     }
-    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM) 
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+# Маршрут для управления ссылкой на Telegram
+@main_bp.route('/<token>/admin/telegram-link', methods=['GET', 'POST'])
+@admin_required
+def manage_telegram_link(token):
+    if request.method == 'POST':
+        new_link = request.form.get('telegram_link', '').strip()
+        if new_link:
+            save_telegram_link(new_link)
+            flash('Ссылка на Telegram успешно обновлена!', 'success')
+        else:
+            flash('Ссылка не может быть пустой', 'error')
+        return redirect(url_for('main.admin_dashboard', token=token))
+    
+    telegram_link = load_telegram_link()
+    return render_template('admin/telegram_link.html', telegram_link=telegram_link, token=token)
+
+# Маршрут для добавления нового организатора
+@main_bp.route('/<token>/admin/add-organizer', methods=['GET', 'POST'])
+@admin_required
+def add_organizer(token):
+    if request.method == 'POST':
+        name = request.form.get('name')
+        role = request.form.get('role')
+        
+        # Обработка загруженного файла
+        if 'photo' in request.files:
+            file = request.files['photo']
+            if file and file.filename:
+                # Генерируем уникальное имя файла
+                filename = secure_filename(file.filename)
+                file_extension = filename.rsplit('.', 1)[1].lower()
+                new_filename = f"organizer_{uuid.uuid4().hex[:8]}.{file_extension}"
+                
+                # Сохраняем файл
+                upload_folder = 'app/static/img'
+                if not os.path.exists(upload_folder):
+                    os.makedirs(upload_folder)
+                
+                file_path = os.path.join(upload_folder, new_filename)
+                file.save(file_path)
+                
+                # Создаем нового организатора
+                new_organizer = {
+                    'name': name,
+                    'role': role,
+                    'photo': f'img/{new_filename}'
+                }
+                
+                # Сохраняем в JSON файл
+                save_organizer(new_organizer)
+                
+                flash('Организатор успешно добавлен!', 'success')
+                return redirect(url_for('main.admin_dashboard', token=token))
+    
+    return render_template('admin/add_organizer.html', token=token)
+
+# Маршрут для удаления организатора
+@main_bp.route('/<token>/admin/delete-organizer/<organizer_id>')
+@admin_required
+def delete_organizer_route(token, organizer_id):
+    organizers = load_organizers()
+    organizer = next((o for o in organizers if o['id'] == organizer_id), None)
+    
+    if organizer:
+        # Удаляем файл фото (только для динамических организаторов)
+        if not organizer_id.startswith('static_') and organizer.get('photo'):
+            photo_path = os.path.join('app/static', organizer['photo'])
+            if os.path.exists(photo_path):
+                os.remove(photo_path)
+        
+        # Удаляем из JSON (только динамических организаторов)
+        if not organizer_id.startswith('static_'):
+            if delete_organizer(organizer_id):
+                flash('Организатор успешно удален!', 'success')
+            else:
+                flash('Ошибка при удалении организатора', 'error')
+        else:
+            flash('Статических организаторов нельзя удалить', 'error')
+    else:
+        flash('Организатор не найден', 'error')
+    
+    return redirect(url_for('main.admin_dashboard', token=token)) 

@@ -6,71 +6,32 @@
         </div>
         
         <div class="organizers-grid">
-            <!-- Глава организации -->
+            {% for organizer in organizers %}
             <div class="organizer-card">
                 <div class="organizer-photo">
-                    <img src="{{ url_for('static', filename='img/Glava.png') }}" alt="Глава организации">
+                    <img src="{{ url_for('static', filename=organizer.photo) }}" alt="{{ organizer.name }}">
                 </div>
                 <div class="organizer-info">
-                    <h3>ГЛАВА ОРГАНИЗАЦИИ</h3>
-                    <p>Основатель и руководитель проекта "ОСНОВА ПУТИ"</p>
+                    <h3>{{ organizer.name|upper }}</h3>
+                    <p>{{ organizer.role }}</p>
                 </div>
             </div>
-            
-            <!-- Координатор -->
-            <div class="organizer-card">
-                <div class="organizer-photo">
-                    <img src="{{ url_for('static', filename='img/Coordinat.png') }}" alt="Координатор">
-                </div>
-                <div class="organizer-info">
-                    <h3>КООРДИНАТОР</h3>
-                    <p>Координирует все процессы и мероприятия проекта</p>
-                </div>
-            </div>
-            
-            <!-- Проводница -->
-            <div class="organizer-card">
-                <div class="organizer-photo">
-                    <img src="{{ url_for('static', filename='img/Provodnik.png') }}" alt="Проводница">
-                </div>
-                <div class="organizer-info">
-                    <h3>ПРОВОДНИЦА</h3>
-                    <p>Ведет женскую линию и поддерживает участниц</p>
-                </div>
-            </div>
+            {% endfor %}
         </div>
         
         <!-- Мобильная карусель (только для мобильных) -->
         <div class="organizers-carousel-mobile">
-            <div class="organizer-slide active" data-carousel="organizers">
+            {% for organizer in organizers %}
+            <div class="organizer-slide {% if loop.first %}active{% endif %}" data-carousel="organizers">
                 <div class="organizer-photo">
-                    <img src="{{ url_for('static', filename='img/Glava.png') }}" alt="Глава организации">
+                    <img src="{{ url_for('static', filename=organizer.photo) }}" alt="{{ organizer.name }}">
                 </div>
                 <div class="organizer-info">
-                    <h3>ГЛАВА ОРГАНИЗАЦИИ</h3>
-                    <p>Основатель и руководитель проекта "ОСНОВА ПУТИ"</p>
+                    <h3>{{ organizer.name|upper }}</h3>
+                    <p>{{ organizer.role }}</p>
                 </div>
             </div>
-            
-            <div class="organizer-slide" data-carousel="organizers">
-                <div class="organizer-photo">
-                    <img src="{{ url_for('static', filename='img/Coordinat.png') }}" alt="Координатор">
-                </div>
-                <div class="organizer-info">
-                    <h3>КООРДИНАТОР</h3>
-                    <p>Координирует все процессы и мероприятия проекта</p>
-                </div>
-            </div>
-            
-            <div class="organizer-slide" data-carousel="organizers">
-                <div class="organizer-photo">
-                    <img src="{{ url_for('static', filename='img/Provodnik.png') }}" alt="Проводница">
-                </div>
-                <div class="organizer-info">
-                    <h3>ПРОВОДНИЦА</h3>
-                    <p>Ведет женскую линию и поддерживает участниц</p>
-                </div>
-            </div>
+            {% endfor %}
             
             <!-- Навигация карусели -->
             <div class="carousel-nav">
@@ -78,9 +39,9 @@
                     <span>‹</span>
                 </button>
                 <div class="carousel-dots">
-                    <span class="dot active" data-carousel="organizers"></span>
-                    <span class="dot" data-carousel="organizers"></span>
-                    <span class="dot" data-carousel="organizers"></span>
+                    {% for organizer in organizers %}
+                    <span class="dot {% if loop.first %}active{% endif %}" data-carousel="organizers"></span>
+                    {% endfor %}
                 </div>
                 <button class="carousel-btn next" id="organizerNext">
                     <span>›</span>
