@@ -7,8 +7,8 @@
     <meta name="description" content="Закрытая система мужской трансформации. Путь к себе через сообщество, практики и поддержку.">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico', v='1.2') }}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico', v='1.2') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico', v='2.0') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico', v='2.0') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/Logo_white.jpg') }}">
     
     <!-- Leaflet CSS -->
@@ -35,10 +35,19 @@
         
         // Добавляем timestamp к статическим файлам
         const timestamp = new Date().getTime();
-        const links = document.querySelectorAll('link[rel="stylesheet"], script[src]');
+        const links = document.querySelectorAll('link[rel="stylesheet"], script[src], link[rel="icon"]');
         links.forEach(link => {
             if (link.href && !link.href.includes('unpkg.com')) {
                 link.href = link.href + (link.href.includes('?') ? '&' : '?') + 't=' + timestamp;
+            }
+        });
+        
+        // Принудительно обновляем favicon
+        const faviconLinks = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+        faviconLinks.forEach(link => {
+            if (link.href) {
+                const newHref = link.href.split('?')[0] + '?v=2.0&t=' + timestamp;
+                link.href = newHref;
             }
         });
     </script>
