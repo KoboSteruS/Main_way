@@ -443,7 +443,7 @@ function initPortraitsCarousel() {
     setInterval(() => {
         currentSlide = (currentSlide + 1) % totalSlides;
         showSlide(currentSlide);
-    }, 5000);
+    }, 10000);
     
     // Инициализация первого слайда
     showSlide(0);
