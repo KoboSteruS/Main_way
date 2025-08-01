@@ -454,49 +454,43 @@ function initPortraitsCarousel() {
 
 // ===== КАРУСЕЛЬ ОРГАНИЗАТОРОВ =====
 function initOrganizersCarousel() {
-    const track = document.querySelector('.organizers-track');
     const slides = document.querySelectorAll('.organizer-slide[data-carousel="organizers"]');
     const dots = document.querySelectorAll('.dot[data-carousel="organizers"]');
     const prevBtn = document.getElementById('organizerPrev');
     const nextBtn = document.getElementById('organizerNext');
     
-    if (!slides.length || !track) return;
+    if (!slides.length) return; // Выходим если слайды не найдены
     
     let currentSlide = 0;
-    const slidesPerView = window.innerWidth > 768 ? 3 : 1;
-    const maxSlides = slides.length - slidesPerView + 1;
     
-    function updateSlide() {
-        const slideWidth = slides[0].offsetWidth + 40; // 40px - gap
-        const translateX = -currentSlide * slideWidth;
-        track.style.transform = `translateX(${translateX}px)`;
-        
-        // Обновляем точки
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentSlide);
+    function showSlide(index) {
+        // Скрываем все слайды
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+            slide.style.display = 'none';
         });
         
-        // Обновляем состояние кнопок
-        if (prevBtn) {
-            prevBtn.disabled = currentSlide === 0;
-        }
-        if (nextBtn) {
-            nextBtn.disabled = currentSlide >= maxSlides - 1;
+        // Убираем активный класс у всех точек
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        // Показываем текущий слайд
+        slides[index].classList.add('active');
+        slides[index].style.display = 'block';
+        
+        // Активируем соответствующую точку
+        if (dots[index]) {
+            dots[index].classList.add('active');
         }
     }
     
     function nextSlide() {
-        if (currentSlide < maxSlides - 1) {
-            currentSlide++;
-            updateSlide();
-        }
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
     }
     
     function prevSlide() {
-        if (currentSlide > 0) {
-            currentSlide--;
-            updateSlide();
-        }
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
     }
     
     // Обработчики для кнопок
@@ -512,21 +506,15 @@ function initOrganizersCarousel() {
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
             currentSlide = index;
-            updateSlide();
+            showSlide(currentSlide);
         });
     });
     
-    // Обработка изменения размера окна
-    window.addEventListener('resize', () => {
-        const newSlidesPerView = window.innerWidth > 768 ? 3 : 1;
-        if (newSlidesPerView !== slidesPerView) {
-            currentSlide = 0;
-            updateSlide();
-        }
-    });
+    // Автоматическое переключение каждые 5 секунд
+    setInterval(nextSlide, 5000);
     
-    // Инициализация
-    updateSlide();
+    // Показываем первый слайд
+    showSlide(0);
 } 
 
 // ===== КАРУСЕЛЬ ПРОГРАММ =====
