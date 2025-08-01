@@ -2419,9 +2419,12 @@ body {
     margin: 0;
 }
 
-/* Сетка организаторов (скрыта) */
+/* Сетка организаторов для десктопа */
 .organizers-grid {
-    display: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 40px;
 }
 
 .organizer-card {
@@ -2468,16 +2471,23 @@ body {
     line-height: 1.5;
 }
 
-/* Карусель организаторов */
+/* Карусель организаторов (скрыта на десктопе) */
 .organizers-carousel {
+    display: none;
     position: relative;
     max-width: 400px;
     margin: 0 auto;
 }
 
-/* Скрываем сетку на всех устройствах */
-.organizers-grid {
-    display: none;
+/* Мобильные стили для организаторов */
+@media (max-width: 768px) {
+    .organizers-grid {
+        display: none;
+    }
+    
+    .organizers-carousel {
+        display: block;
+    }
 }
     
     .organizer-slide {
