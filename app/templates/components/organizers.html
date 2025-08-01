@@ -5,34 +5,21 @@
             <h2>ОРГАНИЗАТОРЫ</h2>
         </div>
         
-        <!-- Сетка организаторов для десктопа -->
-        <div class="organizers-grid">
-            {% for organizer in organizers %}
-            <div class="organizer-card">
-                <div class="organizer-photo">
-                    <img src="{{ url_for('static', filename=organizer.photo) }}" alt="{{ organizer.name }}">
-                </div>
-                <div class="organizer-info">
-                    <h3>{{ organizer.name|upper }}</h3>
-                    <p>{{ organizer.role }}</p>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        
-        <!-- Карусель организаторов для мобильных -->
+        <!-- Карусель организаторов -->
         <div class="organizers-carousel">
-            {% for organizer in organizers %}
-            <div class="organizer-slide {% if loop.first %}active{% endif %}" data-carousel="organizers">
-                <div class="organizer-photo">
-                    <img src="{{ url_for('static', filename=organizer.photo) }}" alt="{{ organizer.name }}">
+            <div class="organizers-slides">
+                {% for organizer in organizers %}
+                <div class="organizer-slide {% if loop.first %}active{% endif %}" data-carousel="organizers">
+                    <div class="organizer-photo">
+                        <img src="{{ url_for('static', filename=organizer.photo) }}" alt="{{ organizer.name }}">
+                    </div>
+                    <div class="organizer-info">
+                        <h3>{{ organizer.name|upper }}</h3>
+                        <p>{{ organizer.role }}</p>
+                    </div>
                 </div>
-                <div class="organizer-info">
-                    <h3>{{ organizer.name|upper }}</h3>
-                    <p>{{ organizer.role }}</p>
-                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
             
             <!-- Навигация карусели -->
             <div class="carousel-nav">

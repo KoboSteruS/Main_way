@@ -2419,24 +2419,31 @@ body {
     margin: 0;
 }
 
-/* Сетка организаторов для десктопа */
-.organizers-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
+/* Карусель организаторов */
+.organizers-carousel {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
     margin-top: 40px;
+    overflow: hidden;
 }
 
-.organizer-card {
-    text-align: center;
+.organizers-slides {
+    display: flex;
+    transition: transform 0.5s ease;
+    gap: 40px;
+}
 
+.organizer-slide {
+    flex: 0 0 calc(33.333% - 27px);
+    text-align: center;
     border-radius: 20px;
     padding: 30px;
     backdrop-filter: blur(10px);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.organizer-card:hover {
+.organizer-slide:hover {
     transform: translateY(-5px);
 }
 
@@ -2469,25 +2476,6 @@ body {
     color: #ccc;
     margin: 0;
     line-height: 1.5;
-}
-
-/* Карусель организаторов (скрыта на десктопе) */
-.organizers-carousel {
-    display: none;
-    position: relative;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-/* Мобильные стили для организаторов */
-@media (max-width: 768px) {
-    .organizers-grid {
-        display: none;
-    }
-    
-    .organizers-carousel {
-        display: block;
-    }
 }
     
     .organizer-slide {
