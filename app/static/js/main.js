@@ -454,58 +454,47 @@ function initPortraitsCarousel() {
 
 // ===== КАРУСЕЛЬ ОРГАНИЗАТОРОВ =====
 function initOrganizersCarousel() {
-    console.log('Инициализация карусели организаторов...');
     const track = document.querySelector('.organizers-track');
-    const slides = document.querySelectorAll('.organizer-slide');
+    const slides = document.querySelectorAll('.organizer-slide[data-carousel="organizers"]');
     const dots = document.querySelectorAll('.dot[data-carousel="organizers"]');
     const prevBtn = document.getElementById('organizerPrev');
     const nextBtn = document.getElementById('organizerNext');
     
-    console.log('Track:', track);
-    console.log('Slides:', slides.length);
-    console.log('Dots:', dots.length);
-    console.log('PrevBtn:', prevBtn);
-    console.log('NextBtn:', nextBtn);
+    if (!slides.length || !track) return; // Выходим если слайды не найдены
     
-    if (!track || !slides.length) {
-        console.error('Карусель организаторов не найдена');
-        return;
-    }
-    
-    let currentIndex = 0;
+    let currentSlide = 0;
     const slidesPerView = window.innerWidth <= 768 ? 1 : 3;
-    const maxIndex = Math.max(0, slides.length - slidesPerView);
+    const maxSlides = Math.ceil(slides.length / slidesPerView);
     
     function updateCarousel() {
         const slideWidth = slides[0].offsetWidth + 40; // 40px - gap
-        const translateX = -currentIndex * slideWidth;
-        console.log('Обновление карусели:', { currentIndex, slideWidth, translateX });
+        const translateX = -currentSlide * slideWidth * slidesPerView;
         track.style.transform = `translateX(${translateX}px)`;
         
         // Обновляем точки
         dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentIndex);
+            dot.classList.toggle('active', index === currentSlide);
         });
         
         // Обновляем состояние кнопок
         if (prevBtn) {
-            prevBtn.disabled = currentIndex === 0;
+            prevBtn.disabled = currentSlide === 0;
         }
         if (nextBtn) {
-            nextBtn.disabled = currentIndex >= maxIndex;
+            nextBtn.disabled = currentSlide >= maxSlides - 1;
         }
     }
     
     function nextSlide() {
-        if (currentIndex < maxIndex) {
-            currentIndex++;
+        if (currentSlide < maxSlides - 1) {
+            currentSlide++;
             updateCarousel();
         }
     }
     
     function prevSlide() {
-        if (currentIndex > 0) {
-            currentIndex--;
+        if (currentSlide > 0) {
+            currentSlide--;
             updateCarousel();
         }
     }
@@ -522,27 +511,22 @@ function initOrganizersCarousel() {
     // Обработчики для точек
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
-            currentIndex = Math.min(index, maxIndex);
+            currentSlide = index;
             updateCarousel();
         });
     });
     
-    // Инициализация с небольшой задержкой
-    setTimeout(() => {
-        updateCarousel();
-    }, 100);
-    
-    // Обновление при изменении размера окна
+    // Обработчик изменения размера окна
     window.addEventListener('resize', () => {
         const newSlidesPerView = window.innerWidth <= 768 ? 1 : 3;
-        const newMaxIndex = Math.max(0, slides.length - newSlidesPerView);
-        
-        if (currentIndex > newMaxIndex) {
-            currentIndex = newMaxIndex;
+        if (newSlidesPerView !== slidesPerView) {
+            currentSlide = 0;
+            updateCarousel();
         }
-        
-        updateCarousel();
     });
+    
+    // Инициализация
+    updateCarousel();
 } 
 
 // ===== КАРУСЕЛЬ ПРОГРАММ =====
