@@ -2430,6 +2430,7 @@ body {
 
 .organizers-slides {
     display: flex;
+    flex-direction: row;
     transition: transform 0.5s ease;
     gap: 40px;
 }
@@ -2441,6 +2442,7 @@ body {
     padding: 30px;
     backdrop-filter: blur(10px);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-width: 300px;
 }
 
 .organizer-slide:hover {
