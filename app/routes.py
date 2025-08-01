@@ -111,33 +111,57 @@ STATIC_ORGANIZERS = [
 
 # Функция для загрузки участников из JSON
 def load_participants():
+    """Загружает всех участников (статичных + динамических)"""
     try:
+        # Загружаем статичных участников
+        with open('app/data/static_participants.json', 'r', encoding='utf-8') as f:
+            static_participants = json.load(f)
+    except FileNotFoundError:
+        # Если файл не найден, используем константы
+        static_participants = STATIC_PARTICIPANTS
+    except Exception as e:
+        print(f"Ошибка загрузки статичных участников: {e}")
+        static_participants = STATIC_PARTICIPANTS
+    
+    try:
+        # Загружаем динамических участников
         with open('app/data/participants.json', 'r', encoding='utf-8') as f:
             dynamic_participants = json.load(f)
-            # Объединяем статичных и динамических участников
-            all_participants = STATIC_PARTICIPANTS + dynamic_participants
-            return all_participants
     except FileNotFoundError:
-        # Если файл не найден, возвращаем только статичных
-        return STATIC_PARTICIPANTS
+        dynamic_participants = []
     except Exception as e:
-        print(f"Ошибка загрузки участников: {e}")
-        return STATIC_PARTICIPANTS
+        print(f"Ошибка загрузки динамических участников: {e}")
+        dynamic_participants = []
+    
+    # Объединяем статичных и динамических участников
+    return static_participants + dynamic_participants
 
 # Функция для загрузки событий из JSON
 def load_events():
+    """Загружает все события (статичные + динамические)"""
     try:
+        # Загружаем статичные события
+        with open('app/data/static_events.json', 'r', encoding='utf-8') as f:
+            static_events = json.load(f)
+    except FileNotFoundError:
+        # Если файл не найден, используем константы
+        static_events = STATIC_EVENTS
+    except Exception as e:
+        print(f"Ошибка загрузки статичных событий: {e}")
+        static_events = STATIC_EVENTS
+    
+    try:
+        # Загружаем динамические события
         with open('app/data/events.json', 'r', encoding='utf-8') as f:
             dynamic_events = json.load(f)
-            # Объединяем статичных и динамических событий
-            all_events = STATIC_EVENTS + dynamic_events
-            return all_events
     except FileNotFoundError:
-        # Если файл не найден, возвращаем только статичных
-        return STATIC_EVENTS
+        dynamic_events = []
     except Exception as e:
-        print(f"Ошибка загрузки событий: {e}")
-        return STATIC_EVENTS
+        print(f"Ошибка загрузки динамических событий: {e}")
+        dynamic_events = []
+    
+    # Объединяем статичные и динамические события
+    return static_events + dynamic_events
 
 # Функции для работы с Telegram ссылкой
 def load_telegram_link():
@@ -157,13 +181,30 @@ def save_telegram_link(link):
 
 # Функции для работы с организаторами
 def load_organizers():
-    """Загружает организаторов из файла"""
+    """Загружает всех организаторов (статичных + динамических)"""
     try:
+        # Загружаем статичных организаторов
+        with open('app/data/static_organizers.json', 'r', encoding='utf-8') as f:
+            static_organizers = json.load(f)
+    except FileNotFoundError:
+        # Если файл не найден, используем константы
+        static_organizers = STATIC_ORGANIZERS
+    except Exception as e:
+        print(f"Ошибка загрузки статичных организаторов: {e}")
+        static_organizers = STATIC_ORGANIZERS
+    
+    try:
+        # Загружаем динамических организаторов
         with open('app/data/organizers.json', 'r', encoding='utf-8') as f:
             dynamic_organizers = json.load(f)
-            return STATIC_ORGANIZERS + dynamic_organizers
-    except (FileNotFoundError, json.JSONDecodeError):
-        return STATIC_ORGANIZERS
+    except FileNotFoundError:
+        dynamic_organizers = []
+    except Exception as e:
+        print(f"Ошибка загрузки динамических организаторов: {e}")
+        dynamic_organizers = []
+    
+    # Объединяем статичных и динамических организаторов
+    return static_organizers + dynamic_organizers
 
 def save_organizer(organizer_data):
     """Сохраняет нового организатора"""
@@ -541,12 +582,21 @@ def edit_participant(token, participant_id):
         
         # Сохраняем изменения
         if participant_id.startswith('static_'):
-            # Для статичных участников обновляем константу
-            for i, static_p in enumerate(STATIC_PARTICIPANTS):
-                if static_p['id'] == participant_id:
-                    STATIC_PARTICIPANTS[i] = participant
-                    break
-            flash('Статичный участник успешно обновлен!', 'success')
+            # Для статичных участников обновляем файл
+            try:
+                with open('app/data/static_participants.json', 'r', encoding='utf-8') as f:
+                    static_participants = json.load(f)
+                
+                for i, static_p in enumerate(static_participants):
+                    if static_p['id'] == participant_id:
+                        static_participants[i] = participant
+                        break
+                
+                with open('app/data/static_participants.json', 'w', encoding='utf-8') as f:
+                    json.dump(static_participants, f, ensure_ascii=False, indent=2)
+                flash('Статичный участник успешно обновлен!', 'success')
+            except Exception as e:
+                flash(f'Ошибка обновления статичного участника: {e}', 'error')
         else:
             # Для динамических участников обновляем JSON
             try:
@@ -608,12 +658,21 @@ def edit_event(token, event_id):
         
         # Сохраняем изменения
         if event_id.startswith('static_event_'):
-            # Для статичных событий обновляем константу
-            for i, static_e in enumerate(STATIC_EVENTS):
-                if static_e['id'] == event_id:
-                    STATIC_EVENTS[i] = event
-                    break
-            flash('Статичное событие успешно обновлено!', 'success')
+            # Для статичных событий обновляем файл
+            try:
+                with open('app/data/static_events.json', 'r', encoding='utf-8') as f:
+                    static_events = json.load(f)
+                
+                for i, static_e in enumerate(static_events):
+                    if static_e['id'] == event_id:
+                        static_events[i] = event
+                        break
+                
+                with open('app/data/static_events.json', 'w', encoding='utf-8') as f:
+                    json.dump(static_events, f, ensure_ascii=False, indent=2)
+                flash('Статичное событие успешно обновлено!', 'success')
+            except Exception as e:
+                flash(f'Ошибка обновления статичного события: {e}', 'error')
         else:
             # Для динамических событий обновляем JSON
             try:
@@ -675,12 +734,21 @@ def edit_organizer(token, organizer_id):
         
         # Сохраняем изменения
         if organizer_id.startswith('static_'):
-            # Для статичных организаторов обновляем константу
-            for i, static_o in enumerate(STATIC_ORGANIZERS):
-                if static_o['id'] == organizer_id:
-                    STATIC_ORGANIZERS[i] = organizer
-                    break
-            flash('Статичный организатор успешно обновлен!', 'success')
+            # Для статичных организаторов обновляем файл
+            try:
+                with open('app/data/static_organizers.json', 'r', encoding='utf-8') as f:
+                    static_organizers = json.load(f)
+                
+                for i, static_o in enumerate(static_organizers):
+                    if static_o['id'] == organizer_id:
+                        static_organizers[i] = organizer
+                        break
+                
+                with open('app/data/static_organizers.json', 'w', encoding='utf-8') as f:
+                    json.dump(static_organizers, f, ensure_ascii=False, indent=2)
+                flash('Статичный организатор успешно обновлен!', 'success')
+            except Exception as e:
+                flash(f'Ошибка обновления статичного организатора: {e}', 'error')
         else:
             # Для динамических организаторов обновляем JSON
             try:

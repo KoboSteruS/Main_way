@@ -1,0 +1,20 @@
+[
+    {
+        "id": "static_organizer_1",
+        "name": "Координатор",
+        "role": "Координатор",
+        "photo": "img/Coordinat.png"
+    },
+    {
+        "id": "static_organizer_2",
+        "name": "Глава организации",
+        "role": "Глава организации",
+        "photo": "img/Glava.png"
+    },
+    {
+        "id": "static_organizer_3",
+        "name": "Проводница",
+        "role": "Проводница",
+        "photo": "img/Provodnik.png"
+    }
+] 
