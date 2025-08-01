@@ -308,18 +308,14 @@ function initMissionMap() {
     }
     console.log('Leaflet.js загружен');
     
-    // Координаты всех городов
-    const cities = [
-        { name: 'Красноярск', coords: [56.0153, 92.8932], country: 'Россия' },
-        { name: 'Москва', coords: [55.7558, 37.6176], country: 'Россия' },
-        { name: 'Стокгольм', coords: [59.3293, 18.0686], country: 'Швеция' },
-        { name: 'Рига', coords: [56.9496, 24.1052], country: 'Латвия' },
-        { name: 'Цюрих', coords: [47.3769, 8.5417], country: 'Швейцария' },
-        { name: 'Минск', coords: [53.9045, 27.5615], country: 'Беларусь' },
-        { name: 'Владивосток', coords: [43.1198, 131.8869], country: 'Россия' }
+    // Получаем точки карты из глобальной переменной или используем статические данные
+    const mapPoints = window.mapPoints || [
+        { name: 'Красноярск', lat: 56.0184, lng: 92.8672, country: 'Россия', description: 'Столица Сибири. Город силы и встреч.' },
+        { name: 'Тбилиси', lat: 41.7151, lng: 44.8271, country: 'Грузия', description: 'Уникальный женский круг. Горы, ритуалы, поддержка.' },
+        { name: 'Рига', lat: 56.9496, lng: 24.1052, country: 'Латвия', description: 'Сбор в лесу. Единение с природой и собой.' }
     ];
     
-    // Центр карты (примерно центр всех городов)
+    // Центр карты (примерно центр всех точек)
     const centerCoords = [55.0, 30.0];
     
     const map = L.map('map', {
@@ -338,15 +334,16 @@ function initMissionMap() {
         attribution: 'Leaflet | © OpenStreetMap contributors'
     }).addTo(map);
     
-    // Добавляем маркеры для всех городов
-    cities.forEach(city => {
-        const marker = L.marker(city.coords).addTo(map);
+    // Добавляем маркеры для всех точек
+    mapPoints.forEach(point => {
+        const marker = L.marker([point.lat, point.lng]).addTo(map);
         
-        // Создаем popup для каждого города
+        // Создаем popup для каждой точки
         const popupContent = `
             <div class="city-popup-content">
-                <div class="city-name">${city.name}</div>
-                <div class="city-country">${city.country}</div>
+                <div class="city-name">${point.name}</div>
+                <div class="city-country">${point.country}</div>
+                <div class="city-description">${point.description}</div>
             </div>
         `;
         
@@ -356,7 +353,7 @@ function initMissionMap() {
         });
     });
     
-    console.log('Карта инициализирована успешно с', cities.length, 'городами');
+    console.log('Карта инициализирована успешно с', mapPoints.length, 'точками');
 } 
 
 function initMobileSidebar() {

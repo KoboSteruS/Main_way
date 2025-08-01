@@ -238,6 +238,46 @@ def delete_organizer(organizer_id):
     
     return True
 
+# Функции для работы с точками карты
+def load_map_points():
+    """Загружает точки карты из файла"""
+    try:
+        with open('app/data/map_points.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
+def save_map_point(point_data):
+    """Сохраняет новую точку карты"""
+    os.makedirs('app/data', exist_ok=True)
+    try:
+        with open('app/data/map_points.json', 'r', encoding='utf-8') as f:
+            points = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        points = []
+    
+    # Добавляем ID для новой точки
+    point_data['id'] = f'point_{uuid.uuid4().hex[:8]}'
+    points.append(point_data)
+    
+    with open('app/data/map_points.json', 'w', encoding='utf-8') as f:
+        json.dump(points, f, ensure_ascii=False, indent=2)
+
+def delete_map_point(point_id):
+    """Удаляет точку карты"""
+    try:
+        with open('app/data/map_points.json', 'r', encoding='utf-8') as f:
+            points = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return False
+    
+    points = [p for p in points if p.get('id') != point_id]
+    
+    with open('app/data/map_points.json', 'w', encoding='utf-8') as f:
+        json.dump(points, f, ensure_ascii=False, indent=2)
+    
+    return True
+
 @main_bp.route('/')
 @main_bp.route('/<version>')
 def index(version=None):
@@ -249,13 +289,15 @@ def index(version=None):
     events = load_events()
     organizers = load_organizers()
     telegram_link = load_telegram_link()
+    map_points = load_map_points()
     
     response = make_response(render_template('index.html', 
                                           version=version or f'1.1.{timestamp}',
                                           participants=participants,
                                           events=events,
                                           organizers=organizers,
-                                          telegram_link=telegram_link))
+                                          telegram_link=telegram_link,
+                                          map_points=map_points))
     
     # Добавляем заголовки для отключения кэширования
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
@@ -274,12 +316,14 @@ def admin_dashboard(token):
     events = load_events()
     organizers = load_organizers()
     telegram_link = load_telegram_link()
+    map_points = load_map_points()
     
     return render_template('admin/dashboard.html', 
                          participants=participants, 
                          events=events, 
                          organizers=organizers,
                          telegram_link=telegram_link,
+                         map_points=map_points,
                          token=token)
 
 # Маршрут для добавления нового участника
@@ -796,3 +840,87 @@ def delete_organizer_route(token, organizer_id):
         flash('Организатор не найден', 'error')
     
     return redirect(url_for('main.admin_dashboard', token=token)) 
+
+# Маршрут для добавления новой точки карты
+@main_bp.route('/<token>/admin/add-map-point', methods=['GET', 'POST'])
+@admin_required
+def add_map_point(token):
+    if request.method == 'POST':
+        name = request.form.get('name')
+        country = request.form.get('country')
+        lat = float(request.form.get('lat'))
+        lng = float(request.form.get('lng'))
+        description = request.form.get('description')
+        
+        # Создаем новую точку карты
+        new_point = {
+            'name': name,
+            'country': country,
+            'lat': lat,
+            'lng': lng,
+            'description': description
+        }
+        
+        # Сохраняем в JSON файл
+        save_map_point(new_point)
+        
+        flash('Точка карты успешно добавлена!', 'success')
+        return redirect(url_for('main.admin_dashboard', token=token))
+    
+    return render_template('admin/add_map_point.html', token=token)
+
+# Маршрут для редактирования точки карты
+@main_bp.route('/<token>/admin/edit-map-point/<point_id>', methods=['GET', 'POST'])
+@admin_required
+def edit_map_point(token, point_id):
+    map_points = load_map_points()
+    point = next((p for p in map_points if p['id'] == point_id), None)
+    
+    if not point:
+        flash('Точка карты не найдена', 'error')
+        return redirect(url_for('main.admin_dashboard', token=token))
+    
+    if request.method == 'POST':
+        name = request.form.get('name')
+        country = request.form.get('country')
+        lat = float(request.form.get('lat'))
+        lng = float(request.form.get('lng'))
+        description = request.form.get('description')
+        
+        # Обновляем данные точки
+        point['name'] = name
+        point['country'] = country
+        point['lat'] = lat
+        point['lng'] = lng
+        point['description'] = description
+        
+        # Сохраняем изменения
+        try:
+            with open('app/data/map_points.json', 'r', encoding='utf-8') as f:
+                points = json.load(f)
+            
+            for i, p in enumerate(points):
+                if p['id'] == point_id:
+                    points[i] = point
+                    break
+            
+            with open('app/data/map_points.json', 'w', encoding='utf-8') as f:
+                json.dump(points, f, ensure_ascii=False, indent=2)
+            flash('Точка карты успешно обновлена!', 'success')
+        except Exception as e:
+            flash(f'Ошибка обновления: {e}', 'error')
+        
+        return redirect(url_for('main.admin_dashboard', token=token))
+    
+    return render_template('admin/edit_map_point.html', point=point, token=token)
+
+# Маршрут для удаления точки карты
+@main_bp.route('/<token>/admin/delete-map-point/<point_id>')
+@admin_required
+def delete_map_point_route(token, point_id):
+    if delete_map_point(point_id):
+        flash('Точка карты успешно удалена!', 'success')
+    else:
+        flash('Ошибка при удалении точки карты', 'error')
+    
+    return redirect(url_for('main.admin_dashboard', token=token))
