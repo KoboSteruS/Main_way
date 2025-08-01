@@ -2425,12 +2425,15 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     overflow: hidden;
+    width: 100%;
 }
 
 .organizers-track {
     display: flex;
     transition: transform 0.5s ease;
     gap: 40px;
+    width: 100%;
+    flex-wrap: nowrap;
 }
 
 .organizer-slide {
@@ -2441,6 +2444,8 @@ body {
     backdrop-filter: blur(10px);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     min-width: 0;
+    width: calc(33.333% - 27px);
+    box-sizing: border-box;
 }
 
 .organizer-slide:hover {
