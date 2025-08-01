@@ -454,13 +454,23 @@ function initPortraitsCarousel() {
 
 // ===== КАРУСЕЛЬ ОРГАНИЗАТОРОВ =====
 function initOrganizersCarousel() {
+    console.log('Инициализация карусели организаторов...');
     const track = document.querySelector('.organizers-track');
     const slides = document.querySelectorAll('.organizer-slide');
     const dots = document.querySelectorAll('.dot[data-carousel="organizers"]');
     const prevBtn = document.getElementById('organizerPrev');
     const nextBtn = document.getElementById('organizerNext');
     
-    if (!track || !slides.length) return;
+    console.log('Track:', track);
+    console.log('Slides:', slides.length);
+    console.log('Dots:', dots.length);
+    console.log('PrevBtn:', prevBtn);
+    console.log('NextBtn:', nextBtn);
+    
+    if (!track || !slides.length) {
+        console.error('Карусель организаторов не найдена');
+        return;
+    }
     
     let currentIndex = 0;
     const slidesPerView = window.innerWidth <= 768 ? 1 : 3;
@@ -469,6 +479,7 @@ function initOrganizersCarousel() {
     function updateCarousel() {
         const slideWidth = slides[0].offsetWidth + 40; // 40px - gap
         const translateX = -currentIndex * slideWidth;
+        console.log('Обновление карусели:', { currentIndex, slideWidth, translateX });
         track.style.transform = `translateX(${translateX}px)`;
         
         // Обновляем точки
@@ -516,8 +527,10 @@ function initOrganizersCarousel() {
         });
     });
     
-    // Инициализация
-    updateCarousel();
+    // Инициализация с небольшой задержкой
+    setTimeout(() => {
+        updateCarousel();
+    }, 100);
     
     // Обновление при изменении размера окна
     window.addEventListener('resize', () => {
