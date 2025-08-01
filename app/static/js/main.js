@@ -460,15 +460,15 @@ function initOrganizersCarousel() {
     const prevBtn = document.getElementById('organizerPrev');
     const nextBtn = document.getElementById('organizerNext');
     
-    if (!slides.length || !track) return; // Выходим если слайды не найдены
+    if (!slides.length || !track) return;
     
     let currentSlide = 0;
-    const slidesPerView = window.innerWidth <= 768 ? 1 : 3;
-    const maxSlides = Math.ceil(slides.length / slidesPerView);
+    const slidesPerView = window.innerWidth > 768 ? 3 : 1;
+    const maxSlides = slides.length - slidesPerView + 1;
     
-    function updateCarousel() {
+    function updateSlide() {
         const slideWidth = slides[0].offsetWidth + 40; // 40px - gap
-        const translateX = -currentSlide * slideWidth * slidesPerView;
+        const translateX = -currentSlide * slideWidth;
         track.style.transform = `translateX(${translateX}px)`;
         
         // Обновляем точки
@@ -488,14 +488,14 @@ function initOrganizersCarousel() {
     function nextSlide() {
         if (currentSlide < maxSlides - 1) {
             currentSlide++;
-            updateCarousel();
+            updateSlide();
         }
     }
     
     function prevSlide() {
         if (currentSlide > 0) {
             currentSlide--;
-            updateCarousel();
+            updateSlide();
         }
     }
     
@@ -512,21 +512,21 @@ function initOrganizersCarousel() {
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
             currentSlide = index;
-            updateCarousel();
+            updateSlide();
         });
     });
     
-    // Обработчик изменения размера окна
+    // Обработка изменения размера окна
     window.addEventListener('resize', () => {
-        const newSlidesPerView = window.innerWidth <= 768 ? 1 : 3;
+        const newSlidesPerView = window.innerWidth > 768 ? 3 : 1;
         if (newSlidesPerView !== slidesPerView) {
             currentSlide = 0;
-            updateCarousel();
+            updateSlide();
         }
     });
     
     // Инициализация
-    updateCarousel();
+    updateSlide();
 } 
 
 // ===== КАРУСЕЛЬ ПРОГРАММ =====

@@ -10,14 +10,12 @@
             <div class="organizers-track">
                 {% for organizer in organizers %}
                 <div class="organizer-slide" data-carousel="organizers">
-                    <div class="organizer-card">
-                        <div class="organizer-photo">
-                            <img src="{{ url_for('static', filename=organizer.photo) }}" alt="{{ organizer.name }}">
-                        </div>
-                        <div class="organizer-info">
-                            <h3>{{ organizer.name|upper }}</h3>
-                            <p>{{ organizer.role }}</p>
-                        </div>
+                    <div class="organizer-photo">
+                        <img src="{{ url_for('static', filename=organizer.photo) }}" alt="{{ organizer.name }}">
+                    </div>
+                    <div class="organizer-info">
+                        <h3>{{ organizer.name|upper }}</h3>
+                        <p>{{ organizer.role }}</p>
                     </div>
                 </div>
                 {% endfor %}
