@@ -388,9 +388,30 @@ body {
 }
 
 .portrait__story {
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.7;
     color: rgba(255, 255, 255, 0.9);
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.portrait__story::-webkit-scrollbar {
+    width: 6px;
+}
+
+.portrait__story::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.portrait__story::-webkit-scrollbar-thumb {
+    background: rgba(191, 164, 107, 0.5);
+    border-radius: 3px;
+}
+
+.portrait__story::-webkit-scrollbar-thumb:hover {
+    background: rgba(191, 164, 107, 0.7);
 }
 
 .who-we-are__cta {
@@ -885,6 +906,11 @@ body {
 }
 
 @media (max-width: 480px) {
+    .who-we-are__carousel {
+        min-height: 1000px;
+        max-height: 1000px;
+    }
+    
     .who-we-are { 
         min-height: 400px; 
         max-height: 1700px; 
@@ -2278,8 +2304,8 @@ body {
 
 /* ===== КАРУСЕЛЬ УЧАСТНИКОВ ===== */
 .who-we-are__carousel {
-    min-height: 650px;
-    max-height: 650px;
+    min-height: 800px;
+    max-height: 800px;
     position: relative;
     max-width: 800px;
     margin: 0 auto;
@@ -2366,6 +2392,11 @@ body {
 }
 
 @media (max-width: 768px) {
+    .who-we-are__carousel {
+        min-height: 900px;
+        max-height: 900px;
+    }
+    
     .portraits-controls {
         gap: 15px;
         margin-top: 20px;
