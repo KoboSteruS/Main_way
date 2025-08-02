@@ -7,17 +7,23 @@
         
         <!-- Карусель организаторов -->
         <div class="organizers-carousel">
-            {% for organizer in organizers %}
-            <div class="organizer-slide {% if loop.first %}active{% endif %}" data-carousel="organizers">
-                <div class="organizer-photo">
-                    <img src="{{ url_for('static', filename=organizer.photo) }}" alt="{{ organizer.name }}">
+            <div class="organizers-slide {% if loop.first %}active{% endif %}" data-carousel="organizers">
+                {% for organizer in organizers %}
+                <div class="organizer-item">
+                    <div class="organizer-photo">
+                        <img src="{{ url_for('static', filename=organizer.photo) }}" alt="{{ organizer.name }}">
+                    </div>
+                    <div class="organizer-info">
+                        <h3>{{ organizer.name|upper }}</h3>
+                        <p>{{ organizer.role }}</p>
+                    </div>
                 </div>
-                <div class="organizer-info">
-                    <h3>{{ organizer.name|upper }}</h3>
-                    <p>{{ organizer.role }}</p>
+                {% if loop.index % 3 == 0 and not loop.last %}
                 </div>
+                <div class="organizers-slide" data-carousel="organizers">
+                {% endif %}
+                {% endfor %}
             </div>
-            {% endfor %}
             
             <!-- Навигация карусели -->
             <div class="carousel-nav">
@@ -25,7 +31,8 @@
                     <span>‹</span>
                 </button>
                 <div class="carousel-dots">
-                    {% for organizer in organizers %}
+                    {% set total_slides = (organizers|length / 3)|round(0, 'ceil')|int %}
+                    {% for i in range(total_slides) %}
                     <span class="dot {% if loop.first %}active{% endif %}" data-carousel="organizers"></span>
                     {% endfor %}
                 </div>

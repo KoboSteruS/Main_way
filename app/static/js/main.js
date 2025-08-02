@@ -451,7 +451,7 @@ function initPortraitsCarousel() {
 
 // ===== КАРУСЕЛЬ ОРГАНИЗАТОРОВ =====
 function initOrganizersCarousel() {
-    const slides = document.querySelectorAll('.organizer-slide[data-carousel="organizers"]');
+    const slides = document.querySelectorAll('.organizers-slide[data-carousel="organizers"]');
     const dots = document.querySelectorAll('.dot[data-carousel="organizers"]');
     const prevBtn = document.getElementById('organizerPrev');
     const nextBtn = document.getElementById('organizerNext');
@@ -472,7 +472,7 @@ function initOrganizersCarousel() {
         
         // Показываем текущий слайд
         slides[index].classList.add('active');
-        slides[index].style.display = 'block';
+        slides[index].style.display = 'grid';
         
         // Активируем соответствующую точку
         if (dots[index]) {
