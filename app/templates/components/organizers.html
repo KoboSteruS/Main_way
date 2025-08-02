@@ -7,11 +7,8 @@
         
         <!-- Карусель организаторов -->
         <div class="organizers-carousel">
-            {% for i in range(organizers|length) %}
+            {% for organizer in organizers %}
             <div class="organizers-slide {% if loop.first %}active{% endif %}" data-carousel="organizers">
-                {% for j in range(3) %}
-                {% set organizer_index = (i + j) % organizers|length %}
-                {% set organizer = organizers[organizer_index] %}
                 <div class="organizer-item">
                     <div class="organizer-photo">
                         <img src="{{ url_for('static', filename=organizer.photo) }}" alt="{{ organizer.name }}">
@@ -21,7 +18,6 @@
                         <p>{{ organizer.role }}</p>
                     </div>
                 </div>
-                {% endfor %}
             </div>
             {% endfor %}
             
@@ -31,7 +27,7 @@
                     <span>‹</span>
                 </button>
                 <div class="carousel-dots">
-                    {% for i in range(organizers|length) %}
+                    {% for organizer in organizers %}
                     <span class="dot {% if loop.first %}active{% endif %}" data-carousel="organizers"></span>
                     {% endfor %}
                 </div>

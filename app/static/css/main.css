@@ -2502,7 +2502,7 @@ body {
 /* Карусель организаторов */
 .organizers-carousel {
     position: relative;
-    max-width: 1200px;
+    max-width: 500px;
     margin: 0 auto;
     width: 100%;
 }
@@ -2524,9 +2524,9 @@ body {
     }
     
     .organizers-slide.active {
-        display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 30px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
         opacity: 1 !important;
         transform: none !important;
         width: 100% !important;
@@ -2553,9 +2553,9 @@ body {
     }
     
     .organizer-photo {
-        width: 180px;
-        height: 180px;
-        margin: 0 auto 20px;
+        width: 220px;
+        height: 220px;
+        margin: 0 auto 25px;
         border-radius: 50%;
         overflow: hidden;
         border: 4px solid rgba(191, 164, 107, 0.3);
