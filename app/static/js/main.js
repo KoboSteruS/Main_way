@@ -501,6 +501,9 @@ function initOrganizersCarousel() {
         showSlide(currentSlide);
     }
     
+    // Показываем первый слайд при инициализации
+    showSlide(0);
+    
     // Обработчики для кнопок
     if (prevBtn) {
         prevBtn.addEventListener('click', prevSlide);
@@ -518,10 +521,7 @@ function initOrganizersCarousel() {
         });
     });
     
-    // Автоматическое переключение каждые 5 секунд
-    setInterval(nextSlide, 5000);
-    
-    // Показываем первый слайд
+    // Показываем первый слайд при инициализации
     showSlide(0);
 } 
 
