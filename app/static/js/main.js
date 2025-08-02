@@ -451,16 +451,25 @@ function initPortraitsCarousel() {
 
 // ===== КАРУСЕЛЬ ОРГАНИЗАТОРОВ =====
 function initOrganizersCarousel() {
+    console.log('Инициализация карусели организаторов...');
     const slides = document.querySelectorAll('.organizers-slide[data-carousel="organizers"]');
     const dots = document.querySelectorAll('.dot[data-carousel="organizers"]');
     const prevBtn = document.getElementById('organizerPrev');
     const nextBtn = document.getElementById('organizerNext');
     
-    if (!slides.length) return; // Выходим если слайды не найдены
+    console.log('Найдено слайдов:', slides.length);
+    console.log('Найдено точек:', dots.length);
+    
+    if (!slides.length) {
+        console.log('Слайды организаторов не найдены!');
+        return;
+    }
     
     let currentSlide = 0;
     
     function showSlide(index) {
+        console.log('Показываем слайд:', index);
+        
         // Скрываем все слайды
         slides.forEach(slide => {
             slide.classList.remove('active');
@@ -473,6 +482,8 @@ function initOrganizersCarousel() {
         // Показываем текущий слайд
         slides[index].classList.add('active');
         slides[index].style.display = 'grid';
+        
+        console.log('Слайд', index, 'активирован, display:', slides[index].style.display);
         
         // Активируем соответствующую точку
         if (dots[index]) {

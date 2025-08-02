@@ -7,8 +7,10 @@
         
         <!-- Карусель организаторов -->
         <div class="organizers-carousel">
+            {% for organizer in organizers %}
+            {% if loop.index0 % 3 == 0 %}
             <div class="organizers-slide {% if loop.first %}active{% endif %}" data-carousel="organizers">
-                {% for organizer in organizers %}
+            {% endif %}
                 <div class="organizer-item">
                     <div class="organizer-photo">
                         <img src="{{ url_for('static', filename=organizer.photo) }}" alt="{{ organizer.name }}">
@@ -18,12 +20,10 @@
                         <p>{{ organizer.role }}</p>
                     </div>
                 </div>
-                {% if loop.index % 3 == 0 and not loop.last %}
-                </div>
-                <div class="organizers-slide" data-carousel="organizers">
-                {% endif %}
-                {% endfor %}
+            {% if loop.index % 3 == 0 or loop.last %}
             </div>
+            {% endif %}
+            {% endfor %}
             
             <!-- Навигация карусели -->
             <div class="carousel-nav">
