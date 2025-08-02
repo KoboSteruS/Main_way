@@ -634,6 +634,10 @@ function initProgramsCarousel() {
     const prevBtn = document.getElementById('programPrev');
     const nextBtn = document.getElementById('programNext');
     
+    console.log('Инициализация карусели программ...');
+    console.log('Найдено слайдов:', slides.length);
+    console.log('Найдено точек:', dots.length);
+    
     if (!slides.length) return; // Если нет слайдов, выходим
     
     let currentSlide = 0;
