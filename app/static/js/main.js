@@ -598,6 +598,33 @@ function initOrganizersCarousel() {
             updateDots(index);
         });
     });
+    
+    // Принудительная инициализация начального состояния
+    console.log('Принудительная инициализация карусели организаторов...');
+    const items = document.querySelectorAll('.organizer-item');
+    const totalItems = items.length;
+    
+    if (totalItems > 0) {
+        // Устанавливаем активным 2-й организатор (индекс 1)
+        const activeIndex = 1;
+        const prevIndex = (activeIndex - 1 + totalItems) % totalItems;
+        const nextIndex = (activeIndex + 1) % totalItems;
+        
+        // Убираем все классы
+        items.forEach(item => {
+            item.classList.remove('act', 'prev', 'next', 'new-next', 'hide');
+        });
+        
+        // Устанавливаем новые классы
+        items[prevIndex].classList.add('prev');
+        items[activeIndex].classList.add('act');
+        items[nextIndex].classList.add('next');
+        
+        // Обновляем точки навигации
+        updateDots(activeIndex);
+        
+        console.log('Карусель инициализирована с активным индексом:', activeIndex);
+    }
 } 
 
 // ===== КАРУСЕЛЬ ПРОГРАММ =====
