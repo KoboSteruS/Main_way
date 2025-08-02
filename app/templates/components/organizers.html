@@ -7,9 +7,9 @@
         
         <!-- Карусель организаторов -->
         <div class="organizers-carousel">
-            {% for organizer in organizers %}
-            <div class="organizers-slide {% if loop.first %}active{% endif %}" data-carousel="organizers">
-                <div class="organizer-item">
+            <ul class="organizers-list">
+                {% for organizer in organizers %}
+                <li class="organizer-item {% if loop.first %}act{% elif loop.index == 2 %}next{% elif loop.index == 3 %}next new-next{% else %}hide{% endif %}" data-index="{{ loop.index0 }}">
                     <div class="organizer-photo">
                         <img src="{{ url_for('static', filename=organizer.photo) }}" alt="{{ organizer.name }}">
                     </div>
@@ -17,9 +17,9 @@
                         <h3>{{ organizer.name|upper }}</h3>
                         <p>{{ organizer.role }}</p>
                     </div>
-                </div>
-            </div>
-            {% endfor %}
+                </li>
+                {% endfor %}
+            </ul>
             
             <!-- Навигация карусели -->
             <div class="carousel-nav">
@@ -28,7 +28,7 @@
                 </button>
                 <div class="carousel-dots">
                     {% for organizer in organizers %}
-                    <span class="dot {% if loop.first %}active{% endif %}" data-carousel="organizers"></span>
+                    <span class="dot {% if loop.first %}active{% endif %}" data-index="{{ loop.index0 }}"></span>
                     {% endfor %}
                 </div>
                 <button class="carousel-btn next" id="organizerNext">
