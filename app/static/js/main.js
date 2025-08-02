@@ -467,77 +467,84 @@ function initOrganizersCarousel() {
     function next() {
         console.log('Следующий слайд');
         
-        if (document.querySelector(".hide")) {
-            document.querySelector(".hide").remove(); 
-        }
-
-        /* Step */
-        if (document.querySelector(".prev")) {
-            document.querySelector(".prev").classList.add("hide");
-            document.querySelector(".prev").classList.remove("prev");
-        }
-
-        const act = document.querySelector(".act");
-        if (act) {
-            act.classList.add("prev");
-            act.classList.remove("act");
-        }
-
-        const next = document.querySelector(".next");
-        if (next) {
-            next.classList.add("act");
-            next.classList.remove("next");
-        }
-
-        /* New Next */
-        const newNext = document.querySelector(".new-next");
-        if (newNext) {
-            newNext.classList.remove("new-next");
-        }
-
-        const addedEl = document.createElement('li');
-        addedEl.className = 'organizer-item next new-next';
-        list.appendChild(addedEl);
+        // Получаем все элементы организаторов
+        const items = document.querySelectorAll('.organizer-item');
+        const totalItems = items.length;
+        
+        if (totalItems === 0) return;
+        
+        // Находим текущий активный индекс
+        let currentIndex = 0;
+        items.forEach((item, index) => {
+            if (item.classList.contains('act')) {
+                currentIndex = index;
+            }
+        });
+        
+        // Вычисляем новые индексы
+        const nextIndex = (currentIndex + 1) % totalItems;
+        const prevIndex = (currentIndex - 1 + totalItems) % totalItems;
+        const newNextIndex = (currentIndex + 2) % totalItems;
+        
+        // Убираем все классы
+        items.forEach(item => {
+            item.classList.remove('act', 'prev', 'next', 'new-next', 'hide');
+        });
+        
+        // Устанавливаем новые классы
+        items[currentIndex].classList.add('prev');
+        items[nextIndex].classList.add('act');
+        items[newNextIndex].classList.add('next');
+        
+        // Обновляем точки навигации
+        updateDots(nextIndex);
     }
 
     function prev() {
         console.log('Предыдущий слайд');
         
-        const newNext = document.querySelector(".new-next");
-        if (newNext) {
-            newNext.remove();
-        }
+        // Получаем все элементы организаторов
+        const items = document.querySelectorAll('.organizer-item');
+        const totalItems = items.length;
         
-        /* Step */
-        const next = document.querySelector(".next");
-        if (next) {
-            next.classList.add("new-next");
-        }
-
-        const act = document.querySelector(".act");
-        if (act) {
-            act.classList.add("next");
-            act.classList.remove("act");
-        }
-
-        const prev = document.querySelector(".prev");
-        if (prev) {
-            prev.classList.add("act");
-            prev.classList.remove("prev");
-        }
-
-        /* New Prev */
-        const hide = document.querySelector(".hide");
-        if (hide) {
-            hide.classList.add("prev");
-            hide.classList.remove("hide");
-        }
-
-        const addedEl = document.createElement('li');
-        list.insertBefore(addedEl, list.firstChild);
-        addedEl.classList.add("hide");
+        if (totalItems === 0) return;
+        
+        // Находим текущий активный индекс
+        let currentIndex = 0;
+        items.forEach((item, index) => {
+            if (item.classList.contains('act')) {
+                currentIndex = index;
+            }
+        });
+        
+        // Вычисляем новые индексы
+        const prevIndex = (currentIndex - 1 + totalItems) % totalItems;
+        const newPrevIndex = (currentIndex - 2 + totalItems) % totalItems;
+        
+        // Убираем все классы
+        items.forEach(item => {
+            item.classList.remove('act', 'prev', 'next', 'new-next', 'hide');
+        });
+        
+        // Устанавливаем новые классы
+        items[newPrevIndex].classList.add('prev');
+        items[prevIndex].classList.add('act');
+        items[currentIndex].classList.add('next');
+        
+        // Обновляем точки навигации
+        updateDots(prevIndex);
     }
 
+    function updateDots(activeIndex) {
+        // Убираем активный класс у всех точек
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        // Активируем нужную точку
+        if (dots[activeIndex]) {
+            dots[activeIndex].classList.add('active');
+        }
+    }
+    
     function slide(element) {
         /* Next slide */
         if (element.classList.contains('next')) {
@@ -565,8 +572,30 @@ function initOrganizersCarousel() {
     // Обработчики для точек
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
-            // Пока что просто переключаем на нужный индекс
             console.log('Клик по точке:', index);
+            
+            // Получаем все элементы организаторов
+            const items = document.querySelectorAll('.organizer-item');
+            const totalItems = items.length;
+            
+            if (totalItems === 0) return;
+            
+            // Убираем все классы
+            items.forEach(item => {
+                item.classList.remove('act', 'prev', 'next', 'new-next', 'hide');
+            });
+            
+            // Вычисляем индексы для показа 3 элементов
+            const prevIndex = (index - 1 + totalItems) % totalItems;
+            const nextIndex = (index + 1) % totalItems;
+            
+            // Устанавливаем новые классы
+            items[prevIndex].classList.add('prev');
+            items[index].classList.add('act');
+            items[nextIndex].classList.add('next');
+            
+            // Обновляем точки навигации
+            updateDots(index);
         });
     });
 } 
