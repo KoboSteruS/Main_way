@@ -461,7 +461,7 @@ function initOrganizersCarousel() {
         console.log('Список организаторов не найден!');
         return;
     }
-    
+
     console.log('Найдено точек:', dots.length);
     
     function next() {

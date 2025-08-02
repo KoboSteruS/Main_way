@@ -2700,6 +2700,13 @@ body {
     display: none; /* Скрыто по умолчанию */
 }
 
+/* Скрываем мобильную карусель на больших экранах */
+@media (min-width: 769px) {
+    .programs-carousel-mobile {
+        display: none !important;
+    }
+}
+
 .programs-carousel {
     position: relative;
     overflow: hidden;
