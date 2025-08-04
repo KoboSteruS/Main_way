@@ -2532,8 +2532,8 @@ body {
     
     .organizer-item {
         list-style-type: none;
-        width: 300px;
-        height: 350px;
+        width: 350px;
+        height: 450px;
         opacity: 0.25;
         position: absolute;
         left: 50%;
@@ -2612,7 +2612,7 @@ body {
     }
     
     .organizer-info p {
-        font-size: 1.1rem;
+        font-size: 0.9rem;
         color: #ccc;
         margin: 0;
         line-height: 1.5;
@@ -2691,7 +2691,7 @@ body {
     }
     
     .organizer-info p {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 }
 

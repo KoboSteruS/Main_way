@@ -682,11 +682,6 @@ function initProgramsCarousel() {
         });
     });
     
-    // Автоматическое переключение каждые 8 секунд (медленнее чем участники)
-    setInterval(() => {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        showSlide(currentSlide);
-    }, 8000);
     
     // Инициализация первого слайда
     showSlide(0);

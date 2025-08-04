@@ -1,20 +1,20 @@
 [
-    {
-        "id": "static_organizer_1",
-        "name": "Координатор",
-        "role": "Координатор",
-        "photo": "img/Coordinat.png"
-    },
-    {
-        "id": "static_organizer_2",
-        "name": "Глава организации",
-        "role": "Глава организации",
-        "photo": "img/Glava.png"
-    },
-    {
-        "id": "static_organizer_3",
-        "name": "Проводница",
-        "role": "Проводница",
-        "photo": "img/Provodnik.png"
-    }
-] 
+  {
+    "id": "static_organizer_1",
+    "name": "Координатор",
+    "role": "Лицо и голос клуба. Отвечает за организацию всех мероприятий, ритм и структуру встреч. Связывает всё воедино — от расписания до атмосферы. Именно он делает так, чтобы каждый участник оказался в нужном месте, в нужное время и с правильным настроем.",
+    "photo": "img/Coordinat.png"
+  },
+  {
+    "id": "static_organizer_2",
+    "name": "Глава организации",
+    "role": "Глава организации",
+    "photo": "img/Glava.png"
+  },
+  {
+    "id": "static_organizer_3",
+    "name": "Проводница",
+    "role": "Проводница",
+    "photo": "img/Provodnik.png"
+  }
+]
