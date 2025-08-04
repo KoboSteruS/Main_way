@@ -76,27 +76,20 @@ function initSmoothScroll() {
 // ===== ВИДЕО ПЛЕЙЕР =====
 function initVideoPlayer() {
     const playBtn = document.getElementById('playVideoBtn');
-    const videoCover = document.querySelector('.video-section__cover');
-    
-    if (playBtn && videoCover) {
+    const videoPoster = document.getElementById('videoPoster');
+    const videoContainer = document.getElementById('videoContainer');
+    const video = videoContainer.querySelector('video');
+
+    if (playBtn && videoPoster && videoContainer && video) {
         playBtn.addEventListener('click', () => {
-            // Здесь можно добавить логику для открытия модального окна с видео
-            // или встраивания iframe с YouTube/Vimeo
-            
-            // Пример для YouTube
-            const videoId = 'YOUR_VIDEO_ID'; // Замените на реальный ID видео
-            const iframe = document.createElement('iframe');
-            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-            iframe.width = '100%';
-            iframe.height = '450';
-            iframe.frameBorder = '0';
-            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-            
-            videoCover.innerHTML = '';
-            videoCover.appendChild(iframe);
+            videoPoster.style.display = 'none';
+            videoContainer.style.display = 'block';
+            video.play();
         });
     }
 }
+
+document.addEventListener('DOMContentLoaded', initVideoPlayer);
 
 // ===== INTERSECTION OBSERVER ДЛЯ АНИМАЦИЙ =====
 function initIntersectionObserver() {
