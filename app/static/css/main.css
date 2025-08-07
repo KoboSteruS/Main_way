@@ -2561,7 +2561,7 @@ body {
     }
     
     .organizers-list {
-        height: 450px;
+        height: 500px;
         position: relative;
         width: 100%;
         overflow: hidden;
@@ -2570,7 +2570,7 @@ body {
     .organizer-item {
         list-style-type: none;
         width: 350px;
-        height: 500px;
+        min-height: 500px;
         opacity: 0.25;
         position: absolute;
         left: 50%;
@@ -2660,7 +2660,7 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 30px;
+        margin-top: 50px;
         gap: 20px;
     }
     
