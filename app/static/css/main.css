@@ -940,7 +940,17 @@ body {
     
     .video-section__text { font-size: 24px; margin-bottom: 30px; }
     .video-container iframe { height: 300px; }
+
+
+    .organizer-item{
+        left: 45%;
+    }
 }
+
+
+
+
+
 
 @media (max-width: 480px) {
     .who-we-are__carousel {
@@ -953,7 +963,12 @@ body {
         max-height: 1700px; 
         padding: 40px 0;
     }
+    .organizer-item{
+        left: 45%;
+    }
 }
+
+
 
 /* ===== FINAL CTA SECTION ===== */
 .final-cta {
@@ -2742,7 +2757,11 @@ body {
     .programs-carousel-mobile {
         display: none !important;
     }
+
 }
+
+
+
 
 .programs-carousel {
     position: relative;
@@ -3265,6 +3284,9 @@ body {
     .modal__cta .btn {
         width: 100%;
         max-width: 300px;
+    }
+    .organizer-item{
+        left: 45% !important;
     }
 } 
 
