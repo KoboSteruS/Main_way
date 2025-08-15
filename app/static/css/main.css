@@ -3294,47 +3294,57 @@ body {
 .elite-program {
     padding: 0;
     min-height: 100vh;
-    background: var(--color-bg);
+    /* Запасной фон */
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+    /* Основной фон с изображением */
+    background: 
+        linear-gradient(135deg, rgba(10, 10, 10, 0.7) 0%, rgba(26, 26, 26, 0.8) 50%, rgba(10, 10, 10, 0.9) 100%),
+        url('/static/img/Hero_Back.png') center/cover;
+    background-attachment: fixed;
     position: relative;
     overflow: hidden;
 }
 
 .elite-program::before {
     content: '';
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: 
-        linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.75)),
-        url('../img/Hero_Back.png') center/cover,
-        url('../img/run.jpg') center/cover;
-    background-attachment: fixed;
-    background-blend-mode: overlay, normal, normal;
-    z-index: -2;
+    background: linear-gradient(
+        180deg,
+        rgba(10, 10, 10, 0.3) 0%,
+        rgba(10, 10, 10, 0.6) 50%,
+        rgba(10, 10, 10, 0.8) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
 }
 
 .elite-program::after {
     content: '';
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background: 
-        radial-gradient(ellipse at top, rgba(191, 164, 107, 0.08) 0%, transparent 40%),
-        radial-gradient(ellipse at bottom, rgba(191, 164, 107, 0.05) 0%, transparent 50%);
+        radial-gradient(ellipse at 30% 20%, rgba(191, 164, 107, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(191, 164, 107, 0.08) 0%, transparent 60%);
     pointer-events: none;
     z-index: -1;
 }
 
 .elite-program__header {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(20, 20, 20, 0.9) 100%);
+    background: 
+        linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(20, 20, 20, 0.95) 100%),
+        url('/static/img/run.jpg') center/cover;
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(191, 164, 107, 0.2);
     padding: 40px 0 60px;
     position: relative;
+    z-index: 2;
 }
 
 .elite-program__header::before {
@@ -3370,7 +3380,7 @@ body {
     max-width: 900px;
     margin: 0 auto;
     position: relative;
-    z-index: 2;
+    z-index: 3;
     padding: 0 20px 80px;
 }
 
