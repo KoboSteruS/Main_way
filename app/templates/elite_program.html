@@ -2,10 +2,22 @@
 
 {% block content %}
 <div class="elite-program">
-    <div class="container">
-        <div class="elite-program__content">
+    <!-- Хедер с логотипом и заголовком -->
+    <div class="elite-program__header">
+        <div class="container">
+            <!-- Логотип -->
+            <div class="elite-program__logo">
+                <img src="{{ url_for('static', filename='img/Logo_white.jpg') }}" alt="ОСНОВА ПУТИ" class="elite-program__logo-img" />
+            </div>
+            
             <h1 class="elite-program__title">ЭЛИТНАЯ СБОРКА СЕБЯ — 90 ДНЕЙ</h1>
             <p class="elite-program__subtitle">Программа для тех, кто не ищет лёгкого пути.</p>
+        </div>
+    </div>
+    
+    <!-- Основной контент -->
+    <div class="container">        
+        <div class="elite-program__content">
             
             <section class="elite-program__section">
                 <h2 class="elite-program__section-title">ДЛЯ КОГО ЭТО</h2>
@@ -79,6 +91,48 @@
                     Хочешь, чтобы тебя раздели, собрали и включили?<br>
                     Добро пожаловать.
                 </p>
+            </section>
+
+            <!-- Новый раздел "Что ты получишь" -->
+            <section class="elite-program__section elite-program__results">
+                <h2 class="elite-program__section-title">ЧТО ТЫ ПОЛУЧИШЬ</h2>
+                <p class="elite-program__text elite-program__results-intro">
+                    Подача через состояние, не просто "вы научитесь"
+                </p>
+                <div class="elite-program__results-grid">
+                    <div class="elite-program__result-item">
+                        <span class="elite-program__result-icon">🔹</span>
+                        <span class="elite-program__result-text">Железный режим</span>
+                    </div>
+                    <div class="elite-program__result-item">
+                        <span class="elite-program__result-icon">🔹</span>
+                        <span class="elite-program__result-text">Привычки миллионеров</span>
+                    </div>
+                    <div class="elite-program__result-item">
+                        <span class="elite-program__result-icon">🔹</span>
+                        <span class="elite-program__result-text">Аудит и сборка себя</span>
+                    </div>
+                    <div class="elite-program__result-item">
+                        <span class="elite-program__result-icon">🔹</span>
+                        <span class="elite-program__result-text">Деньги как энергия</span>
+                    </div>
+                    <div class="elite-program__result-item">
+                        <span class="elite-program__result-icon">🔹</span>
+                        <span class="elite-program__result-text">Возврат к телу и силе</span>
+                    </div>
+                    <div class="elite-program__result-item">
+                        <span class="elite-program__result-icon">🔹</span>
+                        <span class="elite-program__result-text">Перезапуск дела</span>
+                    </div>
+                    <div class="elite-program__result-item">
+                        <span class="elite-program__result-icon">🔹</span>
+                        <span class="elite-program__result-text">Публичность, харизма, влияние</span>
+                    </div>
+                    <div class="elite-program__result-item">
+                        <span class="elite-program__result-icon">🔹</span>
+                        <span class="elite-program__result-text">Новое состояние</span>
+                    </div>
+                </div>
             </section>
 
             <div class="elite-program__cta">
