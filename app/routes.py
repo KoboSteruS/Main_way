@@ -924,3 +924,9 @@ def delete_map_point_route(token, point_id):
         flash('Ошибка при удалении точки карты', 'error')
     
     return redirect(url_for('main.admin_dashboard', token=token))
+
+# Маршрут для страницы элитной программы
+@main_bp.route('/elite-program')
+def elite_program():
+    telegram_link = load_telegram_link()
+    return render_template('elite_program.html', telegram_link=telegram_link)

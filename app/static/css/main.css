@@ -3290,4 +3290,122 @@ body {
     }
 } 
 
+/* ===== ЭЛИТНАЯ ПРОГРАММА ===== */
+.elite-program {
+    padding: 120px 0 80px;
+    min-height: 100vh;
+    background: var(--color-bg);
+}
+
+.elite-program__content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.elite-program__title {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--color-accent);
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+}
+
+.elite-program__subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-bottom: 60px;
+    font-weight: 400;
+}
+
+.elite-program__section {
+    margin-bottom: 50px;
+}
+
+.elite-program__section:last-of-type {
+    margin-bottom: 40px;
+}
+
+.elite-program__section-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.elite-program__text {
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+
+.elite-program__text:last-child {
+    margin-bottom: 0;
+}
+
+.elite-program__cta {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--color-border);
+}
+
+.elite-program__btn {
+    font-size: var(--font-size-base);
+    padding: 18px 40px;
+    min-width: 250px;
+}
+
+@media (max-width: 768px) {
+    .elite-program {
+        padding: 100px 0 60px;
+    }
+    
+    .elite-program__content {
+        padding: 0 20px;
+    }
+    
+    .elite-program__title {
+        font-size: var(--font-size-2xl);
+        margin-bottom: 15px;
+    }
+    
+    .elite-program__subtitle {
+        font-size: var(--font-size-base);
+        margin-bottom: 40px;
+    }
+    
+    .elite-program__section {
+        margin-bottom: 35px;
+    }
+    
+    .elite-program__section-title {
+        font-size: var(--font-size-lg);
+        margin-bottom: 15px;
+    }
+    
+    .elite-program__text {
+        font-size: var(--font-size-sm);
+        line-height: 1.6;
+    }
+    
+    .elite-program__cta {
+        margin-top: 40px;
+        padding-top: 30px;
+    }
+    
+    .elite-program__btn {
+        width: 100%;
+        max-width: 300px;
+        font-size: var(--font-size-sm);
+        padding: 16px 32px;
+    }
+} 
+
  
